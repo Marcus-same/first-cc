@@ -1,0 +1,72 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card report-header">
+    <view class="report-title">📊 肠道健康周报</view>
+    <view class="report-range">{{dateRange}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">📈 本周概览</view>
+    <view class="overview-grid">
+      <view class="overview-item">
+        <view class="ov-num">{{summary.total}}</view>
+        <view class="ov-label">总次数</view>
+      </view>
+      <view class="overview-item">
+        <view class="ov-num">{{summary.days}}</view>
+        <view class="ov-label">打卡天数</view>
+      </view>
+      <view class="overview-item">
+        <view class="ov-num">{{summary.avgPerDay}}</view>
+        <view class="ov-label">日均次数</view>
+      </view>
+      <view class="overview-item">
+        <view class="ov-num">{{summary.avgMin}}分</view>
+        <view class="ov-label">平均时长</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">📊 每日趋势</view>
+    <view class="bar-chart">
+      <view class="bar-col" wx:for="{{bars}}" wx:key="day">
+        <view class="bar-val">{{item.count > 0 ? item.count : ''}}</view>
+        <view class="bar-fill" style="height:{{item.height}}px"></view>
+        <view class="bar-label">{{item.day}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">🔬 类型分布</view>
+    <view class="type-dist">
+      <view class="type-item" wx:for="{{typeDist}}" wx:key="icon">
+        <view class="type-icon">{{item.icon}}</view>
+        <view class="type-bar-bg">
+          <view class="type-bar-fill" style="width:{{item.pct}}%"></view>
+        </view>
+        <view class="type-pct">{{item.pct}}%</view>
+      </view>
+    </view>
+    <view class="type-empty" wx:if="{{!typeDist.length}}">本周无类型记录</view>
+  </view>
+
+  <!-- Medical alerts -->
+  <view class="card alerts-card" wx:if="{{alerts.length}}">
+    <view class="section-title">🩺 健康提醒</view>
+    <view class="alert-item {{item.level}}" wx:for="{{alerts}}" wx:key="icon">
+      <view class="alert-icon">{{item.icon}}</view>
+      <view class="alert-text">{{item.text}}</view>
+    </view>
+  </view>
+
+  <view class="card advice-card">
+    <view class="advice-title">💊 本周建议</view>
+    <view class="advice-body">{{advice}}</view>
+  </view>
+
+  <view class="share-actions">
+    <button class="btn-share" open-type="share">📤 分享周报</button>
+    <button class="btn-save-img" bindtap="saveImage">💾 保存图片</button>
+  </view>
+</view>

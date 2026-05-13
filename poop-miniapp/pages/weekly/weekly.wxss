@@ -1,0 +1,36 @@
+.container { min-height:100vh; padding-bottom:40rpx; }
+.report-header { text-align:center; }
+.report-title { font-size:36rpx; font-weight:bold; }
+.report-range { font-size:26rpx; color:var(--sub); margin-top:8rpx; }
+.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
+.overview-grid { display:flex; flex-wrap:wrap; }
+.overview-item { width:50%; text-align:center; padding:16rpx 0; }
+.ov-num { font-size:52rpx; font-weight:bold; color:var(--accent); }
+.ov-label { font-size:24rpx; color:var(--sub); margin-top:4rpx; }
+.bar-chart { display:flex; justify-content:space-around; align-items:flex-end; height:200rpx; }
+.bar-col { display:flex; flex-direction:column; align-items:center; width:60rpx; }
+.bar-val { font-size:22rpx; color:var(--sub); margin-bottom:4rpx; }
+.bar-fill { width:40rpx; min-height:4rpx; background:var(--accent); border-radius:6rpx 6rpx 0 0; transition:.3s; }
+.bar-label { font-size:22rpx; color:var(--sub); margin-top:8rpx; }
+.type-dist { }
+.type-item { display:flex; align-items:center; gap:12rpx; margin-bottom:14rpx; }
+.type-icon { font-size:36rpx; width:50rpx; }
+.type-bar-bg { flex:1; height:20rpx; background:var(--border); border-radius:10rpx; overflow:hidden; }
+.type-bar-fill { height:100%; background:var(--accent); border-radius:10rpx; }
+.type-pct { font-size:24rpx; color:var(--sub); width:50rpx; text-align:right; }
+.type-empty { text-align:center; color:var(--sub); padding:20rpx; font-size:26rpx; }
+.advice-card { }
+.advice-title { font-size:30rpx; font-weight:bold; margin-bottom:16rpx; }
+.advice-body { font-size:28rpx; color:var(--sub); line-height:1.7; }
+
+.alerts-card { }
+.alert-item { display:flex; gap:12rpx; padding:16rpx; border-radius:12rpx; margin-bottom:12rpx; }
+.alert-item.danger { background:rgba(224,123,90,0.1); }
+.alert-item.warn { background:rgba(240,180,60,0.1); }
+.alert-item.info { background:rgba(100,150,200,0.1); }
+.alert-icon { font-size:32rpx; }
+.alert-text { font-size:26rpx; color:var(--text); flex:1; line-height:1.5; }
+
+.share-actions { display:flex; gap:20rpx; padding:0 20rpx; margin-top:20rpx; }
+.btn-share { flex:1; background:var(--accent); color:#fff; border-radius:40rpx; padding:20rpx; font-size:28rpx; border:none; }
+.btn-save-img { flex:1; background:var(--card); color:var(--accent); border-radius:40rpx; padding:20rpx; font-size:28rpx; border:1rpx solid var(--accent); }

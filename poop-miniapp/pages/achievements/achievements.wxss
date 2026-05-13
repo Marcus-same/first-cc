@@ -1,0 +1,22 @@
+.container { min-height:100vh; padding-bottom:40rpx; }
+.milestone-card { text-align:center; background:linear-gradient(135deg,#fff9e6,#fff5cc); }
+.milestone-icon { font-size:72rpx; }
+.milestone-text { font-size:30rpx; font-weight:bold; color:#b8860b; margin-top:10rpx; }
+.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
+.achievement-grid { display:flex; flex-wrap:wrap; gap:20rpx; }
+.ach-item { width:calc(33.33% - 14rpx); text-align:center; padding:20rpx 10rpx; border-radius:12rpx; background:rgba(107,142,78,0.06); }
+.ach-item.locked { opacity:0.5; background:var(--border); }
+.ach-icon { font-size:48rpx; }
+.ach-name { font-size:26rpx; font-weight:bold; margin:8rpx 0; }
+.ach-desc { font-size:22rpx; color:var(--sub); }
+.total-stats { display:flex; justify-content:space-around; text-align:center; }
+.total-num { font-size:48rpx; font-weight:bold; color:var(--accent); }
+.total-label { font-size:24rpx; color:var(--sub); margin-top:4rpx; }
+
+.empty-state { text-align:center; padding:60rpx 40rpx; }
+.empty-icon { font-size:100rpx; margin-bottom:20rpx; }
+.empty-text { font-size:30rpx; color:var(--text); margin-bottom:8rpx; }
+.empty-sub { font-size:26rpx; color:var(--sub); }
+
+.quick-links { display:flex; gap:16rpx; padding:0 20rpx; margin-top:20rpx; }
+.link-btn { flex:1; text-align:center; background:var(--card); border-radius:16rpx; padding:24rpx 16rpx; font-size:28rpx; color:var(--text); box-shadow:0 2rpx 12rpx rgba(0,0,0,0.05); }

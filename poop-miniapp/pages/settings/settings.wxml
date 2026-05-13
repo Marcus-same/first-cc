@@ -1,0 +1,75 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card">
+    <view class="section-title">⏰ 久蹲提醒</view>
+    <view class="setting-row">
+      <view class="setting-label">开启提醒</view>
+      <switch checked="{{warnEnabled}}" bindchange="toggleWarn" color="#6b8e4e" />
+    </view>
+    <view class="setting-row" wx:if="{{warnEnabled}}">
+      <view class="setting-label">提醒时长</view>
+      <view class="setting-val picker-val" bindtap="showWarnPicker">{{warnMin}}分钟</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">🌙 暗黑模式</view>
+    <view class="setting-row">
+      <view class="setting-label">主题</view>
+      <picker class="picker" mode="selector" range="{{themeOptions}}" value="{{themeIdx}}" bindchange="changeTheme">
+        <view class="setting-val">{{themeOptions[themeIdx]}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">💾 数据管理</view>
+    <view class="setting-row">
+      <view class="setting-label">导出记录</view>
+      <button class="btn-small" bindtap="exportData">导出</button>
+    </view>
+    <view class="setting-row">
+      <view class="setting-label">清除所有数据</view>
+      <button class="btn-small btn-danger" bindtap="clearData">清除</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">🎮 更多功能</view>
+    <view class="setting-row" bindtap="goSquad">
+      <view class="setting-label">👥 我的战队</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="goMap">
+      <view class="setting-label">🗺️ 拉屎地图</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="goPersonality">
+      <view class="setting-label">🧬 肠道人格</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="goOnboarding">
+      <view class="setting-label">📖 重新查看引导</view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">ℹ️ 关于</view>
+    <view class="setting-row" bindtap="goPrivacy">
+      <view class="setting-label">隐私政策</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="goAgreement">
+      <view class="setting-label">用户协议</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="sendFeedback">
+      <view class="setting-label">反馈建议</view>
+      <view class="arrow">›</view>
+    </view>
+    <view class="setting-row">
+      <view class="setting-label">版本</view>
+      <view class="setting-val">2.0.0</view>
+    </view>
+  </view>
+</view>

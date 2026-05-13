@@ -1,0 +1,19 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <swiper class="swiper" current="{{current}}" bindchange="onSwiperChange" indicator-dots="{{true}}" indicator-color="#ccc" indicator-active-color="{{slides[current].color}}">
+    <swiper-item wx:for="{{slides}}" wx:key="title">
+      <view class="slide">
+        <view class="slide-emoji" style="color:{{item.color}}">{{item.emoji}}</view>
+        <view class="slide-title">{{item.title}}</view>
+        <view class="slide-desc">{{item.desc}}</view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <view class="onboarding-footer">
+    <view class="dots">
+      <view class="dot {{current === i ? 'active' : ''}}" wx:for="{{slides}}" wx:key="title" wx:for-index="i" style="background:{{current === i ? slides[current].color : '#ddd'}}"></view>
+    </view>
+    <button class="btn-start" bindtap="onStart" style="background:{{slides[current].color}}">开始使用</button>
+    <view class="btn-skip" bindtap="onSkip">跳过</view>
+  </view>
+</view>

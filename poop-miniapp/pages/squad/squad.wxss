@@ -1,0 +1,30 @@
+.container { min-height:100vh; padding-bottom:40rpx; }
+.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
+
+.code-card { text-align:center; }
+.code-display { font-size:80rpx; font-weight:bold; letter-spacing:12rpx; color:var(--accent); font-family:'Courier New',monospace; margin:20rpx 0; }
+.code-actions { display:flex; flex-wrap:wrap; gap:16rpx; }
+.btn-share { flex:1; min-width:200rpx; background:var(--accent); color:#fff; border-radius:40rpx; padding:16rpx; font-size:26rpx; border:none; }
+.btn-outline { flex:1; min-width:200rpx; background:transparent; color:var(--accent); border:1rpx solid var(--accent); border-radius:40rpx; padding:16rpx; font-size:24rpx; }
+
+.add-form { margin-top:16rpx; }
+.add-input { width:100%; border:1rpx solid var(--border); border-radius:12rpx; padding:16rpx; font-size:28rpx; margin-bottom:12rpx; color:var(--text); }
+.btn-add { width:100%; background:var(--accent2); color:#fff; border-radius:12rpx; padding:16rpx; font-size:28rpx; border:none; }
+
+.friend-item { display:flex; align-items:center; justify-content:space-between; padding:16rpx 0; border-bottom:1rpx solid var(--border); }
+.friend-name { font-size:30rpx; font-weight:bold; }
+.friend-code { font-size:24rpx; color:var(--sub); margin-top:4rpx; }
+.friend-stats { font-size:24rpx; color:var(--accent); margin-top:4rpx; }
+.friend-stats.dim { color:var(--sub); font-style:italic; }
+
+.empty-friends { text-align:center; padding:60rpx; }
+.empty-icon { font-size:80rpx; margin-bottom:16rpx; }
+.empty-text { font-size:30rpx; color:var(--text); margin-bottom:8rpx; }
+.empty-sub { font-size:26rpx; color:var(--sub); line-height:1.8; }
+
+.lb-item { display:flex; align-items:center; gap:16rpx; padding:16rpx 0; border-bottom:1rpx solid var(--border); }
+.lb-item.me { background:rgba(107,142,78,0.06); border-radius:12rpx; padding:16rpx 12rpx; margin:0 -12rpx; border:none; }
+.lb-rank { font-size:32rpx; font-weight:bold; color:var(--accent); width:50rpx; text-align:center; }
+.lb-name { font-size:28rpx; font-weight:bold; flex:1; }
+.lb-stats { display:flex; gap:12rpx; }
+.lb-stat { font-size:24rpx; color:var(--sub); }

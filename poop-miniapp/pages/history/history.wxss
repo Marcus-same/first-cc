@@ -1,0 +1,25 @@
+.container { min-height:100vh; padding-bottom:40rpx; }
+.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
+.heatmap { display:flex; flex-direction:column; gap:6rpx; }
+.heatmap-row { display:flex; align-items:center; gap:6rpx; }
+.heatmap-label { font-size:22rpx; color:var(--sub); width:50rpx; }
+.heatmap-dot { width:32rpx; height:32rpx; border-radius:6rpx; margin:2rpx; }
+.dot.l0 { background:#e8e8e0; }
+.dot.l1 { background:#b5d4a0; }
+.dot.l2 { background:#6b8e4e; }
+.dot.l3 { background:#3d5e1e; }
+.heatmap-legend { display:flex; align-items:center; gap:8rpx; margin-top:16rpx; font-size:22rpx; color:var(--sub); }
+.fun-fact { display:flex; align-items:center; gap:20rpx; }
+.fun-icon { font-size:44rpx; }
+.fun-text { font-size:28rpx; color:var(--sub); line-height:1.6; flex:1; }
+.empty { text-align:center; color:var(--sub); padding:40rpx; font-size:28rpx; }
+.empty-emoji { font-size:80rpx; margin-bottom:16rpx; }
+.empty-text { font-size:28rpx; color:var(--sub); }
+.list-item { display:flex; align-items:center; padding:20rpx 0; border-bottom:1rpx solid var(--border); }
+.item-left { min-width:160rpx; }
+.item-date { font-size:26rpx; }
+.item-time { font-size:24rpx; color:var(--sub); }
+.item-mid { flex:1; }
+.item-dur { font-size:28rpx; }
+.item-note { font-size:22rpx; color:var(--sub); margin-top:4rpx; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240rpx; }
+.item-type { font-size:32rpx; }

@@ -1,0 +1,44 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card calendar-card">
+    <view class="section-title">📅 排便热力图</view>
+    <view class="heatmap">
+      <view class="heatmap-row" wx:for="{{heatmap}}" wx:key="week">
+        <view class="heatmap-label">{{item.label}}</view>
+        <view class="heatmap-dot {{cell.level}}" wx:for="{{item.days}}" wx:for-item="cell" wx:key="date">
+        </view>
+      </view>
+    </view>
+    <view class="heatmap-legend">
+      <view class="dot l0"></view><text>0</text>
+      <view class="dot l1"></view><text>1</text>
+      <view class="dot l2"></view><text>2</text>
+      <view class="dot l3"></view><text>3+</text>
+    </view>
+  </view>
+
+  <view class="card fun-fact">
+    <view class="fun-icon">🎯</view>
+    <view class="fun-text">{{funFact}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">📋 全部记录</view>
+    <view wx:if="{{!list.length}}" class="empty">
+      <view class="empty-emoji">📅</view>
+      <view class="empty-text">坚持记录，这里会出现你的排便日历</view>
+    </view>
+    <view class="list-item" wx:for="{{list}}" wx:key="start">
+      <view class="item-left">
+        <view class="item-date">{{item.dateStr}}</view>
+        <view class="item-time">{{item.timeStr}}</view>
+      </view>
+      <view class="item-mid">
+        <view class="item-dur">⏱ {{item.min}}分{{item.sec}}秒</view>
+        <view class="item-note" wx:if="{{item.note}}">📝 {{item.note}}</view>
+      </view>
+      <view class="item-right">
+        <view class="item-type">{{item.typeIcon}} {{item.typeName}}</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card policy">
+    <view class="policy-title">肠道日历 用户协议</view>
+    <view class="policy-date">更新日期：2026年5月13日</view>
+
+    <view class="section">
+      <view class="s-title">一、服务说明</view>
+      <view class="s-text">「肠道日历」是一款肠道健康记录工具，帮助用户记录排便习惯、了解肠道健康状况。本小程序仅供个人健康管理参考，不构成医疗建议。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">二、免责声明</view>
+      <view class="s-text">本小程序提供的信息仅供参考，不能替代专业医疗诊断、治疗或建议。如有健康问题，请及时咨询专业医师。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">三、使用规范</view>
+      <view class="s-text">用户应合理使用本小程序，不得利用本小程序进行任何违法或不当行为。开发者保留对小程序功能和内容的修改权。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">四、知识产权</view>
+      <view class="s-text">本小程序的代码、设计、文案等知识产权归开发者所有。布里斯托大便分类法为医学界通用标准，不涉及知识产权问题。</view>
+    </view>
+  </view>
+</view>

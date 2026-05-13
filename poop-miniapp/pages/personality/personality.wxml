@@ -1,0 +1,48 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view wx:if="{{!persona}}" class="empty">
+    <view class="empty-icon">🌱</view>
+    <view class="empty-text">还没有足够数据</view>
+    <view class="empty-sub">记录几天后再来看看</view>
+  </view>
+
+  <view wx:if="{{persona}}" class="persona-card card">
+    <view class="persona-icon">{{persona.icon}}</view>
+    <view class="persona-name">{{persona.name}}</view>
+    <view class="persona-desc">{{persona.desc}}</view>
+  </view>
+
+  <view class="card" wx:if="{{persona && persona.id !== 'newbie'}}">
+    <view class="personality-detail">
+      <view class="detail-title">关于「{{persona.name}}」</view>
+      <view class="detail-item" wx:if="{{persona.id === 'morning'}}">
+        🌅 清晨排便是最健康的模式，说明你的生物钟和肠道菌群配合得很好。建议保持每天早餐后固定时间的如厕习惯。
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'night_owl'}}">
+        🦉 晚上排便本身没问题，但睡前尽量排空可以改善睡眠质量。注意晚餐时间不要太晚，给肠道足够的消化时间。
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'speed'}}">
+        ⚡ 排便快说明肠道蠕动好、饮食纤维充足。但也要确保每次都排干净，不要因为快而匆忙结束。
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'thinker'}}">
+        🧘 坐得久可能是肠道蠕动偏慢，或是"完美主义排便"。建议增加膳食纤维和运动量，把手机放远一点。
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'golden'}}">
+        🍌 你的肠道状态堪称教科书级别。布里斯托4型是消化系统健康的金标准。继续保持当前的饮食和生活方式！
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'rainbow'}}">
+        🎨 肠道类型的多样性反映了饮食的丰富性，但也说明稳定性不足。建议固定三餐时间，减少刺激性食物。
+      </view>
+      <view class="detail-item" wx:if="{{persona.id === 'explorer'}}">
+        🌍 你不在乎在哪里解决，重要的是解决。出差旅行频繁的人肠道更容易紊乱，建议随身携带益生菌。
+      </view>
+    </view>
+  </view>
+
+  <view class="card stats-mini" wx:if="{{persona}}">
+    <view class="stats-text">基于 <text class="highlight">{{totalSessions}}</text> 次记录分析得出</view>
+  </view>
+
+  <view class="share-row" wx:if="{{persona}}">
+    <button class="btn-share" open-type="share">📤 分享我的肠道人格</button>
+  </view>
+</view>

@@ -1,0 +1,40 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card policy">
+    <view class="policy-title">肠道日历 隐私政策</view>
+    <view class="policy-date">更新日期：2026年5月13日</view>
+
+    <view class="section">
+      <view class="s-title">一、我们收集的信息</view>
+      <view class="s-text">本小程序仅在本地存储以下数据：
+        <view>• 排便记录（时间、时长、类型）</view>
+        <view>• 应用设置（提醒开关、主题偏好）</view>
+        <view>• 成就数据</view>
+      </view>
+      <view class="s-text">以上所有数据仅存储在您的手机本地，我们不收集、不上传、不访问您的任何数据。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">二、数据存储</view>
+      <view class="s-text">所有数据通过微信小程序提供的本地存储 API（wx.setStorageSync）存储在您的设备中。您可以随时在「设置」中清除所有数据。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">三、数据共享</view>
+      <view class="s-text">我们不会与任何第三方共享您的数据。数据仅在您的设备本地存储和处理。</view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">四、您的权利</view>
+      <view class="s-text">您可以随时：
+        <view>• 查看所有记录数据（「记录」页面）</view>
+        <view>• 导出数据（「设置」→「导出记录」）</view>
+        <view>• 删除所有数据（「设置」→「清除所有数据」）</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="s-title">五、联系我们</view>
+      <view class="s-text">如有疑问，请在「设置」页面通过反馈入口联系我们。</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,62 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <!-- My code card -->
+  <view class="card code-card">
+    <view class="section-title">🔑 我的邀请码</view>
+    <view class="code-display">{{myCode}}</view>
+    <view class="code-actions">
+      <button class="btn-share" open-type="share">📤 邀请好友</button>
+      <button class="btn-outline" bindtap="shareStats">📊 分享我的数据</button>
+      <button class="btn-outline" bindtap="importFriendStats">📥 导入好友数据</button>
+    </view>
+  </view>
+
+  <!-- Add friend -->
+  <view class="card">
+    <view class="section-title" bindtap="toggleAdd">
+      {{showAdd ? '✖️ 取消添加' : '➕ 添加好友'}}
+    </view>
+    <view wx:if="{{showAdd}}" class="add-form">
+      <input class="add-input" placeholder="输入好友的4位邀请码" value="{{inputCode}}" bindinput="onCodeInput" maxlength="4" />
+      <input class="add-input" placeholder="给好友起个备注名（选填）" value="{{inputName}}" bindinput="onNameInput" maxlength="10" />
+      <button class="btn-add" bindtap="addFriend">确认添加</button>
+    </view>
+  </view>
+
+  <!-- Friend list -->
+  <view class="card" wx:if="{{friends.length}}">
+    <view class="section-title">👥 我的好友 ({{friendCount}})</view>
+    <view class="friend-item" wx:for="{{friends}}" wx:key="code">
+      <view class="friend-info">
+        <view class="friend-name">{{item.name}}</view>
+        <view class="friend-code">邀请码：{{item.code}}</view>
+        <view class="friend-stats" wx:if="{{item.stats}}">
+          连续 {{item.stats.streak}} 天 · 本周 {{item.stats.weekCount}} 次
+        </view>
+        <view class="friend-stats dim" wx:if="{{!item.stats}}">
+          等待好友分享数据…
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty state -->
+  <view class="card empty-friends" wx:if="{{!friends.length}}">
+    <view class="empty-icon">👥</view>
+    <view class="empty-text">还没有好友</view>
+    <view class="empty-sub">点击上方「添加好友」输入邀请码<br/>或者「邀请好友」分享你的邀请码</view>
+  </view>
+
+  <!-- Leaderboard -->
+  <view class="card" wx:if="{{leaderboard.length > 1}}">
+    <view class="section-title">🏆 战队排行榜</view>
+    <view class="lb-item {{item.isMe ? 'me' : ''}}" wx:for="{{leaderboard}}" wx:key="name">
+      <view class="lb-rank">{{index + 1}}</view>
+      <view class="lb-name">{{item.isMe ? '⭐ 我' : item.name}}</view>
+      <view class="lb-stats">
+        <text class="lb-stat">🔥{{item.streak}}天</text>
+        <text class="lb-stat">📝{{item.weekCount}}次</text>
+        <text class="lb-stat">⏱{{item.totalMin}}分</text>
+      </view>
+    </view>
+  </view>
+</view>

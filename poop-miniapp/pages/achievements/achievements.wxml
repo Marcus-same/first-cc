@@ -1,0 +1,46 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view wx:if="{{totalSessions === 0}}" class="card empty-state">
+    <view class="empty-icon">🏅</view>
+    <view class="empty-text">完成首次记录解锁第一枚勋章</view>
+    <view class="empty-sub">记录肠道健康，解锁更多成就</view>
+  </view>
+
+  <view class="card milestone-card" wx:if="{{milestone}}">
+    <view class="milestone-icon">🎊</view>
+    <view class="milestone-text">{{milestone.msg}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">🏅 成就勋章</view>
+    <view class="achievement-grid">
+      <view class="ach-item {{item.unlocked ? '' : 'locked'}}" wx:for="{{achievements}}" wx:key="id">
+        <view class="ach-icon">{{item.unlocked ? item.icon : '🔒'}}</view>
+        <view class="ach-name">{{item.unlocked ? item.name : '???'}}</view>
+        <view class="ach-desc">{{item.unlocked ? item.desc : item.hint}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">📊 累计统计</view>
+    <view class="total-stats">
+      <view class="total-item">
+        <view class="total-num">{{totalSessions}}</view>
+        <view class="total-label">累计次数</view>
+      </view>
+      <view class="total-item">
+        <view class="total-num">{{totalMin}}分</view>
+        <view class="total-label">累计时长</view>
+      </view>
+      <view class="total-item">
+        <view class="total-num">{{totalDays}}天</view>
+        <view class="total-label">打卡天数</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="quick-links">
+    <view class="link-btn" bindtap="goMap">🗺️ 拉屎地图</view>
+    <view class="link-btn" bindtap="goSquad">👥 我的战队</view>
+  </view>
+</view>

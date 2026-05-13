@@ -1,0 +1,61 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <!-- Empty state -->
+  <view class="empty-state" wx:if="{{isEmpty && !running}}">
+    <view class="empty-emoji">🚽</view>
+    <view class="empty-title">准备好开始记录了吗？</view>
+    <view class="empty-sub">记录你的肠道健康，坚持就有收获</view>
+  </view>
+
+  <!-- Timer card -->
+  <view class="card timer-card">
+    <view class="emoji {{running ? 'bounce' : ''}}">{{running ? '💩' : '🚽'}}</view>
+    <view class="timer-text">{{timeStr}}</view>
+    <view class="btn-row">
+      <button class="btn-start" bindtap="onStart" disabled="{{running}}">开始计时</button>
+      <button class="btn-stop" bindtap="onStop" disabled="{{!running}}">结束记录</button>
+    </view>
+    <view class="tip" wx:if="{{running}}">{{runTip}}</view>
+    <view class="tip warn" wx:if="{{running && elapsed > warnSec}}">⏰ 已经蹲了{{warnMin}}分钟，注意时间哦</view>
+  </view>
+
+  <!-- Streak -->
+  <view class="card streak-card" wx:if="{{streak >= 1}}">
+    <view class="streak-inner">
+      <view class="streak-emoji">🔥</view>
+      <view class="streak-info">
+        <view class="streak-num">连续打卡 <text class="streak-count">{{streak}}</text> 天</view>
+        <view class="streak-sub">{{streak >= 7 ? '一周全勤达成！肠道管理优等生' : streak >= 3 ? '三天连击！继续保持' : '好的开始是成功的一半'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Stats -->
+  <view class="card stats-row">
+    <view class="stat" wx:for="{{statItems}}" wx:key="key">
+      <view class="stat-num">{{item.val}}</view>
+      <view class="stat-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- Daily Fortune -->
+  <view class="card fortune-card" wx:if="{{fortune}}">
+    <view class="fortune-header">
+      <view class="fortune-stars">{{fortune.stars}}</view>
+    </view>
+    <view class="fortune-text">{{fortune.text}}</view>
+  </view>
+
+  <!-- Health tip -->
+  <view class="daily-tip card">
+    <view class="tip-icon">💡</view>
+    <view class="tip-text">{{dailyTip}}</view>
+  </view>
+
+  <!-- Quick actions -->
+  <view class="quick-actions">
+    <view class="quick-btn" bindtap="goHistory">📅 排便日历</view>
+    <view class="quick-btn" bindtap="goWeekly">📊 本周报告</view>
+    <view class="quick-btn" bindtap="goAchievements">🏅 我的成就</view>
+    <view class="quick-btn" bindtap="goPersonality">🧬 肠道人格</view>
+  </view>
+</view>

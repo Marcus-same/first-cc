@@ -1,0 +1,7 @@
+.container { min-height:100vh; padding-bottom:40rpx; }
+.policy { line-height:1.8; }
+.policy-title { font-size:36rpx; font-weight:bold; text-align:center; }
+.policy-date { font-size:24rpx; color:var(--sub); text-align:center; margin:12rpx 0 30rpx; }
+.section { margin-bottom:28rpx; }
+.s-title { font-size:30rpx; font-weight:bold; margin-bottom:10rpx; }
+.s-text { font-size:28rpx; color:var(--sub); }

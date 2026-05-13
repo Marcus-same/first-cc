@@ -1,0 +1,52 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <view class="card header">
+    <view class="header-icon">🧻</view>
+    <view class="header-text">
+      <view class="header-title">记录完成！</view>
+      <view class="header-time">用时 {{min}}分{{sec}}秒</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">选择布里斯托类型</view>
+    <view class="bristol-grid">
+      <view class="bristol-item {{selectedType === item.type ? 'selected' : ''}}"
+        wx:for="{{bristol}}" wx:key="type" bindtap="selectType" data-type="{{item.type}}">
+        <view class="bristol-icon">{{item.icon}}</view>
+        <view class="bristol-name">{{item.name}}</view>
+        <view class="bristol-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{selectedType}}">
+    <view class="advice">
+      <view class="advice-icon">💊</view>
+      <view class="advice-text">{{advice}}</view>
+    </view>
+  </view>
+
+  <!-- Note input -->
+  <view class="card">
+    <view class="section-title">📝 备注（可选）</view>
+    <textarea class="note-input" placeholder="吃了什么？身体感受？"
+      value="{{note}}" bindinput="onNoteInput" maxlength="200"
+      placeholder-class="note-placeholder" />
+  </view>
+
+  <!-- Location toggle -->
+  <view class="card">
+    <view class="setting-row">
+      <view class="setting-label">📍 记录位置</view>
+      <switch checked="{{recordLocation}}" bindchange="toggleLocation" color="#6b8e4e" />
+    </view>
+    <view class="location-info" wx:if="{{recordLocation && locationName}}">
+      已定位：{{locationName}}
+    </view>
+  </view>
+
+  <view class="save-row">
+    <button class="btn-skip" bindtap="skip">跳过</button>
+    <button class="btn-save" bindtap="save" disabled="{{!selectedType}}">保存记录</button>
+  </view>
+</view>

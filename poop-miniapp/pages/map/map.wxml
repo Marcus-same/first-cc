@@ -1,0 +1,42 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <map
+    class="map-view"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    markers="{{markers}}"
+    scale="14"
+    show-location="{{true}}"
+  />
+
+  <!-- Filter tabs -->
+  <view class="filter-bar">
+    <view
+      class="filter-tab {{filterIdx === i ? 'active' : ''}}"
+      wx:for="{{filters}}" wx:key="*this" wx:for-index="i"
+      bindtap="onFilterTap" data-idx="{{i}}">
+      {{item}}
+    </view>
+  </view>
+
+  <!-- Stats bar -->
+  <view class="stats-bar">
+    <view class="stat-item">
+      <view class="stat-num">{{stats.locations}}</view>
+      <view class="stat-label">探索地点</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-num">{{stats.total}}</view>
+      <view class="stat-label">总标记数</view>
+    </view>
+    <view class="stat-item" bindtap="toggleFriends">
+      <view class="stat-num">{{showFriends ? 'ON' : 'OFF'}}</view>
+      <view class="stat-label">好友视图</view>
+    </view>
+  </view>
+
+  <view class="empty-hint" wx:if="{{!allMarkers.length}}">
+    <view class="hint-icon">🗺️</view>
+    <view class="hint-text">还没有位置记录</view>
+    <view class="hint-sub">记录时打开「记录位置」开关，<br/>这里就会出现你的拉屎地图</view>
+  </view>
+</view>
