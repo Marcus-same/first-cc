@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>番茄钟</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1A1A2E;
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      user-select: none;
+    }
+
+    .mode-section {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .mode-label {
+      font-size: 18px;
+      color: #A0A0A0;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    .mode-label.work { color: #E74C3C; }
+    .mode-label.break { color: #27AE60; }
+
+    .pomodoro-count {
+      font-size: 24px;
+    }
+
+    .timer-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 20px 0 30px;
+    }
+
+    .timer-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--ring-color, #F1C40F) var(--progress, 100%),
+        #16213E var(--progress, 100%)
+      );
+    }
+
+    .timer-inner {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: #16213E;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .timer-time {
+      font-family: 'Arial', monospace;
+      font-size: 56px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .timer-label {
+      font-size: 14px;
+      color: #A0A0A0;
+      margin-top: 8px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: inherit;
+    }
+
+    .btn:hover { transform: scale(1.1); }
+    .btn:active { transform: scale(0.95); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #E74C3C;
+      color: white;
+      font-size: 24px;
+    }
+
+    .btn-secondary {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #16213E;
+      color: #A0A0A0;
+      font-size: 16px;
+    }
+
+    .btn-skip {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #16213E;
+      color: #A0A0A0;
+      font-size: 14px;
+    }
+
+    .settings {
+      margin-top: 32px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .settings-title {
+      font-size: 14px;
+      color: #A0A0A0;
+      margin-bottom: 16px;
+      text-align: center;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .settings-title:hover { color: #FFFFFF; }
+
+    .settings-panel {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 20px;
+      background: #16213E;
+      border-radius: 12px;
+    }
+
+    .settings-panel.show { display: flex; }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .setting-label {
+      font-size: 14px;
+    }
+
+    .setting-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .setting-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #1A1A2E;
+      color: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .setting-btn:hover { background: #2A2A4E; }
+
+    .setting-number {
+      font-family: 'Arial', monospace;
+      width: 40px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .quit-btn {
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #A0A0A0;
+      color: #A0A0A0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .quit-btn:hover {
+      border-color: #E74C3C;
+      color: #E74C3C;
+    }
+
+    .stats {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .stats-title {
+      font-size: 14px;
+      color: #A0A0A0;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat-item {
+      background: #16213E;
+      border-radius: 8px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #E74C3C;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #A0A0A0;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mode-section">
+    <div class="mode-label work" id="modeLabel">专注时间</div>
+    <div class="pomodoro-count" id="pomodoroCount">🍅 x 0</div>
+  </div>
+
+  <div class="timer-container">
+    <div class="timer-ring" id="timerRing">
+      <div class="timer-inner">
+        <div class="timer-time" id="timerTime">25:00</div>
+        <div class="timer-label" id="timerLabel">专注工作</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-secondary" id="resetBtn" title="重置">↺</button>
+    <button class="btn btn-primary" id="startBtn" title="开始/暂停">▶</button>
+    <button class="btn btn-skip" id="skipBtn" title="跳过">⏭</button>
+  </div>
+
+  <div class="settings">
+    <div class="settings-title" id="settingsToggle">⚙ 设置</div>
+    <div class="settings-panel" id="settingsPanel">
+      <div class="setting-item">
+        <span class="setting-label">工作时长</span>
+        <div class="setting-value">
+          <button class="setting-btn" data-type="work" data-delta="-5">−</button>
+          <span class="setting-number" id="workTime">25</span>
+          <button class="setting-btn" data-type="work" data-delta="5">+</button>
+        </div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">短休息</span>
+        <div class="setting-value">
+          <button class="setting-btn" data-type="shortBreak" data-delta="-1">−</button>
+          <span class="setting-number" id="shortBreakTime">5</span>
+          <button class="setting-btn" data-type="shortBreak" data-delta="1">+</button>
+        </div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">长休息</span>
+        <div class="setting-value">
+          <button class="setting-btn" data-type="longBreak" data-delta="-5">−</button>
+          <span class="setting-number" id="longBreakTime">15</span>
+          <button class="setting-btn" data-type="longBreak" data-delta="5">+</button>
+        </div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">番茄后长休</span>
+        <div class="setting-value">
+          <button class="setting-btn" data-type="pomodorosToLongBreak" data-delta="-1">−</button>
+          <span class="setting-number" id="pomodorosToLongBreak">4</span>
+          <button class="setting-btn" data-type="pomodorosToLongBreak" data-delta="1">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="quit-btn" id="quitBtn">退出应用</button>
+
+  <div class="stats">
+    <div class="stats-title">今日统计</div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value" id="statPomodoros">0</div>
+        <div class="stat-label">完成番茄</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statMinutes">0</div>
+        <div class="stat-label">专注分钟</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statSessions">0</div>
+        <div class="stat-label">工作轮次</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const MODE = {
+      WORK: { label: '专注时间', timerLabel: '专注工作', class: 'work', color: '#F1C40F' },
+      SHORT_BREAK: { label: '短休息', timerLabel: '休息一下', class: 'break', color: '#27AE60' },
+      LONG_BREAK: { label: '长休息', timerLabel: '好好休息', class: 'break', color: '#27AE60' }
+    };
+
+    const settings = {
+      workTime: 25,
+      shortBreakTime: 5,
+      longBreakTime: 15,
+      pomodorosToLongBreak: 4
+    };
+
+    let state = {
+      mode: MODE.WORK,
+      timeLeft: settings.workTime * 60,
+      isRunning: false,
+      pomodorosCompleted: 0,
+      timerId: null,
+      totalTime: settings.workTime * 60
+    };
+
+    const elements = {
+      modeLabel: document.getElementById('modeLabel'),
+      pomodoroCount: document.getElementById('pomodoroCount'),
+      timerRing: document.getElementById('timerRing'),
+      timerTime: document.getElementById('timerTime'),
+      timerLabel: document.getElementById('timerLabel'),
+      startBtn: document.getElementById('startBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      skipBtn: document.getElementById('skipBtn'),
+      settingsToggle: document.getElementById('settingsToggle'),
+      settingsPanel: document.getElementById('settingsPanel'),
+      quitBtn: document.getElementById('quitBtn'),
+      statPomodoros: document.getElementById('statPomodoros'),
+      statMinutes: document.getElementById('statMinutes'),
+      statSessions: document.getElementById('statSessions')
+    };
+
+    function loadSettings() {
+      const saved = localStorage.getItem('pomodoro-settings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.assign(settings, parsed);
+        updateSettingsUI();
+      }
+    }
+
+    function saveSettings() {
+      localStorage.setItem('pomodoro-settings', JSON.stringify(settings));
+    }
+
+    function getTodayKey() {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
+    function loadStats() {
+      const saved = localStorage.getItem('pomodoro-stats');
+      const todayKey = getTodayKey();
+      if (saved) {
+        const allStats = JSON.parse(saved);
+        return allStats[todayKey] || { pomodorosCompleted: 0, totalFocusMinutes: 0, sessionsCompleted: 0 };
+      }
+      return { pomodorosCompleted: 0, totalFocusMinutes: 0, sessionsCompleted: 0 };
+    }
+
+    function saveStats() {
+      const saved = localStorage.getItem('pomodoro-stats');
+      const allStats = saved ? JSON.parse(saved) : {};
+      const todayKey = getTodayKey();
+      allStats[todayKey] = todayStats;
+      localStorage.setItem('pomodoro-stats', JSON.stringify(allStats));
+    }
+
+    let todayStats = loadStats();
+
+    function updateStatsDisplay() {
+      elements.statPomodoros.textContent = todayStats.pomodorosCompleted;
+      elements.statMinutes.textContent = todayStats.totalFocusMinutes;
+      elements.statSessions.textContent = todayStats.sessionsCompleted;
+    }
+
+    function updateSettingsUI() {
+      document.getElementById('workTime').textContent = settings.workTime;
+      document.getElementById('shortBreakTime').textContent = settings.shortBreakTime;
+      document.getElementById('longBreakTime').textContent = settings.longBreakTime;
+      document.getElementById('pomodorosToLongBreak').textContent = settings.pomodorosToLongBreak;
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateDisplay() {
+      elements.timerTime.textContent = formatTime(state.timeLeft);
+      elements.modeLabel.textContent = state.mode.label;
+      elements.modeLabel.className = 'mode-label ' + state.mode.class;
+      elements.timerLabel.textContent = state.mode.timerLabel;
+      elements.pomodoroCount.textContent = `🍅 x ${state.pomodorosCompleted}`;
+
+      const progress = (state.timeLeft / state.totalTime) * 100;
+      elements.timerRing.style.background = `conic-gradient(${state.mode.color} ${progress}%, #16213E ${progress}%)`;
+
+      elements.startBtn.textContent = state.isRunning ? '⏸' : '▶';
+    }
+
+    function showNotification() {
+      let title, body;
+      if (state.mode === MODE.WORK) {
+        title = '专注完成！'; body = '干得不错，休息一下吧~ 🍅';
+      } else if (state.mode === MODE.SHORT_BREAK) {
+        title = '休息结束！'; body = '准备好继续专注了吗？';
+      } else {
+        title = '长休息结束！'; body = '充满电了，继续加油！💪';
+      }
+      window.electronAPI.showNotification({ title, body });
+    }
+
+    function switchMode() {
+      if (state.mode === MODE.WORK) {
+        state.pomodorosCompleted++;
+        todayStats.pomodorosCompleted++;
+        todayStats.sessionsCompleted++;
+        todayStats.totalFocusMinutes += settings.workTime;
+        saveStats();
+        updateStatsDisplay();
+        if (state.pomodorosCompleted % settings.pomodorosToLongBreak === 0) {
+          state.mode = MODE.LONG_BREAK;
+          state.totalTime = settings.longBreakTime * 60;
+        } else {
+          state.mode = MODE.SHORT_BREAK;
+          state.totalTime = settings.shortBreakTime * 60;
+        }
+      } else {
+        state.mode = MODE.WORK;
+        state.totalTime = settings.workTime * 60;
+      }
+      state.timeLeft = state.totalTime;
+      updateDisplay();
+    }
+
+    function tick() {
+      if (state.timeLeft > 0) {
+        state.timeLeft--;
+        updateDisplay();
+      } else {
+        clearInterval(state.timerId);
+        state.isRunning = false;
+        showNotification();
+        switchMode();
+        updateDisplay();
+      }
+    }
+
+    function startTimer() {
+      if (state.isRunning) {
+        clearInterval(state.timerId);
+        state.isRunning = false;
+      } else {
+        state.isRunning = true;
+        state.timerId = setInterval(tick, 1000);
+      }
+      updateDisplay();
+    }
+
+    function resetTimer() {
+      clearInterval(state.timerId);
+      state.isRunning = false;
+      state.timeLeft = state.totalTime;
+      updateDisplay();
+    }
+
+    function skipToNext() {
+      clearInterval(state.timerId);
+      state.isRunning = false;
+      showNotification();
+      switchMode();
+      updateDisplay();
+    }
+
+    function adjustSetting(type, delta) {
+      const limits = {
+        workTime: { min: 15, max: 60 },
+        shortBreakTime: { min: 1, max: 15 },
+        longBreakTime: { min: 5, max: 30 },
+        pomodorosToLongBreak: { min: 2, max: 8 }
+      };
+      const newVal = settings[type] + delta;
+      if (newVal >= limits[type].min && newVal <= limits[type].max) {
+        settings[type] = newVal;
+        if (type === 'workTime' && state.mode === MODE.WORK && !state.isRunning) {
+          state.totalTime = settings.workTime * 60;
+          state.timeLeft = state.totalTime;
+        }
+        updateSettingsUI();
+        saveSettings();
+        updateDisplay();
+      }
+    }
+
+    elements.startBtn.addEventListener('click', startTimer);
+    elements.resetBtn.addEventListener('click', resetTimer);
+    elements.skipBtn.addEventListener('click', skipToNext);
+
+    elements.settingsToggle.addEventListener('click', () => {
+      elements.settingsPanel.classList.toggle('show');
+    });
+
+    elements.settingsPanel.querySelectorAll('.setting-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        const delta = parseInt(btn.dataset.delta);
+        adjustSetting(type, delta);
+      });
+    });
+
+    elements.quitBtn.addEventListener('click', () => {
+      window.electronAPI.quitApp();
+    });
+
+    loadSettings();
+    updateStatsDisplay();
+    state.totalTime = settings.workTime * 60;
+    state.timeLeft = state.totalTime;
+    updateDisplay();
+  </script>
+</body>
+</html>

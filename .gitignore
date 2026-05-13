@@ -1,0 +1,14 @@
+node_modules/
+dist/
+release/
+output/
+package/
+.claude/
+lark-skills/
+*.tgz
+*.zip
+.env
+__pycache__/
+*.pyc
+temp_*.*
+*_temp.*

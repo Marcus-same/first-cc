@@ -1,0 +1,16 @@
+# 小红书 Cookie 文件
+#
+# 操作步骤：
+# 1. 在 Chrome 打开 https://www.xiaohongshu.com 并登录
+# 2. F12 → Console
+# 3. 粘贴以下代码并回车：
+#
+#    copy(document.cookie.split(';').map(c => c.trim()).join('\n'))
+#
+# 4. 然后粘贴到本文件（覆盖下面这行示例），保存
+#
+# 格式：每行一个 name=value，示例：
+# a1=xxx
+# web_session=xxx
+# webBuild=xxx
+
