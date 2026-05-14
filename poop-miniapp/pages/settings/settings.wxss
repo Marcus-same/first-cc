@@ -11,7 +11,7 @@
 }
 .val-arrow { font-size:32rpx; color:var(--sub2); }
 
-.danger-label { color:var(--accent2); font-weight:500; }
+.danger-label { color:var(--accent2); font-weight:600; }
 .danger-val { color:var(--accent2); }
 
 /* ========== 导航行 ========== */
@@ -20,10 +20,10 @@
   padding:20rpx 0; transition:background 0.15s;
 }
 .nav-row.divider { border-bottom:1rpx solid var(--border-light); }
-.row-hover { background:rgba(0,0,0,0.02); margin:0 -30rpx; padding-left:30rpx; padding-right:30rpx; }
+.row-hover { background:rgba(0,0,0,0.02); margin:0 -30rpx; padding-left:30rpx; padding-right:30rpx; border-radius:var(--radius-sm); }
 .theme-dark .row-hover { background:rgba(255,255,255,0.02); }
 .nav-icon { font-size:32rpx; width:44rpx; text-align:center; }
-.nav-label { font-size:28rpx; color:var(--text); flex:1; }
+.nav-label { font-size:28rpx; color:var(--text); flex:1; font-weight:500; }
 .nav-arrow { font-size:32rpx; color:var(--sub2); }
 
 .version-tag {
@@ -34,3 +34,14 @@
 /* ========== Footer ========== */
 .settings-footer { text-align:center; padding:40rpx 0 60rpx; }
 .footer-text { font-size:24rpx; color:var(--sub2); }
+
+/* ========== 反馈按钮 ========== */
+.feedback-btn {
+  width:100%; margin:0; padding:0; background:none; border:none;
+  text-align:left; border-radius:0; line-height:inherit;
+  border-bottom:1rpx solid var(--border-light);
+}
+.feedback-btn::after { border:none; }
+.feedback-inner {
+  display:flex; align-items:center; gap:16rpx; padding:20rpx 0;
+}

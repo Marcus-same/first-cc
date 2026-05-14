@@ -1,7 +1,7 @@
 .container { position:relative; height:100vh; }
 .map-view { width:100%; height:100%; }
-.filter-bar { position:absolute; top:20rpx; left:20rpx; right:20rpx; display:flex; gap:12rpx; z-index:10; }
-.filter-tab { flex:1; text-align:center; background:rgba(255,255,255,0.9); border-radius:30rpx; padding:14rpx 0; font-size:24rpx; color:#666; backdrop-filter:blur(10px); }
+.filter-bar { position:absolute; top:20rpx; left:20rpx; right:20rpx; display:flex; gap:8rpx; z-index:10; }
+.filter-tab { flex:1; text-align:center; background:rgba(255,255,255,0.9); border-radius:30rpx; padding:14rpx 4rpx; font-size:22rpx; color:#666; backdrop-filter:blur(10px); word-break:break-all; }
 .filter-tab.active { background:var(--accent); color:#fff; font-weight:bold; }
 .theme-dark .filter-tab { background:rgba(30,30,50,0.9); color:#aaa; }
 .theme-dark .filter-tab.active { background:var(--accent); color:#fff; }
@@ -12,8 +12,23 @@
 .stat-num { font-size:36rpx; font-weight:bold; color:var(--accent); }
 .stat-label { font-size:22rpx; color:var(--sub); margin-top:4rpx; }
 
-.empty-hint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; background:rgba(255,255,255,0.95); border-radius:24rpx; padding:60rpx 40rpx; z-index:5; width:520rpx; box-shadow:0 8rpx 40rpx rgba(0,0,0,0.12); }
+.empty-hint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; background:rgba(255,255,255,0.95); border-radius:24rpx; padding:60rpx 40rpx; z-index:5; width:calc(100% - 80rpx); max-width:520rpx; box-shadow:0 8rpx 40rpx rgba(0,0,0,0.12); }
 .theme-dark .empty-hint { background:rgba(30,30,50,0.95); }
 .hint-icon { font-size:100rpx; margin-bottom:20rpx; }
 .hint-text { font-size:32rpx; color:var(--text); margin-bottom:12rpx; }
 .hint-sub { font-size:26rpx; color:var(--sub); line-height:1.6; }
+
+/* ========== 噗友入口 ========== */
+.squad-entry {
+  position:absolute; bottom:200rpx; left:20rpx; right:20rpx;
+  display:flex; align-items:center; gap:12rpx;
+  background:rgba(255,255,255,0.93); backdrop-filter:blur(10px);
+  border-radius:var(--radius-md); padding:22rpx 24rpx;
+  z-index:10; box-shadow:var(--shadow-sm);
+  transition:all 0.15s;
+}
+.theme-dark .squad-entry { background:rgba(30,30,50,0.93); }
+.squad-entry-hover { transform:translateY(2rpx); box-shadow:var(--shadow-md); }
+.squad-entry-icon { font-size:36rpx; width:44rpx; text-align:center; }
+.squad-entry-label { font-size:28rpx; color:var(--text); font-weight:500; flex:1; }
+.squad-entry-arrow { font-size:32rpx; color:var(--sub2); }

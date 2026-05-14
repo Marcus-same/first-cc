@@ -87,10 +87,6 @@
 
   <!-- 快捷入口 -->
   <view class="quick-actions fade-in-3">
-    <view class="quick-btn" bindtap="goHistory" hover-class="quick-btn-hover">
-      <view class="quick-icon">📅</view>
-      <view class="quick-label">排便日历</view>
-    </view>
     <view class="quick-btn" bindtap="goWeekly" hover-class="quick-btn-hover">
       <view class="quick-icon">📊</view>
       <view class="quick-label">本周报告</view>

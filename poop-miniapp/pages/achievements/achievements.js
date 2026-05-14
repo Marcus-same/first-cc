@@ -1,6 +1,6 @@
 const { ALL, getAllWithProgress, getDistinctBristolTypes } = require('../../utils/achievements');
 const store = require('../../utils/store');
-const { getMilestone, celebrate, getTier } = require('../../utils/fun');
+const { celebrate, getTier } = require('../../utils/fun');
 const { BRISTOL } = require('../../utils/health-tips');
 const app = getApp();
 
@@ -9,7 +9,7 @@ Page({
     dark: false, achievements: [], unlockedCount: 0,
     filteredAchievements: [],
     totalSessions: 0, totalMin: 0, totalDays: 0,
-    milestone: null, tier: null,
+    tier: null,
     museum: [], museumCollected: 0,
     catIdx: 0
   },
@@ -31,7 +31,6 @@ Page({
     const unlockedCount = achievementsWithProgress.filter(a => a.unlocked).length;
 
     const totalSec = allSessions.reduce((s, x) => s + (x.duration || 0), 0);
-    const milestone = getMilestone(totalCount);
     const tier = getTier(totalCount);
 
     // Museum: collected Bristol types
@@ -57,7 +56,6 @@ Page({
       totalSessions: totalCount,
       totalMin: Math.floor(totalSec / 60),
       totalDays: store.getDayCount(),
-      milestone,
       tier,
       museum,
       museumCollected: museum.filter(m => m.collected).length
@@ -79,6 +77,4 @@ Page({
     });
   },
 
-  goMap() { wx.navigateTo({ url: '/pages/map/map' }); },
-  goSquad() { wx.navigateTo({ url: '/pages/squad/squad' }); }
 });

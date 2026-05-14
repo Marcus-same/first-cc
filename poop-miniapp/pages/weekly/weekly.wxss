@@ -24,8 +24,8 @@
   background:var(--border); border-radius:8rpx 8rpx 0 0;
   transition:height 0.5s ease-out;
 }
-.bar-fill.mid { background:linear-gradient(180deg, #8cba6a, #6b8e4e); }
-.bar-fill.high { background:linear-gradient(180deg, #7ba65a, #4a7a2e); }
+.bar-fill.mid { background:linear-gradient(180deg, var(--accent-light), var(--accent)); }
+.bar-fill.high { background:linear-gradient(180deg, var(--accent), var(--accent-dark)); }
 .bar-label { font-size:20rpx; color:var(--sub2); margin-top:10rpx; white-space:nowrap; }
 
 /* ========== 类型分布 ========== */
@@ -39,11 +39,11 @@
 
 /* ========== 健康提醒 ========== */
 .alerts-section { margin:16rpx 20rpx; }
-.alerts-header { font-size:30rpx; font-weight:600; margin-bottom:16rpx; padding-left:4rpx; }
+.alerts-header { font-size:30rpx; font-weight:700; margin-bottom:16rpx; padding-left:4rpx; }
 .alert-item { display:flex; gap:14rpx; padding:18rpx 20rpx; border-radius:var(--radius-md); margin-bottom:12rpx; align-items:flex-start; }
-.alert-item.danger { background:rgba(224,123,90,0.08); border-left:4rpx solid var(--accent2); }
-.alert-item.warn { background:rgba(240,180,60,0.08); border-left:4rpx solid var(--accent4); }
-.alert-item.info { background:rgba(100,150,200,0.08); border-left:4rpx solid var(--accent3); }
+.alert-item.danger { background:rgba(255,159,67,0.08); border-left:4rpx solid var(--accent2); }
+.alert-item.warn { background:rgba(245,197,66,0.08); border-left:4rpx solid var(--accent4); }
+.alert-item.info { background:rgba(91,192,222,0.08); border-left:4rpx solid var(--accent3); }
 .alert-dot { width:10rpx; height:10rpx; border-radius:50%; margin-top:10rpx; flex-shrink:0; }
 .alert-dot.danger { background:var(--accent2); }
 .alert-dot.warn { background:var(--accent4); }
@@ -51,13 +51,13 @@
 .alert-text { font-size:26rpx; color:var(--text); flex:1; line-height:1.7; }
 
 /* ========== 建议 ========== */
-.advice-card { margin:0 20rpx 16rpx; padding:24rpx 28rpx; background:var(--card); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); }
+.advice-card { margin:0 20rpx 16rpx; padding:24rpx 28rpx; background:var(--card); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border:1rpx solid var(--border-light); }
 .advice-header { font-size:30rpx; font-weight:600; margin-bottom:14rpx; color:var(--text); }
 .advice-body { font-size:28rpx; color:var(--sub); line-height:1.8; }
 
 /* ========== 分享按钮 ========== */
 .share-actions { display:flex; gap:20rpx; padding:8rpx 20rpx 40rpx; }
-.btn-share { flex:1; background:var(--accent); color:#fff; border-radius:var(--radius-full); padding:22rpx; font-size:28rpx; font-weight:600; border:none; box-shadow:0 4rpx 16rpx rgba(107,142,78,0.25); }
-.btn-share:active { transform:scale(0.97); }
+.btn-share { flex:1; background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border-radius:var(--radius-full); padding:22rpx; font-size:28rpx; font-weight:600; border:none; box-shadow:0 6rpx 20rpx rgba(126,200,80,0.25); }
+.btn-share:active { transform:scale(0.95); }
 .btn-save { flex:1; background:var(--card); color:var(--accent); border-radius:var(--radius-full); padding:22rpx; font-size:28rpx; font-weight:600; border:2rpx solid var(--accent); }
-.btn-save:active { background:rgba(107,142,78,0.05); }
+.btn-save:active { background:rgba(126,200,80,0.05); transform:scale(0.95); }

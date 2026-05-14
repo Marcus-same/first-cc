@@ -1,0 +1,120 @@
+<view class="container {{dark ? 'theme-dark' : ''}}">
+  <!-- ======== 答题模式 ======== -->
+  <block wx:if="{{step === 'test'}}">
+    <view class="test-header fade-in">
+      <view class="test-hero">🧠</view>
+      <view class="test-title">BPTI 肠道人格自测</view>
+      <view class="test-sub">回答 {{questions.length}} 道题，发现你的 BPTI 类型编码</view>
+      <view class="test-progress">
+        <view class="progress-track">
+          <view class="progress-fill-bpti" style="width:{{Object.keys(answers).length / questions.length * 100}}%"></view>
+        </view>
+        <text class="progress-text">{{Object.keys(answers).length}}/{{questions.length}}</text>
+      </view>
+    </view>
+
+    <view class="q-list">
+      <view class="q-card fade-in-1" wx:for="{{questions}}" wx:for-item="q" wx:key="id">
+        <view class="q-number">{{qi + 1}}</view>
+        <view class="q-text">{{q.text}}</view>
+        <view class="q-options">
+          <view
+            class="q-option {{answers[q.id] === opt.val ? 'active' : ''}}"
+            wx:for="{{q.options}}" wx:for-item="opt" wx:key="val"
+            bindtap="onOptionTap"
+            data-q="{{q.id}}"
+            data-val="{{opt.val}}"
+          >{{opt.text}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-wrap">
+      <button class="btn-submit" bindtap="onSubmit">
+        {{Object.keys(answers).length === questions.length ? '✅ 提交测试' : '提交测试'}}
+      </button>
+    </view>
+  </block>
+
+  <!-- ======== 结果模式 ======== -->
+  <block wx:if="{{step === 'result' && persona}}">
+    <view class="persona-wrap fade-in">
+      <view class="result-badge">📋 自测结果</view>
+
+      <view class="persona-card {{persona.id}}">
+        <view class="persona-icon">{{persona.icon}}</view>
+        <view class="persona-name">{{persona.name}}</view>
+        <view class="poo-code">
+          <text class="poo-label">BPTI</text>
+          <text class="poo-value">{{code}}</text>
+        </view>
+        <view class="persona-desc">{{persona.desc}}</view>
+      </view>
+
+      <!-- 四维度 -->
+      <view class="card fade-in-1" wx:if="{{dims}}">
+        <view class="section-title">📊 四维度分析</view>
+        <view class="dims-wrap">
+          <view class="dim-row">
+            <view class="dim-header">
+              <text class="dim-name">时段</text>
+              <text class="dim-code">{{code.split('-')[0]}}</text>
+            </view>
+            <view class="dim-bar-wrap">
+              <view class="dim-bar dim-bar-time" style="width:{{dims.time}}%"></view>
+            </view>
+            <view class="dim-label">{{dims.time < 35 ? '晨型' : dims.time > 65 ? '夜型' : '均衡'}}</view>
+          </view>
+          <view class="dim-row">
+            <view class="dim-header">
+              <text class="dim-name">速度</text>
+              <text class="dim-code">{{code.split('-')[1]}}</text>
+            </view>
+            <view class="dim-bar-wrap">
+              <view class="dim-bar dim-bar-speed" style="width:{{dims.speed}}%"></view>
+            </view>
+            <view class="dim-label">{{dims.speed < 30 ? '快速' : dims.speed > 65 ? '慢速' : '适中'}}</view>
+          </view>
+          <view class="dim-row">
+            <view class="dim-header">
+              <text class="dim-name">类型</text>
+              <text class="dim-code">{{code.split('-')[2]}}</text>
+            </view>
+            <view class="dim-bar-wrap">
+              <view class="dim-bar dim-bar-type" style="width:{{dims.type}}%"></view>
+            </view>
+            <view class="dim-label">{{dims.type < 30 ? '专一' : dims.type > 65 ? '多样' : '均衡'}}</view>
+          </view>
+          <view class="dim-row">
+            <view class="dim-header">
+              <text class="dim-name">节律</text>
+              <text class="dim-code">{{code.split('-')[3]}}</text>
+            </view>
+            <view class="dim-bar-wrap">
+              <view class="dim-bar dim-bar-rhythm" style="width:{{dims.rhythm}}%"></view>
+            </view>
+            <view class="dim-label">{{dims.rhythm < 35 ? '规律' : '随性'}}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 核心优势 -->
+      <view class="card fade-in-1" wx:if="{{persona.strength}}">
+        <view class="section-title">💪 核心优势</view>
+        <view class="strength-body">{{persona.strength}}</view>
+      </view>
+
+      <!-- 行动建议 -->
+      <view class="advice-card fade-in-2" wx:if="{{persona.advice}}">
+        <view class="advice-title">💡 行动建议</view>
+        <view class="advice-body">{{persona.advice}}</view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="result-actions">
+        <button class="btn-share-result" open-type="share">📤 分享结果</button>
+        <button class="btn-retry" bindtap="onRetry">🔄 重新测试</button>
+      </view>
+    </view>
+  </block>
+</view>

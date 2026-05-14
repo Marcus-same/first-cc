@@ -37,6 +37,13 @@
   <view class="empty-hint" wx:if="{{!allMarkers.length}}">
     <view class="hint-icon">🗺️</view>
     <view class="hint-text">还没有位置记录</view>
-    <view class="hint-sub">记录时打开「记录位置」开关，<br/>这里就会出现你的拉屎地图</view>
+    <view class="hint-sub">记录时打开「记录位置」开关，<br/>这里就会出现你的噗噗地图</view>
+  </view>
+
+  <!-- 我的噗友 -->
+  <view class="squad-entry" bindtap="goSquad" hover-class="squad-entry-hover">
+    <view class="squad-entry-icon">👥</view>
+    <view class="squad-entry-label">我的噗友</view>
+    <view class="squad-entry-arrow">›</view>
   </view>
 </view>

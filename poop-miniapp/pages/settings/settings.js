@@ -62,8 +62,16 @@ Page({
       content: '将删除所有记录数据、好友数据和设置，不可恢复。确认？',
       success: (res) => {
         if (res.confirm) {
-          store.clearAll();
-          wx.showToast({ title: '已清除', icon: 'success' });
+          wx.showModal({
+            title: '二次确认',
+            content: '真的要清除所有数据吗？此操作不可撤销！',
+            success: (r2) => {
+              if (r2.confirm) {
+                store.clearAll();
+                wx.showToast({ title: '已清除', icon: 'success' });
+              }
+            }
+          });
         }
       }
     });
@@ -72,15 +80,10 @@ Page({
   goPrivacy() { wx.navigateTo({ url: '/pages/privacy/privacy' }); },
   goAgreement() { wx.navigateTo({ url: '/pages/agreement/agreement' }); },
   goOnboarding() { wx.navigateTo({ url: '/pages/onboarding/onboarding' }); },
-  goSquad() { wx.navigateTo({ url: '/pages/squad/squad' }); },
-  goMap() { wx.navigateTo({ url: '/pages/map/map' }); },
+  goMap() { wx.switchTab({ url: '/pages/map/map' }); },
   goPersonality() { wx.navigateTo({ url: '/pages/personality/personality' }); },
 
   sendFeedback() {
-    wx.showModal({
-      title: '反馈建议',
-      content: '请将建议发送至开发者飞书群「Claude Code Bridge」',
-      showCancel: false
-    });
+    // Replaced by open-type="contact" button in WXML
   }
 });

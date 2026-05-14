@@ -1,65 +1,71 @@
 /* ========== 空状态 ========== */
-.empty-state { display:flex; flex-direction:column; align-items:center; padding:100rpx 40rpx 40rpx; }
+.empty-state { display:flex; flex-direction:column; align-items:center; padding:60rpx 40rpx 40rpx; }
 .empty-illustration { margin-bottom:32rpx; }
 .empty-circle {
-  width:180rpx; height:180rpx; border-radius:50%;
-  background:var(--card); box-shadow:var(--shadow-md);
-  display:flex; align-items:center; justify-content:center; font-size:88rpx;
+  width:200rpx; height:200rpx; border-radius:50%;
+  background:linear-gradient(135deg, #fff5ea, #ffe8d6);
+  box-shadow:var(--shadow-md);
+  display:flex; align-items:center; justify-content:center; font-size:96rpx;
+  border:4rpx solid rgba(255,159,67,0.15);
 }
-.empty-title { font-size:36rpx; font-weight:700; color:var(--text); margin-bottom:12rpx; }
+.empty-title { font-size:38rpx; font-weight:800; color:var(--text); margin-bottom:12rpx; }
 .empty-sub { font-size:28rpx; color:var(--sub); margin-bottom:24rpx; }
 .empty-hint { font-size:26rpx; color:var(--sub2); background:var(--card2); border-radius:var(--radius-full); padding:14rpx 36rpx; }
 
 /* ========== 计时卡片 ========== */
 .timer-card {
-  background: linear-gradient(160deg, #fafdf6 0%, #f5f8ef 40%, #fdf5f3 100%);
+  background: linear-gradient(160deg, #fafff5 0%, #f5fce8 40%, #fff8f0 100%);
   border-radius:var(--radius-lg); padding:48rpx 30rpx 36rpx;
   margin:16rpx 20rpx; text-align:center;
   box-shadow:var(--shadow-md);
   transition: all 0.3s;
+  border:1rpx solid rgba(126,200,80,0.08);
 }
 .theme-dark .timer-card {
   background: linear-gradient(160deg, #1e2518 0%, #1e2218 40%, #251c18 100%);
+  border-color:rgba(126,200,80,0.06);
 }
 .timer-card.running {
-  background: linear-gradient(160deg, #fef9f5 0%, #fdf3ee 40%, #fef5f1 100%);
+  background: linear-gradient(160deg, #fff8f0 0%, #fff0e8 40%, #fff5f0 100%);
 }
 .theme-dark .timer-card.running {
   background: linear-gradient(160deg, #251e18 0%, #251c16 40%, #241c18 100%);
 }
 
 .timer-ring {
-  width:160rpx; height:160rpx; border-radius:50%;
+  width:180rpx; height:180rpx; border-radius:50%;
   margin:0 auto 28rpx;
   background:var(--card);
   box-shadow:var(--shadow-sm);
   display:flex; align-items:center; justify-content:center;
   transition: all 0.3s;
+  border:4rpx solid var(--border-light);
 }
 .timer-ring.pulse {
-  box-shadow: 0 0 0 8rpx rgba(224,123,90,0.12);
+  border-color:var(--accent2);
+  box-shadow: 0 0 0 10rpx rgba(255,159,67,0.12);
   animation: ringPulse 2s ease-in-out infinite;
 }
 @keyframes ringPulse {
-  0%, 100% { box-shadow: 0 0 0 8rpx rgba(224,123,90,0.12); }
-  50% { box-shadow: 0 0 0 20rpx rgba(224,123,90,0.05); }
+  0%, 100% { box-shadow: 0 0 0 10rpx rgba(255,159,67,0.12); }
+  50% { box-shadow: 0 0 0 24rpx rgba(255,159,67,0.05); }
 }
-.timer-emoji { font-size:80rpx; transition: transform 0.3s; }
+.timer-emoji { font-size:88rpx; transition: transform 0.3s; }
 .timer-ring.pulse .timer-emoji { animation: emojiBounce 0.6s ease-in-out infinite alternate; }
 @keyframes emojiBounce {
   from { transform: translateY(0) scale(1); }
-  to { transform: translateY(-10rpx) scale(1.05); }
+  to { transform: translateY(-12rpx) scale(1.06); }
 }
 
 .timer-text {
-  font-size:96rpx; font-weight:800; letter-spacing:6rpx;
+  font-size:100rpx; font-weight:800; letter-spacing:6rpx;
   font-family: 'SF Mono', 'Courier New', monospace;
   color:var(--text); margin-bottom:8rpx; transition:color 0.3s;
 }
 .timer-text.counting { color:var(--accent2); }
 
 .timer-label { font-size:26rpx; color:var(--sub2); margin-bottom:24rpx; }
-.timer-label.running-label { color:var(--accent2); font-weight:500; }
+.timer-label.running-label { color:var(--accent2); font-weight:600; }
 
 .btn-row { display:flex; justify-content:center; gap:20rpx; }
 .btn-start, .btn-stop {
@@ -68,110 +74,120 @@
   font-size:32rpx; font-weight:600; border:none; transition:all 0.15s;
 }
 .btn-start {
-  background:var(--accent); color:#fff;
-  box-shadow:0 4rpx 16rpx rgba(107,142,78,0.25);
+  background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color:#fff;
+  box-shadow:0 6rpx 20rpx rgba(126,200,80,0.30);
 }
-.btn-start:active { transform:scale(0.96); box-shadow:0 2rpx 8rpx rgba(107,142,78,0.2); }
+.btn-start:active { transform:scale(0.94); box-shadow:0 3rpx 10rpx rgba(126,200,80,0.2); }
 .btn-stop {
-  background:var(--accent2); color:#fff;
-  box-shadow:0 4rpx 16rpx rgba(224,123,90,0.25);
+  background:linear-gradient(135deg, var(--accent2), #e88830);
+  color:#fff;
+  box-shadow:0 6rpx 20rpx rgba(255,159,67,0.30);
 }
-.btn-stop:active { transform:scale(0.96); box-shadow:0 2rpx 8rpx rgba(224,123,90,0.2); }
+.btn-stop:active { transform:scale(0.94); box-shadow:0 3rpx 10rpx rgba(255,159,67,0.2); }
 .btn-icon { font-size:24rpx; }
 
 .warn-banner {
   margin-top:20rpx; padding:14rpx 24rpx;
-  background:rgba(224,123,90,0.1); border-radius:var(--radius-sm);
+  background:rgba(255,159,67,0.10); border-radius:var(--radius-sm);
   font-size:26rpx; color:var(--accent2); font-weight:600;
 }
 
 /* ========== 连续打卡 ========== */
 .streak-card {
-  background:linear-gradient(135deg, #fff8ed, #fff0dc, #ffe8cc);
+  background:linear-gradient(135deg, #fff8e8, #fff0d6, #ffe8c8);
   border-radius:var(--radius-lg); padding:28rpx 30rpx;
   margin:16rpx 20rpx; display:flex; align-items:center; gap:24rpx;
   box-shadow:var(--shadow-sm);
+  border:1rpx solid rgba(245,197,66,0.15);
 }
 .theme-dark .streak-card {
-  background:linear-gradient(135deg, #2a2520, #2a2418, #2e2218);
+  background:linear-gradient(135deg, #2a2518, #2a2410, #2e2218);
 }
-.streak-flame { font-size:64rpx; filter:drop-shadow(0 2rpx 6rpx rgba(255,160,0,0.3)); }
+.streak-flame { font-size:72rpx; filter:drop-shadow(0 4rpx 12rpx rgba(255,160,0,0.35)); }
 .streak-info { flex:1; }
-.streak-num { font-size:26rpx; color:var(--text); }
-.streak-count { font-size:48rpx; font-weight:800; color:var(--accent2); margin:0 4rpx; }
-.streak-bar-wrap { height:6rpx; background:rgba(0,0,0,0.06); border-radius:3rpx; margin:10rpx 0 8rpx; overflow:hidden; }
-.streak-bar { height:100%; background:linear-gradient(90deg, #f9a825, #f57c00, #e65100); border-radius:3rpx; transition:width 0.6s ease-out; min-width:4rpx; }
+.streak-num { font-size:28rpx; color:var(--text); font-weight:500; }
+.streak-count { font-size:52rpx; font-weight:800; color:var(--accent2); margin:0 4rpx; }
+.streak-bar-wrap { height:8rpx; background:rgba(0,0,0,0.05); border-radius:4rpx; margin:12rpx 0 8rpx; overflow:hidden; }
+.streak-bar { height:100%; background:linear-gradient(90deg, #f9a825, #f57c00, #e65100); border-radius:4rpx; transition:width 0.6s ease-out; min-width:6rpx; }
 .streak-sub { font-size:24rpx; color:var(--sub); }
 
 /* ========== 统计数字 ========== */
-.stats-row { display:flex; gap:12rpx; padding:0 20rpx; margin-bottom:4rpx; }
+.stats-row { display:flex; gap:12rpx; padding:0 20rpx; margin-bottom:4rpx; flex-wrap:wrap; }
+.stats-row .stat-card { min-width:calc(25% - 9rpx); flex:1; }
 .stat-card {
   flex:1; background:var(--card); border-radius:var(--radius-md);
   padding:24rpx 12rpx 20rpx; text-align:center;
-  box-shadow:var(--shadow-sm); transition:background 0.3s;
+  box-shadow:var(--shadow-sm); transition:all 0.3s;
+  border:1rpx solid var(--border-light);
 }
-.stat-icon { font-size:32rpx; margin-bottom:8rpx; }
-.stat-num { font-size:40rpx; font-weight:800; color:var(--accent); line-height:1.2; }
+.stat-icon { font-size:36rpx; margin-bottom:8rpx; }
+.stat-num { font-size:44rpx; font-weight:800; color:var(--accent); line-height:1.2; }
 .stat-label { font-size:22rpx; color:var(--sub2); margin-top:4rpx; }
 
 /* ========== 每日运势 ========== */
 .fortune-card {
-  background:linear-gradient(135deg, #f4f6ff, #eef0ff, #f0f2ff);
-  border-radius:var(--radius-lg); padding:0; margin:16rpx 20rpx;
+  background:linear-gradient(135deg, #f0f8ff, #e8f4ff, #eef5ff);
+  border-radius:var(--radius-lg); margin:16rpx 20rpx;
   box-shadow:var(--shadow-sm); overflow:hidden;
+  border:1rpx solid rgba(91,192,222,0.12);
 }
 .theme-dark .fortune-card {
   background:linear-gradient(135deg, #1e2030, #1e1e2e, #222238);
 }
 .fortune-inner { padding:28rpx 30rpx; text-align:center; }
 .fortune-star-row { display:flex; justify-content:center; gap:8rpx; margin-bottom:12rpx; }
-.fortune-star { font-size:36rpx; opacity:0.25; transition:opacity 0.3s; }
+.fortune-star { font-size:40rpx; opacity:0.25; transition:opacity 0.3s; }
 .fortune-star.lit { opacity:1; }
 .fortune-text { font-size:28rpx; color:var(--sub); line-height:1.6; }
 
 /* ========== 每日挑战 ========== */
 .challenge-card {
   margin:16rpx 20rpx; padding:24rpx 28rpx;
-  background:linear-gradient(135deg, #fefdf5, #fdf8e8, #fef9f0);
+  background:linear-gradient(135deg, #fffdf5, #fffaec, #fffbf0);
   border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);
-  border-left:4rpx solid var(--accent4);
+  border-left:6rpx solid var(--accent4);
 }
 .theme-dark .challenge-card {
   background:linear-gradient(135deg, #282620, #2a2418, #282418);
 }
 .challenge-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16rpx; }
-.challenge-badge { font-size:24rpx; color:var(--accent4); font-weight:600; }
+.challenge-badge { font-size:26rpx; color:var(--accent4); font-weight:700; }
 .challenge-status { font-size:22rpx; color:var(--sub2); background:var(--card2); padding:4rpx 16rpx; border-radius:var(--radius-full); }
-.challenge-status.done { color:var(--accent); background:rgba(107,142,78,0.1); }
+.challenge-status.done { color:var(--accent); background:rgba(126,200,80,0.10); }
 .challenge-body { display:flex; align-items:center; gap:16rpx; }
 .challenge-body.done { opacity:0.7; }
-.challenge-icon { font-size:44rpx; }
-.challenge-text { font-size:28rpx; color:var(--text); font-weight:500; }
+.challenge-icon { font-size:48rpx; }
+.challenge-text { font-size:28rpx; color:var(--text); font-weight:600; }
 
 /* ========== 每日小贴士 ========== */
 .tip-card {
   display:flex; align-items:flex-start; gap:20rpx;
   background:var(--card); border-radius:var(--radius-md);
   padding:24rpx 28rpx; margin:16rpx 20rpx;
-  box-shadow:var(--shadow-sm); border-left:4rpx solid var(--accent3);
+  box-shadow:var(--shadow-sm); border:1rpx solid var(--border-light);
+  border-left:6rpx solid var(--accent3);
 }
-.tip-icon-wrap { font-size:40rpx; line-height:1.4; }
+.tip-icon-wrap { font-size:44rpx; line-height:1.4; }
 .tip-content { flex:1; }
-.tip-label { font-size:22rpx; color:var(--accent3); font-weight:600; margin-bottom:4rpx; text-transform:uppercase; letter-spacing:2rpx; }
+.tip-label { font-size:22rpx; color:var(--accent3); font-weight:700; margin-bottom:4rpx; text-transform:uppercase; letter-spacing:2rpx; }
 .tip-text { font-size:26rpx; color:var(--sub); line-height:1.7; }
 
 /* ========== 快捷入口 ========== */
 .quick-actions { display:flex; gap:16rpx; padding:8rpx 20rpx 0; }
 .quick-btn {
   flex:1; display:flex; flex-direction:column; align-items:center; gap:12rpx;
-  background:var(--card); border-radius:var(--radius-md);
-  padding:28rpx 8rpx; box-shadow:var(--shadow-sm);
-  transition:all 0.15s;
+  background:var(--card); border-radius:var(--radius-lg);
+  padding:30rpx 8rpx 26rpx; box-shadow:var(--shadow-sm);
+  transition:all 0.2s;
+  border:1rpx solid var(--border-light);
 }
-.quick-btn-hover { transform:translateY(2rpx); box-shadow:var(--shadow-sm); }
+.quick-btn:active { transform:translateY(4rpx) scale(0.96); box-shadow:var(--shadow-sm); }
 .quick-icon {
-  width:72rpx; height:72rpx; border-radius:50%;
+  width:80rpx; height:80rpx; border-radius:50%;
   background:var(--card2); display:flex; align-items:center; justify-content:center;
-  font-size:36rpx;
+  font-size:40rpx;
+  transition:transform 0.2s;
 }
-.quick-label { font-size:24rpx; color:var(--text); font-weight:500; }
+.quick-btn:active .quick-icon { transform:scale(0.9); }
+.quick-label { font-size:24rpx; color:var(--text); font-weight:600; }

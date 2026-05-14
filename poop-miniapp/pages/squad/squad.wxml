@@ -82,7 +82,7 @@
 
   <!-- 排行榜 -->
   <view class="card fade-in-2" wx:if="{{leaderboard.length > 1}}">
-    <view class="section-title">🏆 战队排行榜</view>
+    <view class="section-title">🏆 噗友排行榜</view>
     <view class="lb-item {{item.isMe ? 'is-me' : ''}}" wx:for="{{leaderboard}}" wx:key="name">
       <view class="lb-rank {{index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : ''}}">
         {{index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}}

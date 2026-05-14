@@ -51,14 +51,9 @@
   <!-- 更多功能 -->
   <view class="card fade-in-2">
     <view class="section-title">🎮 更多功能</view>
-    <view class="nav-row divider" bindtap="goSquad" hover-class="row-hover">
-      <view class="nav-icon">👥</view>
-      <view class="nav-label">我的战队</view>
-      <view class="nav-arrow">›</view>
-    </view>
     <view class="nav-row divider" bindtap="goMap" hover-class="row-hover">
       <view class="nav-icon">🗺️</view>
-      <view class="nav-label">拉屎地图</view>
+      <view class="nav-label">噗噗地图</view>
       <view class="nav-arrow">›</view>
     </view>
     <view class="nav-row divider" bindtap="goPersonality" hover-class="row-hover">
@@ -84,10 +79,12 @@
       <view class="nav-label">用户协议</view>
       <view class="nav-arrow">›</view>
     </view>
-    <view class="nav-row divider" bindtap="sendFeedback" hover-class="row-hover">
-      <view class="nav-label">反馈建议</view>
-      <view class="nav-arrow">›</view>
-    </view>
+    <button class="feedback-btn" open-type="contact" hover-class="row-hover">
+      <view class="feedback-inner">
+        <view class="nav-label">反馈建议</view>
+        <view class="nav-arrow">›</view>
+      </view>
+    </button>
     <view class="nav-row">
       <view class="nav-label">版本</view>
       <view class="version-tag">v2.0.0</view>

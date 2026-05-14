@@ -131,5 +131,7 @@ Page({
 
   onMarkerTap(e) {
     // Marker tap handled by callout naturally
-  }
+  },
+
+  goSquad() { wx.navigateTo({ url: '/pages/squad/squad' }); }
 });

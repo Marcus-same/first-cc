@@ -69,7 +69,7 @@ ALIYUN_ASR_APP_KEY = os.environ.get("ALIYUN_ASR_APP_KEY", "")
 ALIYUN_ASR_ACCESS_KEY_ID = os.environ.get("ALIYUN_ASR_ACCESS_KEY_ID", "")
 ALIYUN_ASR_ACCESS_KEY_SECRET = os.environ.get("ALIYUN_ASR_ACCESS_KEY_SECRET", "")
 
-ASR_ENGINE = os.environ.get("ASR_ENGINE", "lark")  # lark(飞书妙记) | whisper
+ASR_ENGINE = os.environ.get("ASR_ENGINE", "lark")  # lark(飞书妙记) | whisper | local-whisper
 
 # Playwright 持久化登录状态目录（小红书）
 PLAYWRIGHT_STATE_DIR = Path(os.environ.get("PLAYWRIGHT_STATE_DIR",
@@ -584,9 +584,9 @@ def transcribe_via_lark_minutes(audio_path: str) -> str:
         raise RuntimeError("未获取到 file_token")
     print(f"  ✅ 上传完成: {file_token[:12]}...")
 
-    # 2. 生成妙记
+    # 2. 生成妙记（需要 user 身份）
     print("  🎬 生成妙记...")
-    resp = _run_lark_cli(["minutes", "+upload", "--as", "user", "--file-token", file_token], timeout=30)
+    resp = _run_lark_cli(["--as", "user", "minutes", "+upload", "--file-token", file_token], timeout=30)
     if not resp.get("ok"):
         raise RuntimeError(f"生成妙记失败: {resp.get('error', {}).get('message', '未知')}")
     minute_url = resp.get("data", {}).get("minute_url", "")
@@ -606,8 +606,7 @@ def transcribe_via_lark_minutes(audio_path: str) -> str:
     print("  ⏳ 等待转写完成...")
     for attempt in range(12):  # 最多等 2 分钟
         resp = _run_lark_cli([
-            "vc", "+notes",
-            "--as", "user",
+            "--as", "user", "vc", "+notes",
             "--minute-tokens", minute_token,
             "--output-dir", tmpdir,
         ], timeout=30)
@@ -652,6 +651,24 @@ def transcribe_audio(audio_path: str) -> str:
     # 飞书妙记（默认，推荐）
     if engine == "funasr" or engine == "lark":
         return transcribe_via_lark_minutes(audio_path)
+
+    # 本地 faster-whisper（无需 API Key，需下载模型 75-460MB）
+    if engine == "local-whisper":
+        print("  🎙️ 语音转文字 (本地 Whisper)...")
+        try:
+            from faster_whisper import WhisperModel
+            model_size = os.environ.get("WHISPER_MODEL", "small")
+            device = os.environ.get("WHISPER_DEVICE", "cpu")
+            print(f"  📥 加载模型 {model_size}... (首次自动下载)")
+            model = WhisperModel(model_size, device=device, compute_type="int8")
+            segments, info = model.transcribe(audio_path)
+            text = " ".join([seg.text for seg in segments])
+            if text.strip():
+                print(f"  ✅ 转写完成 ({len(text)} 字符, 语言: {info.language})")
+                return text.strip()
+            raise ValueError("本地 Whisper 返回空结果")
+        except ImportError:
+            raise SystemExit("需要 faster-whisper: pip install faster-whisper")
 
     # Whisper API（远程备用）
     if engine == "whisper":

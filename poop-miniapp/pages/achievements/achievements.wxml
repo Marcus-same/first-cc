@@ -38,16 +38,9 @@
     </view>
   </view>
 
-  <!-- 里程碑 -->
-  <view class="milestone-card fade-in-1" wx:if="{{milestone}}">
-    <view class="milestone-glow"></view>
-    <view class="milestone-icon">{{milestone.icon}}</view>
-    <view class="milestone-msg">{{milestone.msg}}</view>
-  </view>
-
   <!-- 成就墙 -->
   <view class="card fade-in-1">
-    <view class="section-title">🏅 成就勋章 <text class="title-sub">{{unlockedCount}}/{{achievements.length}}</text></view>
+    <view class="section-title">🏅 成就勋章 <text class="title-sub">{{unlockedCount}} 已解锁</text></view>
     <view class="category-tabs">
       <view class="cat-tab {{catIdx === 0 ? 'active' : ''}}" bindtap="onCatTap" data-idx="0">全部</view>
       <view class="cat-tab {{catIdx === 1 ? 'active' : ''}}" bindtap="onCatTap" data-idx="1">里程碑</view>
@@ -67,37 +60,6 @@
         </view>
         <view class="ach-glow" wx:if="{{item.unlocked}}"></view>
       </view>
-    </view>
-  </view>
-
-  <!-- 累计统计 -->
-  <view class="card fade-in-2">
-    <view class="section-title">📊 累计统计</view>
-    <view class="total-stats">
-      <view class="total-item">
-        <view class="total-ring">{{totalSessions}}</view>
-        <view class="total-label">累计次数</view>
-      </view>
-      <view class="total-item">
-        <view class="total-ring">{{totalMin}}<text class="total-unit">分</text></view>
-        <view class="total-label">累计时长</view>
-      </view>
-      <view class="total-item">
-        <view class="total-ring">{{totalDays}}<text class="total-unit">天</text></view>
-        <view class="total-label">打卡天数</view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 快捷入口 -->
-  <view class="quick-links fade-in-3">
-    <view class="link-btn" bindtap="goMap" hover-class="link-btn-hover">
-      <view class="link-icon">🗺️</view>
-      <view class="link-label">拉屎地图</view>
-    </view>
-    <view class="link-btn" bindtap="goSquad" hover-class="link-btn-hover">
-      <view class="link-icon">👥</view>
-      <view class="link-label">我的战队</view>
     </view>
   </view>
 </view>

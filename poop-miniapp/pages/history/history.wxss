@@ -4,14 +4,15 @@
 /* ========== 热力图 ========== */
 .heatmap { display:flex; flex-direction:column; gap:8rpx; }
 .heatmap-row { display:flex; align-items:center; gap:4rpx; }
-.heatmap-label { font-size:20rpx; color:var(--sub2); width:160rpx; letter-spacing:2rpx; }
-.heatmap-dots { display:flex; gap:4rpx; flex:1; }
+.heatmap-label { font-size:20rpx; color:var(--sub2); width:120rpx; min-width:80rpx; letter-spacing:2rpx; flex-shrink:0; }
+.heatmap-dots { display:flex; gap:3rpx; flex:1; min-width:0; overflow-x:auto; }
 
 .heatmap-dot {
-  width:44rpx; height:44rpx; border-radius:var(--radius-sm);
+  width:38rpx; min-width:38rpx; height:38rpx; border-radius:var(--radius-sm);
   display:flex; align-items:center; justify-content:center;
-  font-size:20rpx; font-weight:600; color:#fff;
+  font-size:18rpx; font-weight:600; color:#fff;
   transition:transform 0.2s;
+  flex-shrink:0;
 }
 .heatmap-dot:active { transform:scale(1.2); }
 
@@ -41,10 +42,24 @@
   margin:0 20rpx 16rpx; padding:20rpx 24rpx;
   background:var(--card); border-radius:var(--radius-md);
   box-shadow:var(--shadow-sm);
-  border-left:4rpx solid var(--accent4);
+  border-left:6rpx solid var(--accent4);
+  border:1rpx solid var(--border-light);
 }
-.fun-icon { font-size:40rpx; }
+.fun-icon { font-size:44rpx; }
 .fun-text { font-size:26rpx; color:var(--sub); line-height:1.7; flex:1; }
+
+/* ========== 累计统计 ========== */
+.total-stats { display:flex; justify-content:space-around; text-align:center; }
+.total-item { display:flex; flex-direction:column; align-items:center; gap:8rpx; }
+.total-ring {
+  width:110rpx; height:110rpx; border-radius:50%;
+  background:linear-gradient(135deg, var(--card2), var(--card));
+  display:flex; align-items:center; justify-content:center;
+  font-size:36rpx; font-weight:800; color:var(--accent);
+  box-shadow:var(--shadow-sm);
+}
+.total-unit { font-size:24rpx; font-weight:400; margin-left:2rpx; }
+.total-label { font-size:24rpx; color:var(--sub2); }
 
 /* ========== 空状态 ========== */
 .empty-state { text-align:center; padding:60rpx 40rpx; }
@@ -73,8 +88,86 @@
 }
 .record-note {
   font-size:22rpx; color:var(--sub2); margin-top:6rpx;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:300rpx;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:40vw;
 }
 
 .record-right { text-align:right; }
 .record-dur { font-size:28rpx; font-weight:600; color:var(--accent); white-space:nowrap; }
+
+/* ========== Tab 切换 ========== */
+.history-tabs { display:flex; margin:0 20rpx 16rpx; background:var(--card2); border-radius:var(--radius-full); padding:4rpx; }
+.history-tab { flex:1; text-align:center; padding:16rpx 0; font-size:28rpx; font-weight:500; color:var(--sub2); border-radius:var(--radius-full); transition:all 0.2s; }
+.history-tab.active { background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; font-weight:600; box-shadow:0 4rpx 12rpx rgba(126,200,80,0.30); }
+
+/* ========== 周选择器 ========== */
+.week-picker { margin-bottom:16rpx; }
+.picker-trigger {
+  display:flex; align-items:center; justify-content:center; gap:10rpx;
+  padding:20rpx 24rpx; background:var(--card); border-radius:var(--radius-md);
+  box-shadow:var(--shadow-sm);
+  border:1rpx solid var(--border-light);
+}
+.picker-label { font-size:28rpx; font-weight:600; color:var(--text); }
+.picker-arrow { font-size:22rpx; color:var(--sub2); }
+
+/* ========== 周报头部 ========== */
+.report-header { text-align:center; padding:20rpx 40rpx 28rpx; }
+.report-icon { font-size:64rpx; margin-bottom:12rpx; }
+.report-title { font-size:38rpx; font-weight:800; color:var(--text); }
+.report-range { font-size:26rpx; color:var(--sub2); margin-top:8rpx; }
+
+/* 周报空状态 */
+.weekly-empty { text-align:center; padding:80rpx 40rpx; }
+.we-empty-icon { font-size:80rpx; margin-bottom:16rpx; }
+.we-empty-text { font-size:30rpx; color:var(--text); margin-bottom:8rpx; }
+.we-empty-hint { font-size:26rpx; color:var(--sub2); }
+
+/* ========== 概览 ========== */
+.overview-grid { display:flex; flex-wrap:wrap; gap:8rpx 0; }
+.ov-item { width:50%; text-align:center; padding:20rpx 0; }
+.ov-num { font-size:52rpx; font-weight:800; }
+.ov-num.accent { color:var(--accent); }
+.ov-num.accent2 { color:var(--accent2); }
+.ov-num.accent3 { color:var(--accent3); }
+.ov-num.accent4 { color:var(--accent4); }
+.ov-unit { font-size:28rpx; font-weight:400; }
+.ov-label { font-size:24rpx; color:var(--sub2); margin-top:4rpx; }
+
+/* ========== 每日趋势柱状图 ========== */
+.bar-chart { display:flex; justify-content:space-around; align-items:flex-end; height:220rpx; padding-top:10rpx; }
+.bar-col { display:flex; flex-direction:column; align-items:center; width:52rpx; }
+.bar-val { font-size:22rpx; color:var(--sub); margin-bottom:6rpx; font-weight:600; }
+.bar-fill {
+  width:36rpx; min-height:6rpx;
+  background:var(--border); border-radius:8rpx 8rpx 0 0;
+  transition:height 0.5s ease-out;
+}
+.bar-fill.mid { background:linear-gradient(180deg, var(--accent-light), var(--accent)); }
+.bar-fill.high { background:linear-gradient(180deg, var(--accent), var(--accent-dark)); }
+.bar-label { font-size:20rpx; color:var(--sub2); margin-top:10rpx; white-space:nowrap; }
+
+/* ========== 类型分布 ========== */
+.type-list { }
+.type-row { display:flex; align-items:center; gap:14rpx; margin-bottom:16rpx; }
+.type-emoji { font-size:36rpx; width:50rpx; text-align:center; }
+.type-bar-wrap { flex:1; height:22rpx; background:var(--border-light); border-radius:11rpx; overflow:hidden; }
+.type-bar { height:100%; border-radius:11rpx; transition:width 0.6s ease-out; min-width:4rpx; }
+.type-pct { font-size:24rpx; color:var(--sub); width:56rpx; text-align:right; font-weight:600; }
+
+/* ========== 健康提醒 ========== */
+.alerts-section { margin:16rpx 0; }
+.alerts-header { font-size:30rpx; font-weight:700; margin-bottom:16rpx; padding-left:4rpx; }
+.alert-item { display:flex; gap:14rpx; padding:18rpx 20rpx; border-radius:var(--radius-md); margin-bottom:12rpx; align-items:flex-start; }
+.alert-item.danger { background:rgba(255,159,67,0.08); border-left:4rpx solid var(--accent2); }
+.alert-item.warn { background:rgba(245,197,66,0.08); border-left:4rpx solid var(--accent4); }
+.alert-item.info { background:rgba(91,192,222,0.08); border-left:4rpx solid var(--accent3); }
+.alert-dot { width:10rpx; height:10rpx; border-radius:50%; margin-top:10rpx; flex-shrink:0; }
+.alert-dot.danger { background:var(--accent2); }
+.alert-dot.warn { background:var(--accent4); }
+.alert-dot.info { background:var(--accent3); }
+.alert-text { font-size:26rpx; color:var(--text); flex:1; line-height:1.7; }
+
+/* ========== 建议 ========== */
+.advice-card { margin:0 0 16rpx; padding:24rpx 28rpx; background:var(--card); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border:1rpx solid var(--border-light); }
+.advice-header { font-size:30rpx; font-weight:600; margin-bottom:14rpx; color:var(--text); }
+.advice-body { font-size:28rpx; color:var(--sub); line-height:1.8; }

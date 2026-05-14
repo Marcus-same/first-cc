@@ -1,58 +1,175 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <!-- 热力图 -->
-  <view class="card fade-in">
-    <view class="section-title">📅 排便热力图 <text class="title-sub">近 4 周</text></view>
-    <view class="heatmap">
-      <view class="heatmap-row" wx:for="{{heatmap}}" wx:key="week">
-        <view class="heatmap-label">{{item.label}}</view>
-        <view class="heatmap-dots">
-          <view
-            class="heatmap-dot {{cell.level}}"
-            wx:for="{{item.days}}" wx:for-item="cell" wx:key="date"
-          >
-            <view class="dot-inner">{{cell.count > 0 ? cell.count : ''}}</view>
+  <!-- Tab 切换 -->
+  <view class="history-tabs fade-in">
+    <view class="history-tab {{tabView === 'record' ? 'active' : ''}}" bindtap="onTabTap" data-view="record">📋 记录</view>
+    <view class="history-tab {{tabView === 'weekly' ? 'active' : ''}}" bindtap="onTabTap" data-view="weekly">📊 周报</view>
+  </view>
+
+  <!-- ======== 记录视图 ======== -->
+  <block wx:if="{{tabView === 'record'}}">
+    <!-- 热力图 -->
+    <view class="card fade-in">
+      <view class="section-title">📅 排便热力图 <text class="title-sub">近 4 周</text></view>
+      <view class="heatmap">
+        <view class="heatmap-row" wx:for="{{heatmap}}" wx:key="week">
+          <view class="heatmap-label">{{item.label}}</view>
+          <view class="heatmap-dots">
+            <view
+              class="heatmap-dot {{cell.level}}"
+              wx:for="{{item.days}}" wx:for-item="cell" wx:key="date"
+            >
+              <view class="dot-inner">{{cell.count > 0 ? cell.count : ''}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="heatmap-legend">
+        <view class="legend-item"><view class="dot-sm l0"></view> 0</view>
+        <view class="legend-item"><view class="dot-sm l1"></view> 1</view>
+        <view class="legend-item"><view class="dot-sm l2"></view> 2</view>
+        <view class="legend-item"><view class="dot-sm l3"></view> 3+</view>
+      </view>
+    </view>
+
+    <!-- 趣闻 -->
+    <view class="fun-card fade-in-1" wx:if="{{funFact}}">
+      <view class="fun-icon">🎯</view>
+      <view class="fun-text">{{funFact}}</view>
+    </view>
+
+    <!-- 累计统计 -->
+    <view class="card fade-in-1" wx:if="{{totalSessions > 0}}">
+      <view class="section-title">📊 累计统计</view>
+      <view class="total-stats">
+        <view class="total-item">
+          <view class="total-ring">{{totalSessions}}</view>
+          <view class="total-label">累计次数</view>
+        </view>
+        <view class="total-item">
+          <view class="total-ring">{{totalMin}}<text class="total-unit">分</text></view>
+          <view class="total-label">累计时长</view>
+        </view>
+        <view class="total-item">
+          <view class="total-ring">{{totalDays}}<text class="total-unit">天</text></view>
+          <view class="total-label">打卡天数</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 记录列表 -->
+    <view class="card fade-in-1">
+      <view class="section-title">📋 全部记录</view>
+      <view wx:if="{{!list.length}}" class="empty-state">
+        <view class="empty-icon">📅</view>
+        <view class="empty-text">还没有记录</view>
+        <view class="empty-hint">坚持记录，这里会出现你的打卡日历</view>
+      </view>
+      <view class="record-list" wx:if="{{list.length}}">
+        <view class="record-item fade-in-1" wx:for="{{list}}" wx:key="start" style="animation-delay:{{index * 0.02}}s">
+          <view class="record-left">
+            <view class="record-date">{{item.dateStr}}</view>
+            <view class="record-time">{{item.timeStr}}</view>
+          </view>
+          <view class="record-mid">
+            <view class="record-type-badge">{{item.typeIcon}} {{item.typeName}}</view>
+            <view class="record-note" wx:if="{{item.note}}">📝 {{item.note}}</view>
+          </view>
+          <view class="record-right">
+            <view class="record-dur">⏱ {{item.min}}'{{item.sec}}"</view>
           </view>
         </view>
       </view>
     </view>
-    <view class="heatmap-legend">
-      <view class="legend-item"><view class="dot-sm l0"></view> 0</view>
-      <view class="legend-item"><view class="dot-sm l1"></view> 1</view>
-      <view class="legend-item"><view class="dot-sm l2"></view> 2</view>
-      <view class="legend-item"><view class="dot-sm l3"></view> 3+</view>
-    </view>
-  </view>
+  </block>
 
-  <!-- 趣闻 -->
-  <view class="fun-card fade-in-1" wx:if="{{funFact}}">
-    <view class="fun-icon">🎯</view>
-    <view class="fun-text">{{funFact}}</view>
-  </view>
-
-  <!-- 记录列表 -->
-  <view class="card fade-in-1">
-    <view class="section-title">📋 全部记录</view>
-
-    <view wx:if="{{!list.length}}" class="empty-state">
-      <view class="empty-icon">📅</view>
-      <view class="empty-text">还没有记录</view>
-      <view class="empty-hint">坚持记录，这里会出现你的排便日历</view>
+  <!-- ======== 周报视图 ======== -->
+  <block wx:if="{{tabView === 'weekly'}}">
+    <!-- 周选择器 -->
+    <view class="week-picker fade-in">
+      <picker bindchange="onWeekChange" range="{{weekOptions}}" range-key="label" value="{{selectedWeekIdx}}">
+        <view class="picker-trigger">
+          <text class="picker-label">{{weekOptions[selectedWeekIdx].label}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
     </view>
 
-    <view class="record-list" wx:if="{{list.length}}">
-      <view class="record-item fade-in-1" wx:for="{{list}}" wx:key="start" style="animation-delay:{{index * 0.02}}s">
-        <view class="record-left">
-          <view class="record-date">{{item.dateStr}}</view>
-          <view class="record-time">{{item.timeStr}}</view>
+    <!-- 周报头部 -->
+    <view class="report-header fade-in" wx:if="{{weekly.dateRange}}">
+      <view class="report-icon">📊</view>
+      <view class="report-title">肠道健康周报</view>
+      <view class="report-range">{{weekly.dateRange}}</view>
+    </view>
+
+    <!-- 空周报 -->
+    <view class="weekly-empty fade-in" wx:if="{{!weekly.dateRange}}">
+      <view class="we-empty-icon">📊</view>
+      <view class="we-empty-text">该周还没有数据</view>
+      <view class="we-empty-hint">记录几天后，这里会出现周报</view>
+    </view>
+
+    <!-- 概览 -->
+    <view class="card fade-in-1" wx:if="{{weekly.summary}}">
+      <view class="section-title">📈 本周概览</view>
+      <view class="overview-grid">
+        <view class="ov-item">
+          <view class="ov-num accent">{{weekly.summary.total}}</view>
+          <view class="ov-label">总次数</view>
         </view>
-        <view class="record-mid">
-          <view class="record-type-badge">{{item.typeIcon}} {{item.typeName}}</view>
-          <view class="record-note" wx:if="{{item.note}}">📝 {{item.note}}</view>
+        <view class="ov-item">
+          <view class="ov-num accent2">{{weekly.summary.days}}</view>
+          <view class="ov-label">打卡天数</view>
         </view>
-        <view class="record-right">
-          <view class="record-dur">⏱ {{item.min}}'{{item.sec}}"</view>
+        <view class="ov-item">
+          <view class="ov-num accent3">{{weekly.summary.avgPerDay}}</view>
+          <view class="ov-label">日均次数</view>
+        </view>
+        <view class="ov-item">
+          <view class="ov-num accent4">{{weekly.summary.avgMin}}<text class="ov-unit">分</text></view>
+          <view class="ov-label">平均时长</view>
         </view>
       </view>
     </view>
-  </view>
+
+    <!-- 每日趋势 -->
+    <view class="card fade-in-1" wx:if="{{weekly.bars && weekly.bars.length}}">
+      <view class="section-title">📊 每日趋势</view>
+      <view class="bar-chart">
+        <view class="bar-col" wx:for="{{weekly.bars}}" wx:key="day">
+          <view class="bar-val" wx:if="{{item.count > 0}}">{{item.count}}</view>
+          <view class="bar-fill {{item.count >= 3 ? 'high' : item.count >= 2 ? 'mid' : ''}}" style="height:{{item.height}}px"></view>
+          <view class="bar-label">{{item.day}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 类型分布 -->
+    <view class="card fade-in-1" wx:if="{{weekly.typeDist && weekly.typeDist.length}}">
+      <view class="section-title">🔬 类型分布</view>
+      <view class="type-list">
+        <view class="type-row" wx:for="{{weekly.typeDist}}" wx:key="icon">
+          <view class="type-emoji">{{item.icon}}</view>
+          <view class="type-bar-wrap">
+            <view class="type-bar" style="width:{{item.pct}}%; background:{{item.color}}"></view>
+          </view>
+          <view class="type-pct">{{item.pct}}%</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 健康提醒 -->
+    <view class="alerts-section fade-in-2" wx:if="{{weekly.alerts && weekly.alerts.length}}">
+      <view class="alerts-header">🩺 健康提醒</view>
+      <view class="alert-item {{item.level}}" wx:for="{{weekly.alerts}}" wx:key="icon">
+        <view class="alert-dot {{item.level}}"></view>
+        <view class="alert-text">{{item.text}}</view>
+      </view>
+    </view>
+
+    <!-- 本周建议 -->
+    <view class="advice-card fade-in-2" wx:if="{{weekly.advice}}">
+      <view class="advice-header">💊 本周建议</view>
+      <view class="advice-body">{{weekly.advice}}</view>
+    </view>
+  </block>
 </view>

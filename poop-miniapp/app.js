@@ -15,12 +15,15 @@ App({
     this.globalData.darkMode = dark;
 
     // First-launch onboarding
-    const onboarded = wx.getStorageSync('_onboarded');
-    if (!onboarded) {
-      // Delay navigation to let app initialize
-      setTimeout(() => {
-        wx.navigateTo({ url: '/pages/onboarding/onboarding' });
-      }, 300);
+    try {
+      const onboarded = wx.getStorageSync('_onboarded');
+      if (!onboarded) {
+        setTimeout(() => {
+          wx.navigateTo({ url: '/pages/onboarding/onboarding' });
+        }, 300);
+      }
+    } catch (e) {
+      // Storage not available, skip onboarding
     }
 
     // Handle share card params (friend invite / stats sharing)

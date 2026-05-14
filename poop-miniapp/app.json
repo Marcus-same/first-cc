@@ -11,10 +11,11 @@
     "pages/onboarding/onboarding",
     "pages/squad/squad",
     "pages/map/map",
-    "pages/personality/personality"
+    "pages/personality/personality",
+    "pages/personality-test/personality-test"
   ],
   "window": {
-    "navigationBarTitleText": "肠道日历",
+    "navigationBarTitleText": "噗噗日记",
     "navigationBarBackgroundColor": "#f5f5f0",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f5f5f0"
@@ -25,14 +26,13 @@
     "backgroundColor": "#fff",
     "list": [
       { "pagePath": "pages/index/index", "text": "📝 打卡" },
-      { "pagePath": "pages/history/history", "text": "📋 记录" },
-      { "pagePath": "pages/achievements/achievements", "text": "🏅 成就" },
+      { "pagePath": "pages/map/map", "text": "🗺️ 噗噗地图" },
       { "pagePath": "pages/settings/settings", "text": "⚙️ 设置" }
     ]
   },
   "permission": {
     "scope.userLocation": {
-      "desc": "用于记录排便位置，生成你的拉屎地图"
+      "desc": "用于记录排便位置，生成你的噗噗地图"
     }
   },
   "sitemapLocation": "sitemap.json"

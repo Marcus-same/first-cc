@@ -6,7 +6,7 @@ Page({
     dark: false,
     myCode: '',
     myCodeChars: [],
-    squadName: '我的战队',
+    squadName: '我的噗友',
     friends: [],
     friendCount: 0,
     showAdd: false,
@@ -136,7 +136,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: `加入我的拉屎战队！邀请码：${this.data.myCode}`,
+      title: `加入我的噗友战队！邀请码：${this.data.myCode}`,
       path: `/pages/index/index?invite=${this.data.myCode}`,
     };
   },
@@ -161,7 +161,7 @@ Page({
       data: JSON.stringify({ code: this.data.myCode, stats }),
       success: () => {
         wx.showModal({
-          title: '分享战队数据',
+          title: '分享噗友数据',
           content: '数据已复制到剪贴板。发送给好友后，让对方在「添加好友」中输入你的邀请码，然后粘贴数据即可同步。',
           showCancel: false
         });
@@ -184,7 +184,7 @@ Page({
             wx.showToast({ title: '好友数据已同步！', icon: 'success' });
             this.refresh();
           } else {
-            wx.showToast({ title: '剪贴板无有效战队数据', icon: 'none' });
+            wx.showToast({ title: '剪贴板无有效噗友数据', icon: 'none' });
           }
         } catch (e) {
           wx.showToast({ title: '解析失败，请确认复制了正确的数据', icon: 'none' });

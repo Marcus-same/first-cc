@@ -1,4 +1,4 @@
-const { TIPS } = require('../../utils/health-tips');
+const { generateTip } = require('../../utils/health-tips');
 const store = require('../../utils/store');
 const { getFortune, getMilestone, celebrate, getDailyChallenge } = require('../../utils/fun');
 const app = getApp();
@@ -26,7 +26,8 @@ Page({
     this.loadStreak();
     this.loadFortune();
     this.loadChallenge();
-    this.setData({ dailyTip: TIPS[Math.floor(Math.random() * TIPS.length)] });
+    const todaySessions = store.getToday().sessions;
+    this.setData({ dailyTip: generateTip(todaySessions, store.getStreak()) });
 
     // Timer recovery: check if there's an unfinished timer from last session
     const ts = wx.getStorageSync('_timer_state');
@@ -122,8 +123,10 @@ Page({
     wx.navigateTo({ url: '/pages/record/record' });
   },
 
-  goHistory() { wx.switchTab({ url: '/pages/history/history' }); },
-  goWeekly() { wx.navigateTo({ url: '/pages/weekly/weekly' }); },
-  goAchievements() { wx.switchTab({ url: '/pages/achievements/achievements' }); },
+  goWeekly() {
+    app.globalData.pendingView = 'weekly';
+    wx.navigateTo({ url: '/pages/history/history' });
+  },
+  goAchievements() { wx.navigateTo({ url: '/pages/achievements/achievements' }); },
   goPersonality() { wx.navigateTo({ url: '/pages/personality/personality' }); }
 });
