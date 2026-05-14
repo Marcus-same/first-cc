@@ -1,46 +1,103 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <view wx:if="{{totalSessions === 0}}" class="card empty-state">
-    <view class="empty-icon">🏅</view>
-    <view class="empty-text">完成首次记录解锁第一枚勋章</view>
+  <!-- 空状态 -->
+  <view wx:if="{{totalSessions === 0}}" class="empty-state fade-in">
+    <view class="empty-badge">🏅</view>
+    <view class="empty-title">完成首次记录解锁第一枚勋章</view>
     <view class="empty-sub">记录肠道健康，解锁更多成就</view>
   </view>
 
-  <view class="card milestone-card" wx:if="{{milestone}}">
-    <view class="milestone-icon">🎊</view>
-    <view class="milestone-text">{{milestone.msg}}</view>
-  </view>
-
-  <view class="card">
-    <view class="section-title">🏅 成就勋章</view>
-    <view class="achievement-grid">
-      <view class="ach-item {{item.unlocked ? '' : 'locked'}}" wx:for="{{achievements}}" wx:key="id">
-        <view class="ach-icon">{{item.unlocked ? item.icon : '🔒'}}</view>
-        <view class="ach-name">{{item.unlocked ? item.name : '???'}}</view>
-        <view class="ach-desc">{{item.unlocked ? item.desc : item.hint}}</view>
+  <!-- ========== 段位系统 ========== -->
+  <view class="tier-card fade-in" wx:if="{{tier}}">
+    <view class="tier-badge-wrap">
+      <view class="tier-glow"></view>
+      <view class="tier-icon">{{tier.icon}}</view>
+    </view>
+    <view class="tier-info">
+      <view class="tier-name">{{tier.name}}</view>
+      <view class="tier-bar-wrap" wx:if="{{tier.nextTier}}">
+        <view class="tier-bar" style="width:{{tier.pct}}%"></view>
+      </view>
+      <view class="tier-hint" wx:if="{{tier.nextTier}}">
+        还差 <text class="tier-highlight">{{tier.progressTarget - tier.progress}}</text> 次晋级 {{tier.nextTier.icon}} {{tier.nextTier.name}}
+      </view>
+      <view class="tier-hint max" wx:if="{{!tier.nextTier}}">
+        已达最高段位！传奇成就 🎉
       </view>
     </view>
   </view>
 
-  <view class="card">
+  <!-- ========== 便便博物馆 ========== -->
+  <view class="card fade-in-1" wx:if="{{totalSessions > 0}}">
+    <view class="section-title">🏛️ 便便博物馆 <text class="title-sub">{{museumCollected}}/7 已收集</text></view>
+    <view class="museum-grid">
+      <view class="museum-cell {{item.collected ? 'collected' : ''}}" wx:for="{{museum}}" wx:key="type">
+        <view class="museum-icon">{{item.collected ? item.icon : '🔒'}}</view>
+        <view class="museum-name">{{item.collected ? item.name : '???'}}</view>
+        <view class="museum-desc">{{item.collected ? item.desc : '尚未发现'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 里程碑 -->
+  <view class="milestone-card fade-in-1" wx:if="{{milestone}}">
+    <view class="milestone-glow"></view>
+    <view class="milestone-icon">{{milestone.icon}}</view>
+    <view class="milestone-msg">{{milestone.msg}}</view>
+  </view>
+
+  <!-- 成就墙 -->
+  <view class="card fade-in-1">
+    <view class="section-title">🏅 成就勋章 <text class="title-sub">{{unlockedCount}}/{{achievements.length}}</text></view>
+    <view class="category-tabs">
+      <view class="cat-tab {{catIdx === 0 ? 'active' : ''}}" bindtap="onCatTap" data-idx="0">全部</view>
+      <view class="cat-tab {{catIdx === 1 ? 'active' : ''}}" bindtap="onCatTap" data-idx="1">里程碑</view>
+      <view class="cat-tab {{catIdx === 2 ? 'active' : ''}}" bindtap="onCatTap" data-idx="2">坚持</view>
+      <view class="cat-tab {{catIdx === 3 ? 'active' : ''}}" bindtap="onCatTap" data-idx="3">收集</view>
+    </view>
+    <view class="achievement-grid">
+      <view class="ach-cell {{item.unlocked ? 'unlocked' : 'locked'}}" wx:for="{{filteredAchievements}}" wx:key="id">
+        <view class="ach-icon-wrap">
+          <view class="ach-icon">{{item.unlocked ? item.icon : '🔒'}}</view>
+        </view>
+        <view class="ach-name">{{item.unlocked ? item.name : '???'}}</view>
+        <view class="ach-desc">{{item.unlocked ? item.desc : (item.progress ? item.progress.current + '/' + item.progress.target : '完成一定条件后解锁')}}</view>
+        <!-- 进度条 -->
+        <view class="ach-progress-wrap" wx:if="{{!item.unlocked && item.progress}}">
+          <view class="ach-progress-bar" style="width:{{item.progress.current / item.progress.target * 100}}%"></view>
+        </view>
+        <view class="ach-glow" wx:if="{{item.unlocked}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 累计统计 -->
+  <view class="card fade-in-2">
     <view class="section-title">📊 累计统计</view>
     <view class="total-stats">
       <view class="total-item">
-        <view class="total-num">{{totalSessions}}</view>
+        <view class="total-ring">{{totalSessions}}</view>
         <view class="total-label">累计次数</view>
       </view>
       <view class="total-item">
-        <view class="total-num">{{totalMin}}分</view>
+        <view class="total-ring">{{totalMin}}<text class="total-unit">分</text></view>
         <view class="total-label">累计时长</view>
       </view>
       <view class="total-item">
-        <view class="total-num">{{totalDays}}天</view>
+        <view class="total-ring">{{totalDays}}<text class="total-unit">天</text></view>
         <view class="total-label">打卡天数</view>
       </view>
     </view>
   </view>
 
-  <view class="quick-links">
-    <view class="link-btn" bindtap="goMap">🗺️ 拉屎地图</view>
-    <view class="link-btn" bindtap="goSquad">👥 我的战队</view>
+  <!-- 快捷入口 -->
+  <view class="quick-links fade-in-3">
+    <view class="link-btn" bindtap="goMap" hover-class="link-btn-hover">
+      <view class="link-icon">🗺️</view>
+      <view class="link-label">拉屎地图</view>
+    </view>
+    <view class="link-btn" bindtap="goSquad" hover-class="link-btn-hover">
+      <view class="link-icon">👥</view>
+      <view class="link-label">我的战队</view>
+    </view>
   </view>
 </view>

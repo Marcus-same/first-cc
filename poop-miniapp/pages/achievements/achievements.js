@@ -1,10 +1,18 @@
-const { ALL, getUnlocked } = require('../../utils/achievements');
+const { ALL, getAllWithProgress, getDistinctBristolTypes } = require('../../utils/achievements');
 const store = require('../../utils/store');
-const { getMilestone, celebrate } = require('../../utils/fun');
+const { getMilestone, celebrate, getTier } = require('../../utils/fun');
+const { BRISTOL } = require('../../utils/health-tips');
 const app = getApp();
 
 Page({
-  data: { dark: false, achievements: [], totalSessions: 0, totalMin: 0, totalDays: 0, milestone: null },
+  data: {
+    dark: false, achievements: [], unlockedCount: 0,
+    filteredAchievements: [],
+    totalSessions: 0, totalMin: 0, totalDays: 0,
+    milestone: null, tier: null,
+    museum: [], museumCollected: 0,
+    catIdx: 0
+  },
 
   onShow() {
     this.setData({ dark: app.getDarkMode() });
@@ -17,18 +25,24 @@ Page({
     allSessions.forEach(s => { daysSet[s._date || new Date(s.start).toDateString()] = true; });
     const allDays = Object.keys(daysSet);
     const friendCount = Object.keys(store.getFriends()).length;
-    const unlocked = getUnlocked(allSessions, allDays, allSessions.length, friendCount);
+    const totalCount = allSessions.length;
 
-    const achievements = ALL.map(a => ({
-      ...a,
-      unlocked: unlocked.includes(a.id),
-      hint: a.unlocked ? '' : '完成一定条件后解锁'
-    }));
+    const achievementsWithProgress = getAllWithProgress(allSessions, allDays, totalCount, friendCount);
+    const unlockedCount = achievementsWithProgress.filter(a => a.unlocked).length;
 
     const totalSec = allSessions.reduce((s, x) => s + (x.duration || 0), 0);
-    const milestone = getMilestone(allSessions.length);
+    const milestone = getMilestone(totalCount);
+    const tier = getTier(totalCount);
 
-    // Celebrate if first visit with achievements
+    // Museum: collected Bristol types
+    const collectedTypes = getDistinctBristolTypes(allSessions);
+    const museum = BRISTOL.map(b => ({
+      ...b,
+      collected: allSessions.some(s => s.type === b.type)
+    }));
+
+    // Celebrate new achievements
+    const unlocked = achievementsWithProgress.filter(a => a.unlocked).map(a => a.id);
     const prevUnlocked = wx.getStorageSync('_prev_achievements') || [];
     const newly = unlocked.filter(id => !prevUnlocked.includes(id));
     if (newly.length) {
@@ -37,11 +51,31 @@ Page({
     wx.setStorageSync('_prev_achievements', unlocked);
 
     this.setData({
-      achievements,
-      totalSessions: allSessions.length,
+      achievements: achievementsWithProgress,
+      filteredAchievements: this.filterByCategory(achievementsWithProgress, this.data.catIdx),
+      unlockedCount,
+      totalSessions: totalCount,
       totalMin: Math.floor(totalSec / 60),
       totalDays: store.getDayCount(),
-      milestone
+      milestone,
+      tier,
+      museum,
+      museumCollected: museum.filter(m => m.collected).length
+    });
+  },
+
+  filterByCategory(achievements, catIdx) {
+    const catMap = { 0: null, 1: 'milestone', 2: 'streak', 3: 'collection' };
+    const cat = catMap[catIdx];
+    if (!cat) return achievements;
+    return achievements.filter(a => a.category === cat);
+  },
+
+  onCatTap(e) {
+    const idx = parseInt(e.currentTarget.dataset.idx);
+    this.setData({
+      catIdx: idx,
+      filteredAchievements: this.filterByCategory(this.data.achievements, idx)
     });
   },
 

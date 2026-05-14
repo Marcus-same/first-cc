@@ -5,6 +5,7 @@ Page({
   data: {
     dark: false,
     myCode: '',
+    myCodeChars: [],
     squadName: '我的战队',
     friends: [],
     friendCount: 0,
@@ -12,7 +13,13 @@ Page({
     inputCode: '',
     inputName: '',
     leaderboard: [],
-    lbTab: 0
+    lbTab: 0,
+    showPK: false,
+    pkFriendName: '',
+    pkItems: [],
+    pkMyWins: 0,
+    pkFriendWins: 0,
+    pkWinnerText: ''
   },
 
   onLoad() {
@@ -35,6 +42,7 @@ Page({
     }));
     this.setData({
       myCode,
+      myCodeChars: myCode.split(''),
       squadName,
       friends,
       friendCount: friends.length
@@ -187,5 +195,63 @@ Page({
 
   onLbTab(e) {
     this.setData({ lbTab: parseInt(e.currentTarget.dataset.idx) });
+  },
+
+  pkFriend(e) {
+    const { name, code } = e.currentTarget.dataset;
+    const friend = this.data.friends.find(f => f.code === code);
+    if (!friend || !friend.stats) {
+      wx.showToast({ title: '好友还没有分享数据', icon: 'none' });
+      return;
+    }
+
+    const { BRISTOL } = require('../../utils/health-tips');
+    const mySessions = store.getAllSessions();
+    const myStreak = store.getStreak();
+    const myWeek = mySessions.filter(s => {
+      const d = new Date(s.start);
+      const now = new Date();
+      const weekAgo = new Date(now);
+      weekAgo.setDate(now.getDate() - 7);
+      return d >= weekAgo;
+    });
+    const myTotalMin = Math.floor(mySessions.reduce((a, s) => a + s.duration, 0) / 60);
+
+    // Find dominant Bristol type for "me"
+    const myTypes = {};
+    myWeek.forEach(s => { if (s.type) myTypes[s.type] = (myTypes[s.type] || 0) + 1; });
+    const myTopType = Object.entries(myTypes).sort((a, b) => b[1] - a[1])[0];
+    const myTopBristol = myTopType ? BRISTOL.find(b => b.type === parseInt(myTopType[0])) : null;
+
+    const fStreak = friend.stats.streak || 0;
+    const fWeekCount = friend.stats.weekCount || 0;
+    const fTotalMin = friend.stats.totalMin || 0;
+
+    const pkItems = [
+      { label: '连续打卡', icon: '🔥', me: myStreak + '天', friend: fStreak + '天', meWin: myStreak > fStreak, friendWin: fStreak > myStreak },
+      { label: '本周次数', icon: '📝', me: myWeek.length + '次', friend: fWeekCount + '次', meWin: myWeek.length > fWeekCount, friendWin: fWeekCount > myWeek.length },
+      { label: '累计时长', icon: '⏱', me: myTotalMin + '分', friend: fTotalMin + '分', meWin: myTotalMin > fTotalMin, friendWin: fTotalMin > myTotalMin },
+    ];
+
+    if (myTopBristol) {
+      pkItems.push({ label: '主要类型', icon: myTopBristol.icon, me: myTopBristol.name, friend: '--', meWin: false, friendWin: false });
+    }
+
+    // Count wins
+    const myWins = pkItems.filter(i => i.meWin).length;
+    const friendWins = pkItems.filter(i => i.friendWin).length;
+
+    this.setData({
+      showPK: true,
+      pkFriendName: name,
+      pkItems,
+      pkMyWins: myWins,
+      pkFriendWins: friendWins,
+      pkWinnerText: myWins > friendWins ? '🏆 你赢了！' : friendWins > myWins ? '🏆 ' + name + ' 赢了！' : '🤝 平手！'
+    });
+  },
+
+  closePK() {
+    this.setData({ showPK: false });
   }
 });

@@ -27,10 +27,9 @@ HR知识库 · 内容入库工具（全功能版）
   PLAYWRIGHT_STATE_DIR      Playwright持久化状态目录（首次自动引导登录）
 
   语音识别 (视频转文字):
-  ASR_ENGINE               引擎: funasr(本地/默认) | baidu | whisper
-  FunASR 本地: 无需配置，自动下载模型（首次需下载约2GB）
-  百度语音: 需 BAIDU_ASR_API_KEY + BAIDU_ASR_SECRET_KEY
-  Whisper:  需 WHISPER_API_KEY
+  ASR_ENGINE               引擎: lark(飞书妙记/默认) | whisper
+  飞书妙记: 无需配置，自动上传音频到云空间→生成妙记→获取逐字稿
+  Whisper:  需 WHISPER_API_KEY + WHISPER_BASE_URL
 """
 
 import argparse, json, os, re, shutil, subprocess, sys, tempfile, time, signal
@@ -70,7 +69,7 @@ ALIYUN_ASR_APP_KEY = os.environ.get("ALIYUN_ASR_APP_KEY", "")
 ALIYUN_ASR_ACCESS_KEY_ID = os.environ.get("ALIYUN_ASR_ACCESS_KEY_ID", "")
 ALIYUN_ASR_ACCESS_KEY_SECRET = os.environ.get("ALIYUN_ASR_ACCESS_KEY_SECRET", "")
 
-ASR_ENGINE = os.environ.get("ASR_ENGINE", "funasr")  # funasr | baidu | aliyun | whisper
+ASR_ENGINE = os.environ.get("ASR_ENGINE", "lark")  # lark(飞书妙记) | whisper
 
 # Playwright 持久化登录状态目录（小红书）
 PLAYWRIGHT_STATE_DIR = Path(os.environ.get("PLAYWRIGHT_STATE_DIR",
@@ -81,12 +80,13 @@ PLAYWRIGHT_STATE_FILE = PLAYWRIGHT_STATE_DIR / "auth_state.json"
 DAEMON_POLL_INTERVAL = int(os.environ.get("DAEMON_POLL_INTERVAL", "60"))
 
 TAG_POOL = [
-    "小红书干货", "面试技巧", "薪酬设计", "绩效管理", "培训体系",
-    "员工关系", "招聘技巧", "劳动法务", "组织发展", "AI+HR",
-    "职场成长", "人才盘点", "HR数据", "其他"
+    # 职场成长
+    "沟通表达", "效率工具", "职业规划", "职场关系",
+    # HR知识成长
+    "招聘面试", "培训发展", "薪酬绩效", "员工关系", "组织发展", "劳动法务",
 ]
 
-MODULE_POOL = ["招聘", "培训", "薪酬", "绩效", "员工关系", "组织发展", "AI提效", "职场成长"]
+SOURCE_POOL = ["视频转写", "网页提取", "小红书", "飞书文档", "手动录入"]
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
@@ -525,7 +525,7 @@ def ingest_xiaohongshu(full_url: str, review: bool, skip_confirm: bool) -> bool:
 
     # 4. 正常流程：AI分析 → 预览 → 查重 → 入库
     return process_and_write(
-        title_hint="", text=combined, source="小红书干货", url_link=full_url,
+        title_hint="", text=combined, source="小红书", url_link=full_url,
         review=review, skip_confirm=skip_confirm
     )
 
@@ -535,7 +535,7 @@ def ingest_xiaohongshu(full_url: str, review: bool, skip_confirm: bool) -> bool:
 def download_audio_from_video(url: str) -> str:
     """下载视频并提取音频，返回音频文件路径"""
     print("  📥 下载视频并提取音频...")
-    tmpdir = tempfile.mkdtemp(prefix="hr_ingest_")
+    tmpdir = tempfile.mkdtemp(prefix="hr_ingest_", dir=os.getcwd())
     output_template = os.path.join(tmpdir, "%(title)s.%(ext)s")
 
     try:
@@ -565,89 +565,95 @@ def download_audio_from_video(url: str) -> str:
         shutil.rmtree(tmpdir, ignore_errors=True)
         raise RuntimeError(f"视频下载失败: {e}")
 
+def transcribe_via_lark_minutes(audio_path: str) -> str:
+    """通过飞书妙记上传音频并获取逐字稿"""
+    print("  🎙️ 飞书妙记转写...")
+
+    # lark-cli 要求相对路径，转一下
+    audio_rel = os.path.relpath(audio_path, os.getcwd())
+    if not audio_rel.startswith("."):
+        audio_rel = ".\\" + audio_rel if sys.platform == "win32" else "./" + audio_rel
+
+    # 1. 上传音频到云空间
+    print("  📤 上传音频到云空间...")
+    resp = _run_lark_cli(["drive", "+upload", "--file", audio_rel], timeout=60)
+    if not resp.get("ok"):
+        raise RuntimeError(f"上传失败: {resp.get('error', {}).get('message', '未知')}")
+    file_token = resp.get("data", {}).get("file_token", "")
+    if not file_token:
+        raise RuntimeError("未获取到 file_token")
+    print(f"  ✅ 上传完成: {file_token[:12]}...")
+
+    # 2. 生成妙记
+    print("  🎬 生成妙记...")
+    resp = _run_lark_cli(["minutes", "+upload", "--as", "user", "--file-token", file_token], timeout=30)
+    if not resp.get("ok"):
+        raise RuntimeError(f"生成妙记失败: {resp.get('error', {}).get('message', '未知')}")
+    minute_url = resp.get("data", {}).get("minute_url", "")
+    if not minute_url:
+        raise RuntimeError("未获取到 minute_url")
+
+    # 3. 提取 minute_token
+    import re
+    m = re.search(r'/minutes/([a-zA-Z0-9]+)', minute_url)
+    if not m:
+        raise RuntimeError(f"无法从URL提取 minute_token: {minute_url}")
+    minute_token = m.group(1)
+    print(f"  ✅ 妙记已生成: {minute_token[:12]}...")
+
+    # 4. 等待妙记异步处理完成后获取逐字稿
+    tmpdir = tempfile.mkdtemp(prefix="hr_ingest_minutes_")
+    print("  ⏳ 等待转写完成...")
+    for attempt in range(12):  # 最多等 2 分钟
+        resp = _run_lark_cli([
+            "vc", "+notes",
+            "--as", "user",
+            "--minute-tokens", minute_token,
+            "--output-dir", tmpdir,
+        ], timeout=30)
+        if resp.get("ok"):
+            break
+        error_msg = resp.get("error", {}).get("message", "")
+        if "processing" not in error_msg.lower() and "not ready" not in error_msg.lower():
+            raise RuntimeError(f"获取逐字稿失败: {error_msg}")
+        time.sleep(10)
+    else:
+        raise RuntimeError("妙记转写超时（2分钟）")
+
+    # 5. 读取逐字稿文件
+    transcript_dir = os.path.join(tmpdir, "minutes", minute_token)
+    transcript_file = os.path.join(transcript_dir, "transcript.txt")
+    if not os.path.exists(transcript_file):
+        # 尝试旧布局
+        for root, _, files in os.walk(tmpdir):
+            for f in files:
+                if f == "transcript.txt":
+                    transcript_file = os.path.join(root, f)
+                    break
+    if not os.path.exists(transcript_file):
+        raise RuntimeError("未找到逐字稿文件")
+
+    with open(transcript_file, "r", encoding="utf-8") as f:
+        text = f.read().strip()
+
+    # 清理临时目录
+    shutil.rmtree(tmpdir, ignore_errors=True)
+
+    if text:
+        print(f"  ✅ 转写完成 ({len(text)} 字符)")
+        return text
+    raise RuntimeError("逐字稿为空")
+
+
 def transcribe_audio(audio_path: str) -> str:
-    """将音频转为文字，支持多种 ASR 引擎（默认 FunASR/SenseVoice 本地）"""
+    """将音频转为文字，默认使用飞书妙记"""
     engine = ASR_ENGINE
 
-    # ========== FunASR 本地（SenseVoice） ==========
-    if engine == "funasr":
-        print("  🎙️ 语音转文字 (FunASR SenseVoice 本地)...")
-        try:
-            from funasr import AutoModel
-            model = AutoModel(
-                model="iic/sense_voice_small",
-                vad_model="iic/speech_fsmn_vad",
-                punc_model="iic/punc_ct-transformer_zh-cn-common-vocab272727",
-                disable_update=True,
-            )
-            result = model.generate(input=audio_path, language="zh", use_itn=True)
-            text = result[0].get("text", "").strip() if result else ""
-            if text:
-                print(f"  ✅ 转写完成 ({len(text)} 字符)")
-                return text
-            raise ValueError("FunASR 返回空结果")
-        except ImportError:
-            raise SystemExit("需要 funasr: pip install funasr -i https://pypi.tuna.tsinghua.edu.cn/simple")
-        except Exception as e:
-            raise RuntimeError(f"FunASR 转写失败: {e}")
+    # 飞书妙记（默认，推荐）
+    if engine == "funasr" or engine == "lark":
+        return transcribe_via_lark_minutes(audio_path)
 
-    # ========== 百度语音识别 ==========
-    if engine == "baidu":
-        if not BAIDU_ASR_API_KEY or not BAIDU_ASR_SECRET_KEY:
-            raise SystemExit("百度语音识别需要设置 BAIDU_ASR_API_KEY 和 BAIDU_ASR_SECRET_KEY")
-        print("  🎙️ 语音转文字 (百度语音)...")
-        try:
-            import requests
-            # 获取 access_token
-            token_resp = requests.get(
-                "https://aip.baidubce.com/oauth/2.0/token",
-                params={"grant_type": "client_credentials", "client_id": BAIDU_ASR_API_KEY, "client_secret": BAIDU_ASR_SECRET_KEY},
-                timeout=10
-            )
-            access_token = token_resp.json().get("access_token")
-            if not access_token:
-                raise ValueError("获取百度 access_token 失败")
-
-            # 读取音频并 base64 编码
-            import base64
-            with open(audio_path, "rb") as f:
-                audio_data = f.read()
-            speech_base64 = base64.b64encode(audio_data).decode()
-
-            # 调用 ASR API
-            asr_resp = requests.post(
-                "https://vop.baidu.com/server_api",
-                json={
-                    "format": "pcm",  # 最好转成 PCM 16k
-                    "rate": 16000,
-                    "channel": 1,
-                    "token": access_token,
-                    "cuid": "hr_ingest_tool",
-                    "speech": speech_base64,
-                    "len": len(audio_data),
-                },
-                timeout=120
-            )
-            result = asr_resp.json()
-            if result.get("err_no") == 0:
-                text = "".join(result.get("result", []))
-                if text:
-                    print(f"  ✅ 百度语音转写完成 ({len(text)} 字符)")
-                    return text
-            raise ValueError(f"百度 ASR 失败: {result.get('err_msg', '未知')}")
-        except ImportError:
-            raise SystemExit("需要 requests: pip install requests")
-        except Exception as e:
-            raise RuntimeError(f"百度语音转写失败: {e}")
-
-    # ========== 阿里云语音识别 ==========
-    if engine == "aliyun":
-        if not ALIYUN_ASR_ACCESS_KEY_ID or not ALIYUN_ASR_ACCESS_KEY_SECRET:
-            raise SystemExit("阿里云语音识别需要设置 ALIYUN_ASR_ACCESS_KEY_ID 和 ALIYUN_ASR_ACCESS_KEY_SECRET")
-        print("  🎙️ 语音转文字 (阿里云 ASR)...")
-        raise NotImplementedError("阿里云 ASR 接入中，请先使用 ASR_ENGINE=funasr 或 ASR_ENGINE=baidu")
-
-    # ========== Whisper API (备用) ==========
+    # Whisper API（远程备用）
     if engine == "whisper":
         api_key = WHISPER_API_KEY or DEEPSEEK_API_KEY
         if not api_key:
@@ -673,7 +679,7 @@ def transcribe_audio(audio_path: str) -> str:
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"Whisper API 调用失败: {e}")
 
-    raise SystemExit(f"未知的 ASR 引擎: {engine}，可选: funasr, baidu, whisper")
+    raise SystemExit(f"未知的 ASR 引擎: {engine}，可选: lark, whisper")
 
 def transcribe_video(url: str) -> str:
     """视频URL全流程：下载→提音频→转文字"""
@@ -793,23 +799,24 @@ def call_deepseek(prompt: str, max_tokens: int = 1200) -> str:
         raise SystemExit(f"DeepSeek API 调用失败: {e}")
 
 def analyze_hr_content(content: str) -> dict:
-    """调用DeepSeek做HR内容摘要、打标签、归类模块"""
+    """调用DeepSeek做内容整理：标题、统一格式化内容、自动分类打标签"""
     MAX_LEN = 8000
     if len(content) > MAX_LEN:
         content = content[:MAX_LEN] + "\n\n[... 内容过长，已截断]"
 
     prompt = f"""你是一个HR知识管理助手。请分析以下内容，返回JSON（不要有任何其他文字）：
 {{
-  "title": "内容标题（15字以内）",
-  "summary": "核心要点摘要（150-200字，提炼对HR工作最有价值的信息）",
-  "key_points": ["关键点1", "关键点2", "关键点3"],
+  "title": "内容标题（15字以内，概括核心主题）",
+  "organized_content": "整理后的内容（格式统一、简洁精准，保留原文关键信息、要点、步骤、模板等，去除冗余和无关内容。用Markdown组织：标题用##、要点用-、步骤用1.）",
   "tags": ["标签1", "标签2"],
-  "module": "关联模块",
-  "use_case": "适用场景（一句话，如：面试评估/薪酬谈判/绩效面谈/培训设计等）"
+  "source_type": "来源类型"
 }}
 
-标签必须从以下列表选择1-3个：{', '.join(TAG_POOL)}
-关联模块必须从以下列表选择1个：{', '.join(MODULE_POOL)}
+标签必须从以下列表选择1-3个。请精准判断内容属于哪个维度：
+  职场成长（个人能力/职业发展）：沟通表达、效率工具、职业规划、职场关系
+  HR知识成长（专业能力/业务知识）：招聘面试、培训发展、薪酬绩效、员工关系、组织发展、劳动法务
+完整标签列表：{', '.join(TAG_POOL)}
+来源类型必须从以下列表选择1个：{', '.join(SOURCE_POOL)}
 
 === 待分析内容 ===
 {content}"""
@@ -818,17 +825,20 @@ def analyze_hr_content(content: str) -> dict:
         result = call_deepseek(prompt)
         parsed = json.loads(result)
         valid_tags = [t for t in parsed.get("tags", []) if t in TAG_POOL]
-        valid_module = parsed.get("module", "") if parsed.get("module", "") in MODULE_POOL else "其他"
+        valid_source = parsed.get("source_type", "") if parsed.get("source_type", "") in SOURCE_POOL else "手动录入"
         return {
             "title": parsed.get("title", "未命名"),
-            "summary": parsed.get("summary", ""),
-            "key_points": parsed.get("key_points", []),
-            "tags": valid_tags[:3] or ["其他"],
-            "module": valid_module,
-            "use_case": parsed.get("use_case", "")
+            "organized_content": parsed.get("organized_content", content[:500]),
+            "tags": valid_tags[:3] or ["职业规划"],
+            "source_type": valid_source,
         }
     except json.JSONDecodeError:
-        return {"title": "未命名", "summary": content[:200], "key_points": [], "tags": ["其他"], "module": "其他", "use_case": ""}
+        return {
+            "title": "未命名",
+            "organized_content": content[:500],
+            "tags": ["职业规划"],
+            "source_type": "手动录入",
+        }
 
 # ============================================================
 # 查重去重
@@ -900,24 +910,19 @@ def check_duplicate(title: str, full_text: str = "", url_link: str = "") -> bool
 def interactive_review(result: dict) -> dict | None:
     """用户预览和编辑AI分析结果。返回修改后的dict，或None表示跳过"""
 
-    # 构建菜单
     tags_menu = "\n".join(f"  [{i+1}] {t}" for i, t in enumerate(TAG_POOL))
-    modules_menu = "\n".join(f"  [{i+1}] {m}" for i, m in enumerate(MODULE_POOL))
+    sources_menu = "\n".join(f"  [{i+1}] {s}" for i, s in enumerate(SOURCE_POOL))
 
     print("\n" + "═" * 55)
     print("  📋 AI 分析结果 — 请确认或修改")
     print("═" * 55)
 
     while True:
-        pts = result.get("key_points", [])
         print(f"""
   [1] 标题: {result['title']}
-  [2] 模块: {result['module']}
+  [2] 来源: {result.get('source_type', '')}
   [3] 标签: {', '.join(result['tags'])}
-  [4] 场景: {result['use_case']}
-  [5] 摘要: {result['summary'][:150]}{'...' if len(result['summary']) > 150 else ''}""")
-        if pts:
-            print(f"  [6] 关键点: {'; '.join(pts)}")
+  [4] 整理内容: {result['organized_content'][:200]}{'...' if len(result['organized_content']) > 200 else ''}""")
 
         print("  ────────────────────────────────────────")
         print("  [y] 确认入库  [s] 跳过  [数字] 修改对应字段")
@@ -932,11 +937,11 @@ def interactive_review(result: dict) -> dict | None:
             if v:
                 result["title"] = v
         elif choice == "2":
-            print(f"\n  可选模块:\n{modules_menu}")
+            print(f"\n  可选来源:\n{sources_menu}")
             idx = input("  选择序号: ").strip()
-            if idx.isdigit() and 1 <= int(idx) <= len(MODULE_POOL):
-                result["module"] = MODULE_POOL[int(idx) - 1]
-                print(f"  → 模块已更新: {result['module']}")
+            if idx.isdigit() and 1 <= int(idx) <= len(SOURCE_POOL):
+                result["source_type"] = SOURCE_POOL[int(idx) - 1]
+                print(f"  → 来源已更新: {result['source_type']}")
         elif choice == "3":
             print(f"\n  可选标签 (多选用逗号分隔):\n{tags_menu}")
             idxs = input("  选择序号: ").strip()
@@ -949,13 +954,10 @@ def interactive_review(result: dict) -> dict | None:
                 result["tags"] = selected[:3]
                 print(f"  → 标签已更新: {', '.join(result['tags'])}")
         elif choice == "4":
-            v = input(f"  场景 (回车不变: {result['use_case']}): ").strip()
+            print(f"  整理内容 (太长，仅显示前200字): {result['organized_content'][:200]}")
+            v = input("  输入新内容替换 (回车不变):\n  > ").strip()
             if v:
-                result["use_case"] = v
-        elif choice == "5":
-            v = input(f"  摘要 (回车不变):\n  > ").strip()
-            if v:
-                result["summary"] = v
+                result["organized_content"] = v
 
 # ============================================================
 # lark-cli 调用封装
@@ -1005,32 +1007,35 @@ def _run_lark_cli(args: list[str], timeout: int = 30, max_retries: int = 2) -> d
 # ============================================================
 # 写入 HR知识库
 # ============================================================
-def write_to_hr_base(title: str, source: str, url_link: str, summary: str,
-                     tags: list[str], module: str, full_text: str, use_case: str) -> bool:
+def write_to_hr_base(title: str, source: str, url_link: str, organized_content: str,
+                     tags: list[str], raw_text: str = "") -> bool:
     record = {
         "标题": title,
         "来源": source,
-        "核心要点": summary,
-        "关联模块": module,
-        "使用场景": use_case,
+        "整理内容": organized_content[:60000],
+        "状态": "已完成",
     }
     if url_link:
         record["原始链接"] = url_link
     if tags:
         record["标签"] = tags
-    if full_text:
-        record["详细"] = full_text[:60000]
+    if raw_text:
+        record["原始内容"] = raw_text[:60000]
 
     body = json.dumps(record, ensure_ascii=False)
 
-    # Windows 命令行长度限制 ~8000 字符，超出则截断详细字段
+    # Windows 命令行长度限制 ~8000 字符，超出则先截断原始内容再截断整理内容
     MAX_CMD_LEN = 7500
-    if len(body) > MAX_CMD_LEN:
-        overhead = len(body) - len(record.get("详细", ""))
-        available = MAX_CMD_LEN - overhead
-        if available > 100:
-            record["详细"] = record["详细"][:available]
-            body = json.dumps(record, ensure_ascii=False)
+    for field in ("原始内容", "整理内容"):
+        if len(body) <= MAX_CMD_LEN:
+            break
+        content = record.get(field, "")
+        if content:
+            overhead = len(body) - len(content)
+            available = MAX_CMD_LEN - overhead
+            if available > 100:
+                record[field] = content[:available]
+                body = json.dumps(record, ensure_ascii=False)
 
     try:
         resp = _run_lark_cli([
@@ -1056,7 +1061,6 @@ def write_to_hr_base(title: str, source: str, url_link: str, summary: str,
 # Base API 抽象层（Daemon/Sync 模式用）
 # ============================================================
 FIELD_状态 = "状态"
-FIELD_处理信息 = "处理信息"
 VALUE_待处理 = "待处理"
 VALUE_处理中 = "处理中"
 VALUE_已完成 = "已完成"
@@ -1143,11 +1147,9 @@ def base_update_record(record_id: str, fields: dict) -> bool:
         return False
 
 
-def base_update_status(record_id: str, status: str, message: str = "") -> bool:
-    """快捷更新状态和可选的处理信息"""
+def base_update_status(record_id: str, status: str) -> bool:
+    """快捷更新状态"""
     fields = {FIELD_状态: status}
-    if message:
-        fields[FIELD_处理信息] = message[:500]
     return base_update_record(record_id, fields)
 
 
@@ -1194,7 +1196,7 @@ def process_base_record(record: dict) -> bool:
         raw_url = raw_url.get("link", "") or raw_url.get("text", "")
     url = _clean_url(raw_url)
     if not url:
-        base_update_status(record_id, VALUE_失败, "原始链接为空")
+        base_update_status(record_id, VALUE_失败)
         return False
 
     print(f"\n📝 处理记录 {record_id[:8]}...: {url[:60]}")
@@ -1205,11 +1207,11 @@ def process_base_record(record: dict) -> bool:
     try:
         # 根据 URL 类型分发
         text = ""
-        source = "网页"
+        source = "网页提取"
         url_lower = url.lower()
 
         if "xiaohongshu.com" in url_lower:
-            source = "小红书干货"
+            source = "小红书"
             print(f"📕 小红书内容: {url}")
             page_text, video_url = fetch_xiaohongshu_content(url)
             text = page_text
@@ -1228,7 +1230,7 @@ def process_base_record(record: dict) -> bool:
             text = fetch_feishu_doc(url)
 
         elif any(v in url_lower for v in [".mp4", "bilibili.com", "youtube.com", "douyin.com", "v.qq.com"]):
-            source = "其他"
+            source = "视频转写"
             text = transcribe_video(url)
 
         else:
@@ -1243,12 +1245,10 @@ def process_base_record(record: dict) -> bool:
         # 准备更新字段
         update_fields = {
             "标题": result["title"],
-            "来源": source,
-            "核心要点": result["summary"],
-            "关联模块": result["module"],
-            "使用场景": result["use_case"],
+            "来源": result.get("source_type", source),
+            "整理内容": result["organized_content"][:60000],
             "标签": result["tags"][:3],
-            "详细": text[:60000],
+            "原始内容": text[:60000],
             FIELD_状态: VALUE_已完成,
         }
 
@@ -1256,13 +1256,12 @@ def process_base_record(record: dict) -> bool:
             print(f"  ✅ {result['title']} → 已完成")
             return True
         else:
-            base_update_status(record_id, VALUE_失败, "写入 Base 失败")
+            base_update_status(record_id, VALUE_失败)
             return False
 
     except Exception as e:
-        error_msg = f"{type(e).__name__}: {str(e)[:300]}"
-        print(f"  ❌ {error_msg}")
-        base_update_status(record_id, VALUE_失败, error_msg)
+        print(f"  ❌ {type(e).__name__}: {str(e)[:300]}")
+        base_update_status(record_id, VALUE_失败)
         return False
 
 
@@ -1361,13 +1360,12 @@ def process_and_write(title_hint: str, text: str, source: str, url_link: str,
     print("  🤖 AI 分析...")
     result = analyze_hr_content(text)
     final_title = title_hint or result["title"]
+    final_source = result.get("source_type", source)
 
     print(f"  📌 标题: {final_title}")
-    print(f"  📂 模块: {result['module']}")
+    print(f"  📂 来源: {final_source}")
     print(f"  🏷️  标签: {', '.join(result['tags'])}")
-    print(f"  💡 场景: {result['use_case']}")
-    for pt in result.get("key_points", []):
-        print(f"     • {pt}")
+    print(f"  📝 整理内容: {result['organized_content'][:120]}...")
 
     # 交互式预览
     if review and not skip_confirm:
@@ -1377,6 +1375,7 @@ def process_and_write(title_hint: str, text: str, source: str, url_link: str,
             return False
         result = edited
         final_title = title_hint or result["title"]
+        final_source = result.get("source_type", source)
 
     # 查重
     if not skip_confirm:
@@ -1390,10 +1389,9 @@ def process_and_write(title_hint: str, text: str, source: str, url_link: str,
 
     # 入库
     return write_to_hr_base(
-        title=final_title, source=source, url_link=url_link,
-        summary=result["summary"], tags=result["tags"],
-        module=result["module"], full_text=text,
-        use_case=result["use_case"]
+        title=final_title, source=final_source, url_link=url_link,
+        organized_content=result["organized_content"], tags=result["tags"],
+        raw_text=text
     )
 
 # ============================================================
@@ -1415,7 +1413,7 @@ def ingest_file(file_path: str, review: bool, skip_confirm: bool) -> bool:
     print(f"  📊 {len(text)} 字符")
 
     return process_and_write(
-        title_hint="", text=text, source="本地文件", url_link="",
+        title_hint="", text=text, source="手动录入", url_link="",
         review=review, skip_confirm=skip_confirm
     )
 
@@ -1442,7 +1440,7 @@ def ingest_folder(folder_path: str, review: bool, skip_confirm: bool) -> dict:
 def ingest_text(text: str, title: str = "", review: bool = False, skip_confirm: bool = False) -> bool:
     print(f"\n📝 处理文本 ({len(text)} 字符)")
     return process_and_write(
-        title_hint=title, text=text, source="其他", url_link="",
+        title_hint=title, text=text, source="手动录入", url_link="",
         review=review, skip_confirm=skip_confirm
     )
 
@@ -1451,9 +1449,9 @@ def ingest_url(url: str, review: bool, skip_confirm: bool) -> bool:
     if "xiaohongshu.com" in url.lower():
         return ingest_xiaohongshu(url, review, skip_confirm)
 
-    src = "网页"
+    src = "网页提取"
     if "mp.weixin.qq.com" in url.lower():
-        src = "微信"
+        src = "网页提取"
     print(f"\n🌐 {url}")
 
     try:
@@ -1472,7 +1470,7 @@ def ingest_url(url: str, review: bool, skip_confirm: bool) -> bool:
 
 def ingest_video(url: str, review: bool, skip_confirm: bool) -> bool:
     print(f"\n🎬 视频: {url}")
-    src = "小红书干货" if "xiaohongshu.com" in url.lower() else "其他"
+    src = "小红书" if "xiaohongshu.com" in url.lower() else "视频转写"
 
     try:
         text = transcribe_video(url)

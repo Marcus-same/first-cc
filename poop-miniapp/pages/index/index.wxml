@@ -1,61 +1,107 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <!-- Empty state -->
-  <view class="empty-state" wx:if="{{isEmpty && !running}}">
-    <view class="empty-emoji">🚽</view>
+
+  <!-- 空状态 -->
+  <view class="empty-state fade-in" wx:if="{{isEmpty && !running}}">
+    <view class="empty-illustration">
+      <view class="empty-circle">🚽</view>
+    </view>
     <view class="empty-title">准备好开始记录了吗？</view>
     <view class="empty-sub">记录你的肠道健康，坚持就有收获</view>
+    <view class="empty-hint">👆 点击「开始计时」记录第一次</view>
   </view>
 
-  <!-- Timer card -->
-  <view class="card timer-card">
-    <view class="emoji {{running ? 'bounce' : ''}}">{{running ? '💩' : '🚽'}}</view>
-    <view class="timer-text">{{timeStr}}</view>
+  <!-- 计时卡片 -->
+  <view class="timer-card fade-in {{running ? 'running' : ''}}">
+    <view class="timer-ring {{running ? 'pulse' : ''}}">
+      <view class="timer-emoji">{{running ? '💩' : '🚽'}}</view>
+    </view>
+    <view class="timer-text {{running ? 'counting' : ''}}">{{timeStr}}</view>
+    <view class="timer-label" wx:if="{{!running}}">点击下方按钮开始计时</view>
+    <view class="timer-label running-label" wx:if="{{running}}">{{runTip}}</view>
     <view class="btn-row">
-      <button class="btn-start" bindtap="onStart" disabled="{{running}}">开始计时</button>
-      <button class="btn-stop" bindtap="onStop" disabled="{{!running}}">结束记录</button>
+      <button class="btn-start" bindtap="onStart" disabled="{{running}}">
+        <text class="btn-icon">▶</text> 开始计时
+      </button>
+      <button class="btn-stop" bindtap="onStop" disabled="{{!running}}">
+        <text class="btn-icon">⏹</text> 结束记录
+      </button>
     </view>
-    <view class="tip" wx:if="{{running}}">{{runTip}}</view>
-    <view class="tip warn" wx:if="{{running && elapsed > warnSec}}">⏰ 已经蹲了{{warnMin}}分钟，注意时间哦</view>
+    <view class="warn-banner" wx:if="{{running && elapsed > warnSec}}">
+      ⏰ 已经蹲了 {{warnMin}} 分钟，注意时间哦
+    </view>
   </view>
 
-  <!-- Streak -->
-  <view class="card streak-card" wx:if="{{streak >= 1}}">
-    <view class="streak-inner">
-      <view class="streak-emoji">🔥</view>
-      <view class="streak-info">
-        <view class="streak-num">连续打卡 <text class="streak-count">{{streak}}</text> 天</view>
-        <view class="streak-sub">{{streak >= 7 ? '一周全勤达成！肠道管理优等生' : streak >= 3 ? '三天连击！继续保持' : '好的开始是成功的一半'}}</view>
+  <!-- 连续打卡 -->
+  <view class="streak-card fade-in-1" wx:if="{{streak >= 1}}">
+    <view class="streak-flame">🔥</view>
+    <view class="streak-info">
+      <view class="streak-num">连续打卡 <text class="streak-count">{{streak}}</text> 天</view>
+      <view class="streak-bar-wrap">
+        <view class="streak-bar" style="width:{{streak >= 30 ? 100 : streak / 30 * 100}}%"></view>
       </view>
+      <view class="streak-sub">{{streak >= 30 ? '🏆 满月达成！肠道王者' : streak >= 14 ? '🌟 两周连击！自律达人' : streak >= 7 ? '✅ 一周全勤！优等生' : streak >= 3 ? '👍 三天连击，继续保持' : '💪 好的开始是成功的一半'}}</view>
     </view>
   </view>
 
-  <!-- Stats -->
-  <view class="card stats-row">
-    <view class="stat" wx:for="{{statItems}}" wx:key="key">
+  <!-- 统计数字 -->
+  <view class="stats-row fade-in-1">
+    <view class="stat-card" wx:for="{{statItems}}" wx:key="key">
+      <view class="stat-icon">{{item.icon}}</view>
       <view class="stat-num">{{item.val}}</view>
       <view class="stat-label">{{item.label}}</view>
     </view>
   </view>
 
-  <!-- Daily Fortune -->
-  <view class="card fortune-card" wx:if="{{fortune}}">
-    <view class="fortune-header">
-      <view class="fortune-stars">{{fortune.stars}}</view>
+  <!-- 每日运势 -->
+  <view class="fortune-card fade-in-2" wx:if="{{fortune}}">
+    <view class="fortune-inner">
+      <view class="fortune-star-row">
+        <text class="fortune-star {{i < fortune.level ? 'lit' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this" wx:for-index="i">⭐</text>
+      </view>
+      <view class="fortune-text">{{fortune.text}}</view>
     </view>
-    <view class="fortune-text">{{fortune.text}}</view>
   </view>
 
-  <!-- Health tip -->
-  <view class="daily-tip card">
-    <view class="tip-icon">💡</view>
-    <view class="tip-text">{{dailyTip}}</view>
+  <!-- 每日挑战 -->
+  <view class="challenge-card fade-in-2" wx:if="{{challenge}}">
+    <view class="challenge-header">
+      <view class="challenge-badge">🎯 今日挑战</view>
+      <view class="challenge-status {{challenge.done ? 'done' : ''}}">
+        {{challenge.done ? '✅ 已完成' : '进行中'}}
+      </view>
+    </view>
+    <view class="challenge-body {{challenge.done ? 'done' : ''}}">
+      <view class="challenge-icon">{{challenge.icon}}</view>
+      <view class="challenge-text">{{challenge.text}}</view>
+    </view>
   </view>
 
-  <!-- Quick actions -->
-  <view class="quick-actions">
-    <view class="quick-btn" bindtap="goHistory">📅 排便日历</view>
-    <view class="quick-btn" bindtap="goWeekly">📊 本周报告</view>
-    <view class="quick-btn" bindtap="goAchievements">🏅 我的成就</view>
-    <view class="quick-btn" bindtap="goPersonality">🧬 肠道人格</view>
+  <!-- 健康小贴士 -->
+  <view class="tip-card fade-in-2">
+    <view class="tip-icon-wrap">💡</view>
+    <view class="tip-content">
+      <view class="tip-label">今日小知识</view>
+      <view class="tip-text">{{dailyTip}}</view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions fade-in-3">
+    <view class="quick-btn" bindtap="goHistory" hover-class="quick-btn-hover">
+      <view class="quick-icon">📅</view>
+      <view class="quick-label">排便日历</view>
+    </view>
+    <view class="quick-btn" bindtap="goWeekly" hover-class="quick-btn-hover">
+      <view class="quick-icon">📊</view>
+      <view class="quick-label">本周报告</view>
+    </view>
+    <view class="quick-btn" bindtap="goAchievements" hover-class="quick-btn-hover">
+      <view class="quick-icon">🏅</view>
+      <view class="quick-label">我的成就</view>
+    </view>
+    <view class="quick-btn" bindtap="goPersonality" hover-class="quick-btn-hover">
+      <view class="quick-icon">🧬</view>
+      <view class="quick-label">肠道人格</view>
+    </view>
   </view>
 </view>

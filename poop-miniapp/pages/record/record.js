@@ -1,6 +1,6 @@
 const { BRISTOL } = require('../../utils/health-tips');
 const store = require('../../utils/store');
-const { celebrate } = require('../../utils/fun');
+const { celebrate, checkChallenge } = require('../../utils/fun');
 const app = getApp();
 
 Page({
@@ -78,6 +78,8 @@ Page({
       celebrate('milestone');
     }
 
+    // Check daily challenge after saving
+    checkChallenge();
     wx.navigateBack();
   }
 });

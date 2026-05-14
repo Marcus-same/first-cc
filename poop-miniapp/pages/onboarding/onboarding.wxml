@@ -1,8 +1,19 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <swiper class="swiper" current="{{current}}" bindchange="onSwiperChange" indicator-dots="{{true}}" indicator-color="#ccc" indicator-active-color="{{slides[current].color}}">
+  <swiper
+    class="swiper"
+    current="{{current}}"
+    bindchange="onSwiperChange"
+    indicator-dots="{{true}}"
+    indicator-color="rgba(0,0,0,0.15)"
+    indicator-active-color="{{slides[current].color}}"
+    duration="300"
+  >
     <swiper-item wx:for="{{slides}}" wx:key="title">
       <view class="slide">
-        <view class="slide-emoji" style="color:{{item.color}}">{{item.emoji}}</view>
+        <view class="slide-illust">
+          <view class="slide-glow" style="background:{{item.color}}"></view>
+          <view class="slide-emoji">{{item.emoji}}</view>
+        </view>
         <view class="slide-title">{{item.title}}</view>
         <view class="slide-desc">{{item.desc}}</view>
       </view>
@@ -10,10 +21,12 @@
   </swiper>
 
   <view class="onboarding-footer">
-    <view class="dots">
-      <view class="dot {{current === i ? 'active' : ''}}" wx:for="{{slides}}" wx:key="title" wx:for-index="i" style="background:{{current === i ? slides[current].color : '#ddd'}}"></view>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width:{{(current + 1) / slides.length * 100}}%; background:{{slides[current].color}}"></view>
     </view>
-    <button class="btn-start" bindtap="onStart" style="background:{{slides[current].color}}">开始使用</button>
-    <view class="btn-skip" bindtap="onSkip">跳过</view>
+    <button class="btn-start" bindtap="onStart" style="background:{{slides[current].color}}">
+      {{current === slides.length - 1 ? '🚀 开始肠道之旅' : '跳过，直接开始'}}
+    </button>
+    <view class="swipe-hint" wx:if="{{current < slides.length - 1}}">← 左右滑动查看 →</view>
   </view>
 </view>

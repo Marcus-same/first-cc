@@ -1,43 +1,57 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <view class="card calendar-card">
-    <view class="section-title">📅 排便热力图</view>
+  <!-- 热力图 -->
+  <view class="card fade-in">
+    <view class="section-title">📅 排便热力图 <text class="title-sub">近 4 周</text></view>
     <view class="heatmap">
       <view class="heatmap-row" wx:for="{{heatmap}}" wx:key="week">
         <view class="heatmap-label">{{item.label}}</view>
-        <view class="heatmap-dot {{cell.level}}" wx:for="{{item.days}}" wx:for-item="cell" wx:key="date">
+        <view class="heatmap-dots">
+          <view
+            class="heatmap-dot {{cell.level}}"
+            wx:for="{{item.days}}" wx:for-item="cell" wx:key="date"
+          >
+            <view class="dot-inner">{{cell.count > 0 ? cell.count : ''}}</view>
+          </view>
         </view>
       </view>
     </view>
     <view class="heatmap-legend">
-      <view class="dot l0"></view><text>0</text>
-      <view class="dot l1"></view><text>1</text>
-      <view class="dot l2"></view><text>2</text>
-      <view class="dot l3"></view><text>3+</text>
+      <view class="legend-item"><view class="dot-sm l0"></view> 0</view>
+      <view class="legend-item"><view class="dot-sm l1"></view> 1</view>
+      <view class="legend-item"><view class="dot-sm l2"></view> 2</view>
+      <view class="legend-item"><view class="dot-sm l3"></view> 3+</view>
     </view>
   </view>
 
-  <view class="card fun-fact">
+  <!-- 趣闻 -->
+  <view class="fun-card fade-in-1" wx:if="{{funFact}}">
     <view class="fun-icon">🎯</view>
     <view class="fun-text">{{funFact}}</view>
   </view>
 
-  <view class="card">
+  <!-- 记录列表 -->
+  <view class="card fade-in-1">
     <view class="section-title">📋 全部记录</view>
-    <view wx:if="{{!list.length}}" class="empty">
-      <view class="empty-emoji">📅</view>
-      <view class="empty-text">坚持记录，这里会出现你的排便日历</view>
+
+    <view wx:if="{{!list.length}}" class="empty-state">
+      <view class="empty-icon">📅</view>
+      <view class="empty-text">还没有记录</view>
+      <view class="empty-hint">坚持记录，这里会出现你的排便日历</view>
     </view>
-    <view class="list-item" wx:for="{{list}}" wx:key="start">
-      <view class="item-left">
-        <view class="item-date">{{item.dateStr}}</view>
-        <view class="item-time">{{item.timeStr}}</view>
-      </view>
-      <view class="item-mid">
-        <view class="item-dur">⏱ {{item.min}}分{{item.sec}}秒</view>
-        <view class="item-note" wx:if="{{item.note}}">📝 {{item.note}}</view>
-      </view>
-      <view class="item-right">
-        <view class="item-type">{{item.typeIcon}} {{item.typeName}}</view>
+
+    <view class="record-list" wx:if="{{list.length}}">
+      <view class="record-item fade-in-1" wx:for="{{list}}" wx:key="start" style="animation-delay:{{index * 0.02}}s">
+        <view class="record-left">
+          <view class="record-date">{{item.dateStr}}</view>
+          <view class="record-time">{{item.timeStr}}</view>
+        </view>
+        <view class="record-mid">
+          <view class="record-type-badge">{{item.typeIcon}} {{item.typeName}}</view>
+          <view class="record-note" wx:if="{{item.note}}">📝 {{item.note}}</view>
+        </view>
+        <view class="record-right">
+          <view class="record-dur">⏱ {{item.min}}'{{item.sec}}"</view>
+        </view>
       </view>
     </view>
   </view>

@@ -1,49 +1,54 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <view class="card report-header">
-    <view class="report-title">📊 肠道健康周报</view>
+  <!-- 周报头部 -->
+  <view class="report-header fade-in">
+    <view class="report-icon">📊</view>
+    <view class="report-title">肠道健康周报</view>
     <view class="report-range">{{dateRange}}</view>
   </view>
 
-  <view class="card">
+  <!-- 概览 -->
+  <view class="card fade-in-1">
     <view class="section-title">📈 本周概览</view>
     <view class="overview-grid">
-      <view class="overview-item">
-        <view class="ov-num">{{summary.total}}</view>
+      <view class="ov-item">
+        <view class="ov-num accent">{{summary.total}}</view>
         <view class="ov-label">总次数</view>
       </view>
-      <view class="overview-item">
-        <view class="ov-num">{{summary.days}}</view>
+      <view class="ov-item">
+        <view class="ov-num accent2">{{summary.days}}</view>
         <view class="ov-label">打卡天数</view>
       </view>
-      <view class="overview-item">
-        <view class="ov-num">{{summary.avgPerDay}}</view>
+      <view class="ov-item">
+        <view class="ov-num accent3">{{summary.avgPerDay}}</view>
         <view class="ov-label">日均次数</view>
       </view>
-      <view class="overview-item">
-        <view class="ov-num">{{summary.avgMin}}分</view>
+      <view class="ov-item">
+        <view class="ov-num accent4">{{summary.avgMin}}<text class="ov-unit">分</text></view>
         <view class="ov-label">平均时长</view>
       </view>
     </view>
   </view>
 
-  <view class="card">
+  <!-- 每日趋势 -->
+  <view class="card fade-in-1">
     <view class="section-title">📊 每日趋势</view>
     <view class="bar-chart">
       <view class="bar-col" wx:for="{{bars}}" wx:key="day">
-        <view class="bar-val">{{item.count > 0 ? item.count : ''}}</view>
-        <view class="bar-fill" style="height:{{item.height}}px"></view>
+        <view class="bar-val" wx:if="{{item.count > 0}}">{{item.count}}</view>
+        <view class="bar-fill {{item.count >= 3 ? 'high' : item.count >= 2 ? 'mid' : ''}}" style="height:{{item.height}}px"></view>
         <view class="bar-label">{{item.day}}</view>
       </view>
     </view>
   </view>
 
-  <view class="card">
+  <!-- 类型分布 -->
+  <view class="card fade-in-1">
     <view class="section-title">🔬 类型分布</view>
-    <view class="type-dist">
-      <view class="type-item" wx:for="{{typeDist}}" wx:key="icon">
-        <view class="type-icon">{{item.icon}}</view>
-        <view class="type-bar-bg">
-          <view class="type-bar-fill" style="width:{{item.pct}}%"></view>
+    <view class="type-list" wx:if="{{typeDist.length}}">
+      <view class="type-row" wx:for="{{typeDist}}" wx:key="icon">
+        <view class="type-emoji">{{item.icon}}</view>
+        <view class="type-bar-wrap">
+          <view class="type-bar" style="width:{{item.pct}}%; background:{{item.color}}"></view>
         </view>
         <view class="type-pct">{{item.pct}}%</view>
       </view>
@@ -51,22 +56,24 @@
     <view class="type-empty" wx:if="{{!typeDist.length}}">本周无类型记录</view>
   </view>
 
-  <!-- Medical alerts -->
-  <view class="card alerts-card" wx:if="{{alerts.length}}">
-    <view class="section-title">🩺 健康提醒</view>
+  <!-- 健康提醒 -->
+  <view class="alerts-section fade-in-2" wx:if="{{alerts.length}}">
+    <view class="alerts-header">🩺 健康提醒</view>
     <view class="alert-item {{item.level}}" wx:for="{{alerts}}" wx:key="icon">
-      <view class="alert-icon">{{item.icon}}</view>
+      <view class="alert-dot {{item.level}}"></view>
       <view class="alert-text">{{item.text}}</view>
     </view>
   </view>
 
-  <view class="card advice-card">
-    <view class="advice-title">💊 本周建议</view>
+  <!-- 本周建议 -->
+  <view class="advice-card fade-in-2">
+    <view class="advice-header">💊 本周建议</view>
     <view class="advice-body">{{advice}}</view>
   </view>
 
-  <view class="share-actions">
+  <!-- 操作 -->
+  <view class="share-actions fade-in-3">
     <button class="btn-share" open-type="share">📤 分享周报</button>
-    <button class="btn-save-img" bindtap="saveImage">💾 保存图片</button>
+    <button class="btn-save" bindtap="saveImage">💾 保存图片</button>
   </view>
 </view>

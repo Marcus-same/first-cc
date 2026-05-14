@@ -1,11 +1,36 @@
-.container { min-height:100vh; padding-bottom:40rpx; }
-.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
-.setting-row { display:flex; align-items:center; justify-content:space-between; padding:20rpx 0; border-bottom:1rpx solid var(--border); }
-.setting-row:last-child { border-bottom:none; }
-.setting-label { font-size:30rpx; }
-.setting-val { font-size:28rpx; color:var(--sub); }
-.picker-val { color:var(--accent); }
-.arrow { font-size:36rpx; color:var(--sub); }
-.btn-small { background:var(--accent); color:#fff; border-radius:20rpx; padding:10rpx 24rpx; font-size:24rpx; border:none; }
-.btn-danger { background:#e07b5a; }
-.picker { }
+/* ========== 设置行 ========== */
+.setting-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:18rpx 0;
+}
+.setting-row.divider { border-bottom:1rpx solid var(--border-light); }
+.setting-label { font-size:28rpx; color:var(--text); }
+.setting-val {
+  display:flex; align-items:center; gap:6rpx;
+  font-size:28rpx; color:var(--sub); font-weight:500;
+}
+.val-arrow { font-size:32rpx; color:var(--sub2); }
+
+.danger-label { color:var(--accent2); font-weight:500; }
+.danger-val { color:var(--accent2); }
+
+/* ========== 导航行 ========== */
+.nav-row {
+  display:flex; align-items:center; gap:16rpx;
+  padding:20rpx 0; transition:background 0.15s;
+}
+.nav-row.divider { border-bottom:1rpx solid var(--border-light); }
+.row-hover { background:rgba(0,0,0,0.02); margin:0 -30rpx; padding-left:30rpx; padding-right:30rpx; }
+.theme-dark .row-hover { background:rgba(255,255,255,0.02); }
+.nav-icon { font-size:32rpx; width:44rpx; text-align:center; }
+.nav-label { font-size:28rpx; color:var(--text); flex:1; }
+.nav-arrow { font-size:32rpx; color:var(--sub2); }
+
+.version-tag {
+  background:var(--bg); padding:6rpx 18rpx; border-radius:var(--radius-sm);
+  font-size:24rpx; color:var(--sub2); font-family:'SF Mono','Courier New',monospace;
+}
+
+/* ========== Footer ========== */
+.settings-footer { text-align:center; padding:40rpx 0 60rpx; }
+.footer-text { font-size:24rpx; color:var(--sub2); }

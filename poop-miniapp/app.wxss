@@ -1,15 +1,152 @@
-page { --bg: #f5f5f0; --card: #fff; --text: #333; --sub: #888; --accent: #6b8e4e; --accent2: #e07b5a; --border: #e8e8e0; }
+/* ========== 全局设计令牌 ========== */
+page {
+  --bg: #f5f3ee;
+  --card: #fffef9;
+  --card2: #fafaf5;
+  --text: #2c2c2c;
+  --sub: #8c8c80;
+  --sub2: #b0b0a0;
+  --accent: #6b8e4e;
+  --accent-light: #8cba6a;
+  --accent2: #e07b5a;
+  --accent2-light: #f0a080;
+  --accent3: #5b9ecf;
+  --accent4: #c9a05a;
+  --border: #e8e6de;
+  --border-light: #f0eee8;
+  --shadow-sm: 0 1rpx 4rpx rgba(0,0,0,0.04);
+  --shadow-md: 0 4rpx 20rpx rgba(0,0,0,0.06);
+  --shadow-lg: 0 8rpx 40rpx rgba(0,0,0,0.08);
+  --radius-sm: 10rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 24rpx;
+  --radius-full: 50rpx;
+  /* Bristol type colors */
+  --b1: #8b6914;
+  --b2: #a08050;
+  --b3: #c9a05a;
+  --b4: #6b8e4e;
+  --b5: #8cba6a;
+  --b6: #d4956a;
+  --b7: #e07b5a;
+}
 
-.theme-dark { --bg: #1a1a2e; --card: #252540; --text: #ddd; --sub: #999; --accent: #8bc34a; --accent2: #ff8a65; --border: #333; }
+.theme-dark {
+  --bg: #1a1b1f;
+  --card: #24252a;
+  --card2: #2a2b30;
+  --text: #e4e4e0;
+  --sub: #9c9c94;
+  --sub2: #6c6c64;
+  --accent: #8bc34a;
+  --accent-light: #a5d66e;
+  --accent2: #ff8a65;
+  --accent2-light: #ffab8a;
+  --accent3: #64b5f6;
+  --accent4: #d4a84a;
+  --border: #363840;
+  --border-light: #2e3038;
+  --shadow-sm: 0 1rpx 4rpx rgba(0,0,0,0.2);
+  --shadow-md: 0 4rpx 20rpx rgba(0,0,0,0.3);
+  --shadow-lg: 0 8rpx 40rpx rgba(0,0,0,0.35);
+  --b1: #c9a84a;
+  --b2: #c0a060;
+  --b3: #d4b06a;
+  --b4: #8bc34a;
+  --b5: #a5d66e;
+  --b6: #e0a06a;
+  --b7: #ff8a65;
+}
 
-page { background:var(--bg); color:var(--text); font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif; }
+/* ========== 全局基底 ========== */
+page {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
 
-.card { background:var(--card); border-radius:16rpx; padding:30rpx; margin:20rpx; box-shadow:0 2rpx 16rpx rgba(0,0,0,0.06); }
+/* ========== 卡片体系 ========== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 28rpx 30rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.3s, box-shadow 0.3s;
+}
 
-.btn-primary { background:var(--accent); color:#fff; border-radius:40rpx; padding:18rpx 50rpx; font-size:30rpx; border:none; }
+.card-highlight {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 28rpx 30rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: var(--shadow-md);
+  border-left: 6rpx solid var(--accent);
+}
 
-.btn-secondary { background:var(--card); color:var(--accent); border:2rpx solid var(--accent); border-radius:40rpx; padding:18rpx 50rpx; font-size:30rpx; }
+.card-warn {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 28rpx 30rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: var(--shadow-sm);
+  border-left: 6rpx solid var(--accent2);
+}
 
-button[disabled] { opacity:0.4; }
+/* ========== 按钮体系 ========== */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 18rpx 50rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  border: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.btn-primary:active { transform: scale(0.96); opacity: 0.9; }
 
-.container { padding:20rpx 0; }
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 2rpx solid var(--accent);
+  border-radius: var(--radius-full);
+  padding: 18rpx 50rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  transition: transform 0.15s, background 0.15s;
+}
+.btn-secondary:active { transform: scale(0.96); background: rgba(107,142,78,0.08); }
+
+button[disabled] { opacity: 0.35; pointer-events: none; }
+
+/* ========== 通用布局 ========== */
+.container { padding: 12rpx 0 60rpx; }
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  color: var(--text);
+}
+
+/* ========== 可点击行反馈 ========== */
+.tappable-row {
+  transition: background 0.15s;
+  border-radius: var(--radius-sm);
+}
+.tappable-row:active { background: rgba(0,0,0,0.03); }
+.theme-dark .tappable-row:active { background: rgba(255,255,255,0.04); }
+
+/* ========== 淡入动画 ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.4s ease-out; }
+.fade-in-1 { animation: fadeInUp 0.4s ease-out 0.05s both; }
+.fade-in-2 { animation: fadeInUp 0.4s ease-out 0.1s both; }
+.fade-in-3 { animation: fadeInUp 0.4s ease-out 0.15s both; }

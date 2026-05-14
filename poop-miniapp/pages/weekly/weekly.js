@@ -49,9 +49,10 @@ Page({
     allSessions.forEach(s => {
       if (s.type) typeCount[s.type] = (typeCount[s.type] || 0) + 1;
     });
+    const TYPE_COLORS = { 1: '#8b6914', 2: '#a08050', 3: '#c9a05a', 4: '#6b8e4e', 5: '#8cba6a', 6: '#d4956a', 7: '#e07b5a' };
     const typeDist = Object.entries(typeCount).map(([type, cnt]) => {
       const b = BRISTOL.find(x => x.type === parseInt(type));
-      return { icon: b ? b.icon : '❓', pct: Math.round(cnt / total * 100) };
+      return { icon: b ? b.icon : '❓', pct: Math.round(cnt / total * 100), color: TYPE_COLORS[type] || '#999' };
     }).sort((a, b) => b.pct - a.pct);
 
     // Advice

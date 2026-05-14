@@ -1,23 +1,94 @@
-.container { min-height:100vh; padding-bottom:40rpx; }
-.header { display:flex; align-items:center; gap:24rpx; padding:36rpx; }
-.header-icon { font-size:72rpx; }
-.header-title { font-size:36rpx; font-weight:bold; }
-.header-time { font-size:28rpx; color:var(--sub); margin-top:4rpx; }
-.section-title { font-size:30rpx; font-weight:bold; margin-bottom:20rpx; }
-.bristol-grid { display:flex; flex-direction:column; gap:12rpx; }
-.bristol-item { display:flex; align-items:center; gap:16rpx; padding:20rpx 16rpx; border-radius:12rpx; border:2rpx solid var(--border); transition:.2s; }
-.bristol-item.selected { border-color:var(--accent); background:rgba(107,142,78,0.08); }
-.bristol-icon { font-size:44rpx; width:60rpx; text-align:center; }
-.bristol-name { font-size:28rpx; font-weight:bold; min-width:220rpx; }
-.bristol-desc { font-size:24rpx; color:var(--sub); flex:1; text-align:right; }
-.advice { display:flex; gap:16rpx; }
-.advice-icon { font-size:40rpx; }
-.advice-text { font-size:28rpx; color:var(--sub); line-height:1.7; }
-.save-row { display:flex; gap:20rpx; padding:20rpx; }
-.btn-skip { flex:1; background:var(--card); color:var(--sub); border-radius:40rpx; padding:20rpx; font-size:30rpx; border:none; }
-.btn-save { flex:2; background:var(--accent); color:#fff; border-radius:40rpx; padding:20rpx; font-size:30rpx; border:none; }
-.note-input { width:100%; min-height:120rpx; font-size:28rpx; color:var(--text); padding:12rpx 0; }
-.note-placeholder { color:#bbb; }
+/* ========== 完成头部 ========== */
+.done-header {
+  display:flex; align-items:center; gap:24rpx;
+  padding:32rpx 36rpx; margin:16rpx 20rpx;
+  background:linear-gradient(135deg, #f0f7e8, #e8f4dc);
+  border-radius:var(--radius-lg);
+}
+.theme-dark .done-header {
+  background:linear-gradient(135deg, #1e2818, #1a2418);
+}
+.done-icon { font-size:56rpx; }
+.done-title { font-size:34rpx; font-weight:700; color:var(--text); }
+.done-time { font-size:26rpx; color:var(--sub); margin-top:4rpx; }
+
+/* ========== Bristol 双列网格 ========== */
+.bristol-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:14rpx;
+}
+.bristol-cell {
+  position:relative;
+  padding:20rpx 16rpx 16rpx; border-radius:var(--radius-md);
+  border:2rpx solid var(--border-light);
+  text-align:center;
+  transition:all 0.2s;
+  background:var(--card2);
+}
+.bristol-cell.selected {
+  border-color:var(--accent);
+  background:rgba(107,142,78,0.06);
+  box-shadow:0 0 0 4rpx rgba(107,142,78,0.06);
+}
+.theme-dark .bristol-cell.selected {
+  background:rgba(139,195,74,0.08);
+  box-shadow:0 0 0 4rpx rgba(139,195,74,0.06);
+}
+.bristol-emoji { font-size:48rpx; margin-bottom:8rpx; }
+.bristol-name { font-size:26rpx; font-weight:600; color:var(--text); margin-bottom:4rpx; }
+.bristol-desc { font-size:20rpx; color:var(--sub2); line-height:1.4; }
+.bristol-check {
+  position:absolute; top:-8rpx; right:-8rpx;
+  width:36rpx; height:36rpx; border-radius:50%;
+  background:var(--accent); color:#fff; font-size:22rpx;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:bold;
+}
+
+/* ========== 建议卡片 ========== */
+.advice-card {
+  display:flex; gap:16rpx; align-items:flex-start;
+  margin:0 20rpx 16rpx; padding:20rpx 24rpx;
+  background:rgba(107,142,78,0.05); border-radius:var(--radius-md);
+  border-left:4rpx solid var(--accent);
+}
+.advice-dot { width:8rpx; height:8rpx; border-radius:50%; background:var(--accent); margin-top:14rpx; flex-shrink:0; }
+.advice-text { font-size:26rpx; color:var(--sub); line-height:1.8; flex:1; }
+
+/* ========== 备注 ========== */
+.optional { font-size:24rpx; color:var(--sub2); font-weight:400; }
+.note-input {
+  width:100%; min-height:120rpx; font-size:28rpx; color:var(--text);
+  padding:16rpx; border-radius:var(--radius-sm);
+  background:var(--bg); border:1rpx solid var(--border-light);
+}
+.note-counter { text-align:right; font-size:22rpx; color:var(--sub2); margin-top:8rpx; }
+
+/* ========== 位置设置 ========== */
 .setting-row { display:flex; justify-content:space-between; align-items:center; }
+.setting-left { display:flex; align-items:center; gap:14rpx; }
+.setting-icon { font-size:36rpx; }
 .setting-label { font-size:28rpx; color:var(--text); }
-.location-info { font-size:24rpx; color:var(--accent); margin-top:12rpx; }
+.location-detail {
+  display:flex; align-items:center; gap:10rpx;
+  margin-top:14rpx; padding:14rpx 18rpx;
+  background:rgba(107,142,78,0.06); border-radius:var(--radius-sm);
+  font-size:26rpx; color:var(--accent);
+}
+.location-detail.dim { color:var(--sub2); }
+.loc-dot { width:10rpx; height:10rpx; border-radius:50%; background:var(--accent); }
+
+/* ========== 按钮 ========== */
+.save-row { display:flex; gap:20rpx; padding:8rpx 20rpx 40rpx; }
+.btn-skip {
+  flex:1; background:var(--card); color:var(--sub); border-radius:var(--radius-full);
+  padding:22rpx; font-size:30rpx; border:1rpx solid var(--border);
+  transition:all 0.15s;
+}
+.btn-skip:active { background:var(--border-light); }
+.btn-save {
+  flex:2; background:var(--accent); color:#fff; border-radius:var(--radius-full);
+  padding:22rpx; font-size:30rpx; font-weight:600; border:none;
+  box-shadow:0 4rpx 16rpx rgba(107,142,78,0.25);
+  transition:all 0.15s;
+}
+.btn-save:active { transform:scale(0.97); box-shadow:0 2rpx 8rpx rgba(107,142,78,0.2); }

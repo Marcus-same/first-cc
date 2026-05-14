@@ -1,6 +1,6 @@
 const { TIPS } = require('../../utils/health-tips');
 const store = require('../../utils/store');
-const { getFortune, getMilestone, celebrate } = require('../../utils/fun');
+const { getFortune, getMilestone, celebrate, getDailyChallenge } = require('../../utils/fun');
 const app = getApp();
 
 Page({
@@ -8,12 +8,12 @@ Page({
     dark: false, timeStr: '00:00', running: false, elapsed: 0,
     runTip: '', warnSec: 600, warnMin: 10, warned: false, warnEnabled: true,
     statItems: [
-      { key: 'count', val: 0, label: '今日次数' },
-      { key: 'totalMin', val: 0, label: '总时长(分)' },
-      { key: 'best', val: '--', label: '最短' },
-      { key: 'avg', val: '--', label: '平均' },
+      { key: 'count', val: 0, label: '今日次数', icon: '🧻' },
+      { key: 'totalMin', val: 0, label: '总时长(分)', icon: '⏱️' },
+      { key: 'best', val: '--', label: '最短', icon: '⚡' },
+      { key: 'avg', val: '--', label: '平均', icon: '📊' },
     ],
-    streak: 0, dailyTip: '', fortune: null, isEmpty: true
+    streak: 0, dailyTip: '', fortune: null, challenge: null, isEmpty: true
   },
   timerId: null, startTime: 0,
 
@@ -25,6 +25,7 @@ Page({
     this.loadStats();
     this.loadStreak();
     this.loadFortune();
+    this.loadChallenge();
     this.setData({ dailyTip: TIPS[Math.floor(Math.random() * TIPS.length)] });
 
     // Timer recovery: check if there's an unfinished timer from last session
@@ -66,10 +67,10 @@ Page({
       this.setData({
         isEmpty: true,
         statItems: [
-          { key: 'count', val: 0, label: '今日次数' },
-          { key: 'totalMin', val: 0, label: '总时长(分)' },
-          { key: 'best', val: '--', label: '最短' },
-          { key: 'avg', val: '--', label: '平均' },
+          { key: 'count', val: 0, label: '今日次数', icon: '🧻' },
+          { key: 'totalMin', val: 0, label: '总时长(分)', icon: '⏱️' },
+          { key: 'best', val: '--', label: '最短', icon: '⚡' },
+          { key: 'avg', val: '--', label: '平均', icon: '📊' },
         ]
       });
       return;
@@ -79,10 +80,10 @@ Page({
     const times = s.map(x => Math.floor(x.duration / 60));
     this.setData({
       statItems: [
-        { key: 'count', val: s.length, label: '今日次数' },
-        { key: 'totalMin', val: Math.floor(totalSec / 60), label: '总时长(分)' },
-        { key: 'best', val: Math.min(...times) + '分', label: '最短' },
-        { key: 'avg', val: Math.round(totalSec / s.length / 60) + '分', label: '平均' },
+        { key: 'count', val: s.length, label: '今日次数', icon: '🧻' },
+        { key: 'totalMin', val: Math.floor(totalSec / 60), label: '总时长(分)', icon: '⏱️' },
+        { key: 'best', val: Math.min(...times) + '分', label: '最短', icon: '⚡' },
+        { key: 'avg', val: Math.round(totalSec / s.length / 60) + '分', label: '平均', icon: '📊' },
       ]
     });
   },
@@ -96,6 +97,10 @@ Page({
 
   loadFortune() {
     this.setData({ fortune: getFortune() });
+  },
+
+  loadChallenge() {
+    this.setData({ challenge: getDailyChallenge() });
   },
 
   onStart() {

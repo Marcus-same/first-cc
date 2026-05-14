@@ -1,61 +1,98 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <!-- My code card -->
-  <view class="card code-card">
-    <view class="section-title">🔑 我的邀请码</view>
-    <view class="code-display">{{myCode}}</view>
+  <!-- 我的邀请码 -->
+  <view class="code-card fade-in">
+    <view class="code-label">🔑 我的邀请码</view>
+    <view class="code-row">
+      <text class="code-char" wx:for="{{myCodeChars}}" wx:key="*this">{{item}}</text>
+    </view>
     <view class="code-actions">
-      <button class="btn-share" open-type="share">📤 邀请好友</button>
-      <button class="btn-outline" bindtap="shareStats">📊 分享我的数据</button>
-      <button class="btn-outline" bindtap="importFriendStats">📥 导入好友数据</button>
+      <button class="btn-invite" open-type="share">📤 邀请好友</button>
+      <button class="btn-data" bindtap="shareStats">📊 分享数据</button>
     </view>
   </view>
 
-  <!-- Add friend -->
-  <view class="card">
-    <view class="section-title" bindtap="toggleAdd">
+  <!-- 添加好友 -->
+  <view class="card fade-in-1">
+    <view class="section-title tappable" bindtap="toggleAdd">
       {{showAdd ? '✖️ 取消添加' : '➕ 添加好友'}}
     </view>
     <view wx:if="{{showAdd}}" class="add-form">
-      <input class="add-input" placeholder="输入好友的4位邀请码" value="{{inputCode}}" bindinput="onCodeInput" maxlength="4" />
-      <input class="add-input" placeholder="给好友起个备注名（选填）" value="{{inputName}}" bindinput="onNameInput" maxlength="10" />
-      <button class="btn-add" bindtap="addFriend">确认添加</button>
+      <view class="input-wrap">
+        <view class="input-prefix">#</view>
+        <input class="add-input" placeholder="输入好友的4位邀请码" value="{{inputCode}}" bindinput="onCodeInput" maxlength="4" />
+      </view>
+      <view class="input-wrap">
+        <view class="input-prefix">✏️</view>
+        <input class="add-input" placeholder="给好友起个备注名（选填）" value="{{inputName}}" bindinput="onNameInput" maxlength="10" />
+      </view>
+      <button class="btn-add-friend" bindtap="addFriend">确认添加</button>
     </view>
   </view>
 
-  <!-- Friend list -->
-  <view class="card" wx:if="{{friends.length}}">
-    <view class="section-title">👥 我的好友 ({{friendCount}})</view>
-    <view class="friend-item" wx:for="{{friends}}" wx:key="code">
+  <!-- 好友列表 -->
+  <view class="card fade-in-1" wx:if="{{friends.length}}">
+    <view class="section-title">👥 我的好友 <text class="count-badge">{{friendCount}}</text></view>
+    <view class="friend-item" wx:for="{{friends}}" wx:key="code" bindtap="pkFriend" data-idx="{{index}}" data-name="{{item.name}}" data-code="{{item.code}}">
+      <view class="friend-avatar">{{item.name[0]}}</view>
       <view class="friend-info">
         <view class="friend-name">{{item.name}}</view>
-        <view class="friend-code">邀请码：{{item.code}}</view>
-        <view class="friend-stats" wx:if="{{item.stats}}">
-          连续 {{item.stats.streak}} 天 · 本周 {{item.stats.weekCount}} 次
-        </view>
-        <view class="friend-stats dim" wx:if="{{!item.stats}}">
-          等待好友分享数据…
+        <view class="friend-code">#{{item.code}}</view>
+        <view class="friend-stats {{item.stats ? '' : 'dim'}}">
+          {{item.stats ? '🔥' + item.stats.streak + '天 · 📝' + item.stats.weekCount + '次' : '等待好友分享数据…'}}
         </view>
       </view>
+      <view class="friend-arrow">›</view>
     </view>
   </view>
 
-  <!-- Empty state -->
-  <view class="card empty-friends" wx:if="{{!friends.length}}">
+  <!-- 空好友 -->
+  <view class="empty-friends card fade-in-1" wx:if="{{!friends.length}}">
     <view class="empty-icon">👥</view>
     <view class="empty-text">还没有好友</view>
-    <view class="empty-sub">点击上方「添加好友」输入邀请码<br/>或者「邀请好友」分享你的邀请码</view>
+    <view class="empty-sub">分享你的邀请码给好友<br/>或输入好友的邀请码添加</view>
   </view>
 
-  <!-- Leaderboard -->
-  <view class="card" wx:if="{{leaderboard.length > 1}}">
+  <!-- PK 弹窗 -->
+  <view class="pk-overlay" wx:if="{{showPK}}" catchtap="closePK">
+    <view class="pk-modal" catchtap="">
+      <view class="pk-title">⚔️ 好友 PK</view>
+      <view class="pk-vs-row">
+        <view class="pk-me">
+          <view class="pk-avatar me">⭐</view>
+          <view class="pk-name">我</view>
+        </view>
+        <view class="pk-vs">VS</view>
+        <view class="pk-friend">
+          <view class="pk-avatar friend">{{pkFriendName[0]}}</view>
+          <view class="pk-name">{{pkFriendName}}</view>
+        </view>
+      </view>
+      <view class="pk-winner">{{pkWinnerText}}</view>
+      <view class="pk-items">
+        <view class="pk-row" wx:for="{{pkItems}}" wx:key="label">
+          <view class="pk-val me {{item.meWin ? 'win' : ''}}">{{item.me}}</view>
+          <view class="pk-icon">{{item.icon}}</view>
+          <view class="pk-label">{{item.label}}</view>
+          <view class="pk-val friend {{item.friendWin ? 'win' : ''}}">{{item.friend}}</view>
+        </view>
+      </view>
+      <view class="pk-close-btn" bindtap="closePK">关闭</view>
+    </view>
+  </view>
+
+  <!-- 排行榜 -->
+  <view class="card fade-in-2" wx:if="{{leaderboard.length > 1}}">
     <view class="section-title">🏆 战队排行榜</view>
-    <view class="lb-item {{item.isMe ? 'me' : ''}}" wx:for="{{leaderboard}}" wx:key="name">
-      <view class="lb-rank">{{index + 1}}</view>
-      <view class="lb-name">{{item.isMe ? '⭐ 我' : item.name}}</view>
+    <view class="lb-item {{item.isMe ? 'is-me' : ''}}" wx:for="{{leaderboard}}" wx:key="name">
+      <view class="lb-rank {{index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : ''}}">
+        {{index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}}
+      </view>
+      <view class="lb-avatar">{{item.isMe ? '⭐' : item.name[0]}}</view>
+      <view class="lb-name">{{item.isMe ? '我' : item.name}}</view>
       <view class="lb-stats">
-        <text class="lb-stat">🔥{{item.streak}}天</text>
-        <text class="lb-stat">📝{{item.weekCount}}次</text>
-        <text class="lb-stat">⏱{{item.totalMin}}分</text>
+        <text class="lb-badge">🔥{{item.streak}}天</text>
+        <text class="lb-badge">📝{{item.weekCount}}次</text>
+        <text class="lb-badge">⏱{{item.totalMin}}分</text>
       </view>
     </view>
   </view>

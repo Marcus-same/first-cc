@@ -1,52 +1,72 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
-  <view class="card header">
-    <view class="header-icon">🧻</view>
-    <view class="header-text">
-      <view class="header-title">记录完成！</view>
-      <view class="header-time">用时 {{min}}分{{sec}}秒</view>
+  <!-- 完成头部 -->
+  <view class="done-header fade-in">
+    <view class="done-icon">✅</view>
+    <view class="done-info">
+      <view class="done-title">记录完成！</view>
+      <view class="done-time">⏱ 用时 {{min}}分{{sec}}秒</view>
     </view>
   </view>
 
-  <view class="card">
-    <view class="section-title">选择布里斯托类型</view>
+  <!-- 布里斯托类型选择 -->
+  <view class="card fade-in-1">
+    <view class="section-title">🥑 选择布里斯托类型</view>
     <view class="bristol-grid">
-      <view class="bristol-item {{selectedType === item.type ? 'selected' : ''}}"
-        wx:for="{{bristol}}" wx:key="type" bindtap="selectType" data-type="{{item.type}}">
-        <view class="bristol-icon">{{item.icon}}</view>
+      <view
+        class="bristol-cell {{selectedType === item.type ? 'selected' : ''}}"
+        wx:for="{{bristol}}" wx:key="type"
+        bindtap="selectType" data-type="{{item.type}}"
+      >
+        <view class="bristol-emoji">{{item.icon}}</view>
         <view class="bristol-name">{{item.name}}</view>
         <view class="bristol-desc">{{item.desc}}</view>
+        <view class="bristol-check" wx:if="{{selectedType === item.type}}">✓</view>
       </view>
     </view>
   </view>
 
-  <view class="card" wx:if="{{selectedType}}">
-    <view class="advice">
-      <view class="advice-icon">💊</view>
-      <view class="advice-text">{{advice}}</view>
-    </view>
+  <!-- 类型建议 -->
+  <view class="advice-card fade-in-1" wx:if="{{selectedType}}">
+    <view class="advice-dot"></view>
+    <view class="advice-text">{{advice}}</view>
   </view>
 
-  <!-- Note input -->
-  <view class="card">
-    <view class="section-title">📝 备注（可选）</view>
-    <textarea class="note-input" placeholder="吃了什么？身体感受？"
-      value="{{note}}" bindinput="onNoteInput" maxlength="200"
-      placeholder-class="note-placeholder" />
+  <!-- 备注 -->
+  <view class="card fade-in-2">
+    <view class="section-title">📝 备注 <text class="optional">(选填)</text></view>
+    <textarea
+      class="note-input"
+      placeholder="吃了什么？身体感受？"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      maxlength="200"
+    />
+    <view class="note-counter">{{note.length}}/200</view>
   </view>
 
-  <!-- Location toggle -->
-  <view class="card">
+  <!-- 位置 -->
+  <view class="card fade-in-2">
     <view class="setting-row">
-      <view class="setting-label">📍 记录位置</view>
+      <view class="setting-left">
+        <view class="setting-icon">📍</view>
+        <view class="setting-label">记录位置</view>
+      </view>
       <switch checked="{{recordLocation}}" bindchange="toggleLocation" color="#6b8e4e" />
     </view>
-    <view class="location-info" wx:if="{{recordLocation && locationName}}">
-      已定位：{{locationName}}
+    <view class="location-detail" wx:if="{{recordLocation && locationName}}">
+      <view class="loc-dot"></view>
+      {{locationName}}
+    </view>
+    <view class="location-detail dim" wx:if="{{recordLocation && !locationName}}">
+      正在获取位置…
     </view>
   </view>
 
-  <view class="save-row">
+  <!-- 按钮 -->
+  <view class="save-row fade-in-3">
     <button class="btn-skip" bindtap="skip">跳过</button>
-    <button class="btn-save" bindtap="save" disabled="{{!selectedType}}">保存记录</button>
+    <button class="btn-save" bindtap="save" disabled="{{!selectedType}}">
+      保存记录
+    </button>
   </view>
 </view>
