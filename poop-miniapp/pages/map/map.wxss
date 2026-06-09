@@ -12,23 +12,38 @@
 .stat-num { font-size:36rpx; font-weight:bold; color:var(--accent); }
 .stat-label { font-size:22rpx; color:var(--sub); margin-top:4rpx; }
 
-.empty-hint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; background:rgba(255,255,255,0.95); border-radius:24rpx; padding:60rpx 40rpx; z-index:5; width:calc(100% - 80rpx); max-width:520rpx; box-shadow:0 8rpx 40rpx rgba(0,0,0,0.12); }
+.empty-hint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; background:rgba(255,255,255,0.95); border-radius:24rpx; padding:48rpx 40rpx; z-index:5; width:calc(100% - 80rpx); max-width:520rpx; box-shadow:0 8rpx 40rpx rgba(0,0,0,0.12); }
 .theme-dark .empty-hint { background:rgba(30,30,50,0.95); }
 .hint-icon { font-size:100rpx; margin-bottom:20rpx; }
 .hint-text { font-size:32rpx; color:var(--text); margin-bottom:12rpx; }
 .hint-sub { font-size:26rpx; color:var(--sub); line-height:1.6; }
 
-/* ========== 噗友入口 ========== */
-.squad-entry {
-  position:absolute; bottom:200rpx; left:20rpx; right:20rpx;
-  display:flex; align-items:center; gap:12rpx;
-  background:rgba(255,255,255,0.93); backdrop-filter:blur(10px);
-  border-radius:var(--radius-md); padding:22rpx 24rpx;
-  z-index:10; box-shadow:var(--shadow-sm);
-  transition:all 0.15s;
+/* ========== 底部操作栏：噗友 + 邀请 ========== */
+.map-bottom-bar {
+  position:absolute; bottom:140rpx; left:20rpx; right:20rpx;
+  display:flex; align-items:center;
+  background:rgba(255,255,255,0.94); backdrop-filter:blur(14px);
+  border-radius:var(--radius-full); padding:6rpx;
+  z-index:10;
+  box-shadow: 0 8rpx 32rpx rgba(74,124,89,0.14);
+  border: 1rpx solid rgba(74,124,89,0.10);
+  animation: bounceInUp 0.5s var(--ease-spring);
 }
-.theme-dark .squad-entry { background:rgba(30,30,50,0.93); }
-.squad-entry-hover { transform:translateY(2rpx); box-shadow:var(--shadow-md); }
-.squad-entry-icon { font-size:36rpx; width:44rpx; text-align:center; }
-.squad-entry-label { font-size:28rpx; color:var(--text); font-weight:500; flex:1; }
-.squad-entry-arrow { font-size:32rpx; color:var(--sub2); }
+.theme-dark .map-bottom-bar { background:rgba(30,35,40,0.94); border-color: rgba(74,124,89,0.16); }
+.map-bottom-action {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:10rpx;
+  padding:18rpx 12rpx; border-radius:var(--radius-full);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+.map-bottom-action-hover { background:rgba(74,124,89,0.06); transform: scale(0.97); }
+.map-share-btn {
+  background:transparent; border:none; margin:0; padding:0; line-height:inherit; font-size:inherit;
+  display:flex; align-items:center; justify-content:center; gap:10rpx;
+  padding:18rpx 12rpx; border-radius:var(--radius-full);
+  flex:1;
+}
+.map-share-btn::after { border:none; }
+.mba-icon { font-size:34rpx; }
+.mba-label { font-size:26rpx; font-weight:600; color:var(--text); }
+.mba-arrow { font-size:28rpx; color:var(--sub2); }
+.mba-divider { width:1rpx; height:32rpx; background:var(--border-light); flex-shrink:0; }

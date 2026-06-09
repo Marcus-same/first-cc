@@ -133,5 +133,14 @@ Page({
     // Marker tap handled by callout naturally
   },
 
-  goSquad() { wx.navigateTo({ url: '/pages/squad/squad' }); }
+  goSquad() { wx.navigateTo({ url: '/pages/squad/squad' }); },
+
+  onShareAppMessage() {
+    const myCode = store.getMyCode();
+    return {
+      title: '来看我的噗噗地图！加入一起打卡吧 🗺️',
+      path: `/pages/map/map?invite=${myCode}`,
+      imageUrl: ''
+    };
+  }
 });

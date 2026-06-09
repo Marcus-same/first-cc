@@ -28,6 +28,23 @@ Page({
 
   onShow() {
     this.refresh();
+    // app.js 已全局处理邀请，此处仅作安全兜底
+    this._checkPendingInvite();
+  },
+
+  // 安全兜底：检查是否还有未处理的邀请（app.js 应已处理）
+  _checkPendingInvite() {
+    const pendingCode = wx.getStorageSync('_pending_invite');
+    if (!pendingCode) return;
+    wx.removeStorageSync('_pending_invite');
+    const myCode = store.getMyCode();
+    if (pendingCode === myCode || store.getFriends()[pendingCode]) {
+      this.refresh();
+      return;
+    }
+    store.addFriend(pendingCode, '噗友' + pendingCode);
+    wx.showToast({ title: '已添加噗友！', icon: 'success' });
+    this.refresh();
   },
 
   refresh() {
@@ -137,7 +154,8 @@ Page({
   onShareAppMessage() {
     return {
       title: `加入我的噗友战队！邀请码：${this.data.myCode}`,
-      path: `/pages/index/index?invite=${this.data.myCode}`,
+      path: `/pages/squad/squad?invite=${this.data.myCode}`,
+      imageUrl: ''
     };
   },
 

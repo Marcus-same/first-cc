@@ -14,6 +14,12 @@ App({
       : saved.darkMode === 'dark';
     this.globalData.darkMode = dark;
 
+    // Enable share menu globally (转发按钮)
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
+
     // First-launch onboarding
     try {
       const onboarded = wx.getStorageSync('_onboarded');
@@ -30,8 +36,7 @@ App({
     if (options.query) {
       const q = options.query;
       if (q.invite) {
-        // Store pending invite code for squad page
-        wx.setStorageSync('_pending_invite', q.invite);
+        this._handleInvite(q.invite);
       }
       if (q.stats) {
         try {
@@ -51,9 +56,35 @@ App({
     if (options && options.query) {
       const q = options.query;
       if (q.invite) {
-        wx.setStorageSync('_pending_invite', q.invite);
+        this._handleInvite(q.invite);
       }
     }
+    // Also process any pending invite stored from earlier
+    this._processPendingInvite();
+  },
+
+  // 一键添加好友：处理邀请链接中的邀请码
+  _handleInvite(code) {
+    const myCode = store.getMyCode();
+    if (code === myCode) {
+      wx.showToast({ title: '这是你自己的邀请码', icon: 'none' });
+      return;
+    }
+    const existing = store.getFriends();
+    if (existing[code]) {
+      wx.showToast({ title: '该好友已在列表中', icon: 'none' });
+      return;
+    }
+    store.addFriend(code, '噗友' + code);
+    wx.showToast({ title: '已添加噗友！', icon: 'success' });
+  },
+
+  // 处理旧版遗留的 _pending_invite（兼容）
+  _processPendingInvite() {
+    const pendingCode = wx.getStorageSync('_pending_invite');
+    if (!pendingCode) return;
+    wx.removeStorageSync('_pending_invite');
+    this._handleInvite(pendingCode);
   },
 
   getDarkMode() { return this.globalData.darkMode; },

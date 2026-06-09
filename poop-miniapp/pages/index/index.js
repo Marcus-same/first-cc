@@ -64,9 +64,12 @@ Page({
   loadStats() {
     const today = store.getToday();
     const s = today.sessions;
+    // 用永久标记判断，数据清除后也不会重新出现新手引导
+    const hasHistory = !!wx.getStorageSync('_has_ever_recorded');
     if (!s.length) {
       this.setData({
         isEmpty: true,
+        hasHistory,  // 有过记录 → 不显示"准备好开始记录了么"
         statItems: [
           { key: 'count', val: 0, label: '今日次数', icon: '🧻' },
           { key: 'totalMin', val: 0, label: '总时长(分)', icon: '⏱️' },
@@ -128,5 +131,14 @@ Page({
     wx.navigateTo({ url: '/pages/history/history' });
   },
   goAchievements() { wx.navigateTo({ url: '/pages/achievements/achievements' }); },
-  goPersonality() { wx.navigateTo({ url: '/pages/personality/personality' }); }
+  goPersonality() { wx.navigateTo({ url: '/pages/personality/personality' }); },
+
+  onShareAppMessage() {
+    const myCode = store.getMyCode();
+    return {
+      title: '噗噗日记 — 记录肠道健康，和朋友一起打卡！',
+      path: `/pages/index/index?invite=${myCode}`,
+      imageUrl: '' // 可替换为分享卡片图
+    };
+  }
 });

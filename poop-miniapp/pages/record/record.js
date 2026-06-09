@@ -69,6 +69,8 @@ Page({
       if (this.data.locationName) session.location.name = this.data.locationName;
     }
     store.addSession(session);
+    // 永久标记：用户已记录过，首页不再显示"准备好开始记录了么"
+    wx.setStorageSync('_has_ever_recorded', true);
     wx.removeStorageSync('_last_session');
     wx.removeStorageSync('_timer_state');
 

@@ -40,10 +40,17 @@
     <view class="hint-sub">记录时打开「记录位置」开关，<br/>这里就会出现你的噗噗地图</view>
   </view>
 
-  <!-- 我的噗友 -->
-  <view class="squad-entry" bindtap="goSquad" hover-class="squad-entry-hover">
-    <view class="squad-entry-icon">👥</view>
-    <view class="squad-entry-label">我的噗友</view>
-    <view class="squad-entry-arrow">›</view>
+  <!-- 底部操作栏：噗友 + 邀请 -->
+  <view class="map-bottom-bar">
+    <view class="map-bottom-action" bindtap="goSquad" hover-class="map-bottom-action-hover">
+      <view class="mba-icon">👥</view>
+      <view class="mba-label">噗友</view>
+      <view class="mba-arrow">›</view>
+    </view>
+    <view class="mba-divider"></view>
+    <button class="map-bottom-action map-share-btn" open-type="share" hover-class="map-bottom-action-hover">
+      <view class="mba-icon">📤</view>
+      <view class="mba-label">邀请好友</view>
+    </button>
   </view>
 </view>
