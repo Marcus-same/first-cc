@@ -1,75 +1,125 @@
 /* ========== 邀请码卡片 ========== */
 .code-card {
-  text-align:center; margin:16rpx 20rpx; padding:36rpx 30rpx;
-  background:linear-gradient(135deg, #fafff5, #f0fae8, #f5fff0);
-  border-radius:var(--radius-lg); box-shadow:var(--shadow-md);
-  border:1rpx solid rgba(126,200,80,0.06);
+  text-align:center; margin:20rpx 22rpx; padding:40rpx 34rpx;
+  background: var(--card);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+  border: 1rpx solid var(--border-light);
+  border-top: 3rpx solid var(--accent);
+  animation: bounceInUp 0.55s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+.code-card::before {
+  content: '';
+  position: absolute;
+  top: -60%; right: -30%;
+  width: 220rpx; height: 220rpx;
+  background: radial-gradient(circle, rgba(74,124,89,0.06) 0%, transparent 65%);
+  pointer-events: none;
 }
 .theme-dark .code-card {
-  background:linear-gradient(135deg, #1e2418, #1a2016, #1e2218);
+  background: linear-gradient(135deg, #1e2418, #1a2016, #1e2218);
 }
 .code-label { font-size:26rpx; color:var(--sub); margin-bottom:20rpx; }
 .code-row { display:flex; justify-content:center; gap:12rpx; margin-bottom:28rpx; }
 .code-char {
   width:72rpx; height:84rpx; line-height:84rpx;
-  background:var(--card); border-radius:var(--radius-sm);
+  background: var(--card); border-radius: var(--radius-sm);
   font-size:44rpx; font-weight:800; font-family:'SF Mono','Courier New',monospace;
-  color:var(--accent); box-shadow:0 4rpx 12rpx rgba(126,200,80,0.12);
+  color:var(--accent); box-shadow: 0 4rpx 12rpx rgba(126,200,80,0.12);
+  transition: all var(--duration-normal) var(--ease-spring);
+  animation: bounceIn 0.4s var(--ease-spring) both;
 }
-.code-actions { display:flex; gap:16rpx; }
+.code-char:nth-child(1) { animation-delay: 0.1s; }
+.code-char:nth-child(2) { animation-delay: 0.15s; }
+.code-char:nth-child(3) { animation-delay: 0.2s; }
+.code-char:nth-child(4) { animation-delay: 0.25s; }
+.code-char:active { transform: scale(0.9) rotate(2deg); }
+.code-actions { display:flex; flex-wrap:wrap; gap:12rpx; }
 .btn-invite {
-  flex:1; background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border-radius:var(--radius-full);
-  padding:18rpx; font-size:26rpx; font-weight:600; border:none;
-  box-shadow:0 4rpx 16rpx rgba(126,200,80,0.25);
+  flex:1; min-width:calc(50% - 6rpx);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color:#fff; border-radius: var(--radius-full);
+  padding:18rpx 12rpx; font-size:24rpx; font-weight:600; border:none;
+  box-shadow: 0 4rpx 16rpx rgba(126,200,80,0.25);
+  transition: all var(--duration-fast) var(--ease-spring);
 }
-.btn-invite:active { transform:scale(0.96); }
+.btn-invite:active { transform: scale(0.96); box-shadow: 0 2rpx 8rpx rgba(126,200,80,0.15); }
 .btn-data {
-  flex:1; background:transparent; color:var(--accent); border-radius:var(--radius-full);
-  padding:18rpx; font-size:26rpx; font-weight:600; border:2rpx solid var(--accent);
+  flex:1; min-width:calc(50% - 6rpx);
+  background:transparent; color:var(--accent);
+  border-radius: var(--radius-full);
+  padding:18rpx 12rpx; font-size:24rpx; font-weight:600;
+  border:2rpx solid var(--accent);
+  transition: all var(--duration-fast) var(--ease-spring);
 }
-.btn-data:active { background:rgba(126,200,80,0.05); transform:scale(0.96); }
+.btn-data:active { transform: scale(0.96); background: rgba(126,200,80,0.05); }
+.btn-paste {
+  width:100%;
+  background:var(--card2); color:var(--sub);
+  border-radius: var(--radius-full);
+  padding:16rpx; font-size:24rpx; font-weight:500;
+  border:1.5rpx solid var(--border);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+.btn-paste:active { transform: scale(0.97); background: var(--border-light); }
 
 /* ========== 添加好友 ========== */
 .tappable { cursor:pointer; }
 .count-badge {
   display:inline-flex; align-items:center; justify-content:center;
   min-width:36rpx; height:36rpx; border-radius:18rpx;
-  background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; font-size:22rpx; padding:0 8rpx;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color:#fff; font-size:22rpx; padding:0 8rpx;
   margin-left:8rpx;
+  animation: bounceIn 0.3s var(--ease-spring);
 }
-.add-form { margin-top:20rpx; }
+.add-form { margin-top:20rpx; animation: fadeInUp 0.3s var(--ease-out); }
 .input-wrap {
   display:flex; align-items:center; gap:12rpx;
-  background:var(--bg); border:1rpx solid var(--border); border-radius:var(--radius-sm);
+  background:var(--bg); border:2rpx solid var(--border-light); border-radius: var(--radius-sm);
   padding:0 16rpx; margin-bottom:14rpx;
+  transition: border-color var(--duration-fast);
 }
+.input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4rpx rgba(126,200,80,0.06); }
 .input-prefix { font-size:28rpx; color:var(--sub2); }
 .add-input { flex:1; height:80rpx; font-size:28rpx; color:var(--text); }
 .btn-add-friend {
-  width:100%; background:linear-gradient(135deg, var(--accent2), #e88830); color:#fff; border-radius:var(--radius-sm);
+  width:100%;
+  background: linear-gradient(135deg, var(--accent2), #e88830);
+  color:#fff; border-radius: var(--radius-full);
   padding:18rpx; font-size:28rpx; font-weight:600; border:none;
+  box-shadow: 0 4rpx 16rpx rgba(255,159,67,0.25);
+  transition: all var(--duration-fast) var(--ease-spring);
 }
-.btn-add-friend:active { opacity:0.85; transform:scale(0.97); }
+.btn-add-friend:active { transform: scale(0.97); opacity: 0.9; }
 
 /* ========== 好友列表 ========== */
 .friend-item {
   display:flex; align-items:center; gap:16rpx; padding:18rpx 0;
   border-bottom:1rpx solid var(--border-light);
+  transition: all var(--duration-fast);
+  animation: fadeInUp 0.3s var(--ease-out) both;
 }
 .friend-item:last-child { border-bottom:none; }
+.friend-item:active { background: rgba(0,0,0,0.02); transform: scale(0.99); border-radius: var(--radius-sm); }
 .friend-avatar {
   width:64rpx; height:64rpx; border-radius:50%;
-  background:linear-gradient(135deg, var(--accent-light), var(--accent));
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
   color:#fff; font-size:28rpx; font-weight:700;
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 2rpx 8rpx rgba(126,200,80,0.15);
+  box-shadow: 0 2rpx 8rpx rgba(126,200,80,0.15);
 }
 .friend-info { flex:1; }
 .friend-name { font-size:28rpx; font-weight:600; color:var(--text); }
 .friend-code { font-size:22rpx; color:var(--sub2); margin-top:2rpx; }
 .friend-stats { font-size:24rpx; color:var(--accent); margin-top:4rpx; }
 .friend-stats.dim { color:var(--sub2); font-style:italic; }
-.friend-arrow { font-size:32rpx; color:var(--sub2); }
+.friend-arrow {
+  font-size:32rpx; color:var(--sub2);
+  transition: transform var(--duration-fast);
+}
+.friend-item:active .friend-arrow { transform: translateX(4rpx); }
 
 /* ========== 空好友 ========== */
 .empty-friends { text-align:center; padding:60rpx 40rpx; }
@@ -81,14 +131,18 @@
 .lb-item {
   display:flex; align-items:center; gap:14rpx; padding:16rpx 0;
   border-bottom:1rpx solid var(--border-light);
+  transition: all var(--duration-fast);
 }
 .lb-item:last-child { border-bottom:none; }
 .lb-item.is-me {
-  background:rgba(126,200,80,0.04); border-radius:var(--radius-sm);
+  background: rgba(126,200,80,0.04); border-radius: var(--radius-sm);
   padding:16rpx 12rpx; margin:0 -12rpx; border:none;
 }
+.lb-item:active { transform: scale(0.99); }
 .lb-rank { font-size:28rpx; width:48rpx; text-align:center; }
-.lb-rank.gold, .lb-rank.silver, .lb-rank.bronze { font-size:36rpx; }
+.lb-rank.gold { animation: bounceIn 0.5s var(--ease-spring) 0.1s both; }
+.lb-rank.silver { animation: bounceIn 0.5s var(--ease-spring) 0.15s both; }
+.lb-rank.bronze { animation: bounceIn 0.5s var(--ease-spring) 0.2s both; }
 .lb-avatar {
   width:48rpx; height:48rpx; border-radius:50%;
   background:var(--card2); display:flex; align-items:center; justify-content:center;
@@ -98,19 +152,25 @@
 .lb-stats { display:flex; gap:6rpx; }
 .lb-badge {
   font-size:22rpx; color:var(--sub); background:var(--card2);
-  padding:4rpx 10rpx; border-radius:var(--radius-sm);
+  padding:4rpx 10rpx; border-radius: var(--radius-sm);
+  transition: all var(--duration-fast);
 }
+.lb-item:active .lb-badge { background: var(--border-light); }
 
 /* ========== PK 弹窗 ========== */
 .pk-overlay {
   position:fixed; top:0; left:0; right:0; bottom:0;
-  background:rgba(0,0,0,0.5); z-index:100;
+  background: rgba(0,0,0,0.5); z-index:100;
   display:flex; align-items:center; justify-content:center;
+  backdrop-filter: blur(8rpx);
+  animation: fadeInUp 0.3s var(--ease-out);
 }
 .pk-modal {
-  width:calc(100% - 80rpx); max-width:600rpx; background:var(--card); border-radius:var(--radius-lg);
-  padding:36rpx 30rpx; box-shadow:var(--shadow-lg);
+  width:calc(100% - 80rpx); max-width:600rpx;
+  background: var(--card); border-radius: var(--radius-lg);
+  padding:36rpx 30rpx; box-shadow: var(--shadow-lg);
   border:1rpx solid var(--border-light);
+  animation: bounceInUp 0.4s var(--ease-spring);
 }
 .pk-title { text-align:center; font-size:36rpx; font-weight:800; color:var(--text); margin-bottom:24rpx; }
 .pk-vs-row { display:flex; align-items:center; justify-content:center; gap:28rpx; margin-bottom:20rpx; }
@@ -119,21 +179,24 @@
   width:72rpx; height:72rpx; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   font-size:32rpx; margin:0 auto 8rpx;
-  box-shadow:0 4rpx 12rpx rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-md);
+  animation: breathe 2s ease-in-out infinite;
 }
-.pk-avatar.me { background:linear-gradient(135deg, #ffd54f, #ffa000); color:#fff; }
-.pk-avatar.friend { background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; }
+.pk-avatar.me { background: linear-gradient(135deg, #ffd54f, #ffa000); color:#fff; }
+.pk-avatar.friend { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; }
 .pk-name { font-size:28rpx; font-weight:600; color:var(--text); }
 .pk-vs { font-size:32rpx; font-weight:800; color:var(--sub2); }
 .pk-winner { text-align:center; font-size:30rpx; font-weight:700; color:var(--accent4); margin-bottom:20rpx; }
 .pk-items { }
 .pk-row {
   display:flex; align-items:center; gap:12rpx;
-  padding:16rpx 12rpx; border-radius:var(--radius-sm);
+  padding:16rpx 12rpx; border-radius: var(--radius-sm);
+  transition: all var(--duration-fast);
 }
 .pk-row:nth-child(even) { background:var(--card2); }
 .pk-val {
   font-size:24rpx; font-weight:600; color:var(--sub); min-width:70rpx; text-align:center;
+  transition: color var(--duration-fast);
 }
 .pk-val.win { color:var(--accent); font-weight:800; }
 .pk-val.me { text-align:right; }
@@ -142,9 +205,9 @@
 .pk-label { font-size:24rpx; color:var(--sub2); flex:1; text-align:center; }
 .pk-close-btn {
   margin-top:24rpx; text-align:center; padding:16rpx;
-  background:var(--card2); border-radius:var(--radius-full);
+  background: var(--card2); border-radius: var(--radius-full);
   font-size:28rpx; color:var(--sub);
-  transition:all 0.15s;
+  transition: all var(--duration-fast) var(--ease-spring);
   font-weight:500;
 }
-.pk-close-btn:active { background:var(--border-light); }
+.pk-close-btn:active { background: var(--border-light); transform: scale(0.97); }

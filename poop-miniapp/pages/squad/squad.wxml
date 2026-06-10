@@ -6,8 +6,9 @@
       <text class="code-char" wx:for="{{myCodeChars}}" wx:key="*this">{{item}}</text>
     </view>
     <view class="code-actions">
-      <button class="btn-invite" open-type="share">📤 邀请好友</button>
-      <button class="btn-data" bindtap="shareStats">📊 分享数据</button>
+      <button class="btn-invite" open-type="share">📤 邀请</button>
+      <button class="btn-data" bindtap="shareStats">📊 分享我的数据</button>
+      <button class="btn-paste" bindtap="importFriendStats">📋 粘贴好友数据</button>
     </view>
   </view>
 

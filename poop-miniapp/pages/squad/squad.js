@@ -160,7 +160,6 @@ Page({
   },
 
   shareStats() {
-    // Encode recent stats for sharing
     const sessions = store.getSessions(7);
     const streak = store.getStreak();
     const locations = sessions.filter(s => s.location).map(s => ({
@@ -172,15 +171,14 @@ Page({
       streak,
       weekCount: sessions.length,
       totalMin: Math.floor(sessions.reduce((a, s) => a + s.duration, 0) / 60),
-      locations: locations.slice(0, 10) // Limit location data
+      locations: locations.slice(0, 10)
     };
-    // Store in clipboard as fallback since query params have size limits
     wx.setClipboardData({
       data: JSON.stringify({ code: this.data.myCode, stats }),
       success: () => {
         wx.showModal({
-          title: '分享噗友数据',
-          content: '数据已复制到剪贴板。发送给好友后，让对方在「添加好友」中输入你的邀请码，然后粘贴数据即可同步。',
+          title: '数据已复制 ✅',
+          content: '把数据发给好友（粘贴到聊天），\n好友打开噗噗日记 → 噗友页 → 点「📋 粘贴好友数据」即可同步。',
           showCancel: false
         });
       }
@@ -192,18 +190,22 @@ Page({
       success: (res) => {
         try {
           const data = JSON.parse(res.data);
-          if (data.code && data.stats) {
-            const friends = store.getFriends();
-            if (!friends[data.code]) {
-              wx.showToast({ title: '请先添加该好友', icon: 'none' });
+          if (!data.code || !data.stats) {
+            wx.showToast({ title: '剪贴板无有效噗友数据\n请先让好友点「分享我的数据」', icon: 'none', duration: 2500 });
+            return;
+          }
+          let friends = store.getFriends();
+          // 如果还没添加该好友，自动添加
+          if (!friends[data.code]) {
+            if (data.code === store.getMyCode()) {
+              wx.showToast({ title: '这是你自己的数据', icon: 'none' });
               return;
             }
-            store.updateFriendStats(data.code, data.stats);
-            wx.showToast({ title: '好友数据已同步！', icon: 'success' });
-            this.refresh();
-          } else {
-            wx.showToast({ title: '剪贴板无有效噗友数据', icon: 'none' });
+            store.addFriend(data.code, '噗友' + data.code);
           }
+          store.updateFriendStats(data.code, data.stats);
+          wx.showToast({ title: '好友数据已同步！', icon: 'success' });
+          this.refresh();
         } catch (e) {
           wx.showToast({ title: '解析失败，请确认复制了正确的数据', icon: 'none' });
         }
