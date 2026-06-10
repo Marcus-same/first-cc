@@ -18,7 +18,7 @@
     </view>
   </view>
 
-  <!-- Stats bar -->
+  <!-- 数据统计栏 -->
   <view class="stats-bar">
     <view class="stat-item">
       <view class="stat-num">{{stats.locations}}</view>
@@ -34,23 +34,21 @@
     </view>
   </view>
 
+  <!-- 底部操作栏 -->
+  <view class="map-bottom-bar">
+    <view class="mba-item" bindtap="goSquad" hover-class="mba-hover">
+      <text>👥 噗友 ›</text>
+    </view>
+    <view class="mba-divider"></view>
+    <button class="mba-item mba-btn" open-type="share" hover-class="mba-hover">
+      📤 邀请好友
+    </button>
+  </view>
+
+  <!-- 空状态提示 -->
   <view class="empty-hint" wx:if="{{!allMarkers.length}}">
     <view class="hint-icon">🗺️</view>
     <view class="hint-text">还没有位置记录</view>
     <view class="hint-sub">记录时打开「记录位置」开关，<br/>这里就会出现你的噗噗地图</view>
-  </view>
-
-  <!-- 底部操作栏：噗友 + 邀请 -->
-  <view class="map-bottom-bar">
-    <view class="map-bottom-action" bindtap="goSquad" hover-class="map-bottom-action-hover">
-      <view class="mba-icon">👥</view>
-      <view class="mba-label">噗友</view>
-      <view class="mba-arrow">›</view>
-    </view>
-    <view class="mba-divider"></view>
-    <button class="map-bottom-action map-share-btn" open-type="share" hover-class="map-bottom-action-hover">
-      <view class="mba-icon">📤</view>
-      <view class="mba-label">邀请好友</view>
-    </button>
   </view>
 </view>
