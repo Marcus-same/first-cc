@@ -1,13 +1,12 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
 
-  <!-- 空状态 -->
+  <!-- 空状态：今日暂无记录 -->
   <view class="empty-state fade-in" wx:if="{{isEmpty && !running}}">
     <view class="empty-illustration">
-      <view class="empty-circle">🚽</view>
+      <view class="empty-circle relaxed">☕</view>
     </view>
-    <view class="empty-title">准备好开始记录了吗？</view>
-    <view class="empty-sub">记录你的肠道健康，坚持就有收获</view>
-    <view class="empty-hint">👆 点击「开始计时」记录第一次</view>
+    <view class="empty-title">今天还没有记录</view>
+    <view class="empty-sub">肠道也在休息日，随时可以开始</view>
   </view>
 
   <!-- 计时卡片 -->
