@@ -7,6 +7,25 @@ App({
   },
 
   onLaunch(options) {
+    // 自动检测版本更新，有新版本时弹窗提醒用户重启
+    const updateManager = wx.getUpdateManager();
+    updateManager.onCheckForUpdate((res) => {
+      if (res.hasUpdate) {
+        updateManager.onUpdateReady(() => {
+          wx.showModal({
+            title: '更新提示',
+            content: '新版本已就绪，重启后生效',
+            showCancel: false,
+            confirmText: '立即重启',
+            success: () => updateManager.applyUpdate()
+          });
+        });
+        updateManager.onUpdateFailed(() => {
+          wx.showToast({ title: '新版本下载失败，请稍后重试', icon: 'none' });
+        });
+      }
+    });
+
     const sys = wx.getSystemInfoSync();
     const saved = wx.getStorageSync('app_settings') || {};
     const dark = saved.darkMode === 'auto'
