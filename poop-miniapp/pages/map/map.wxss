@@ -10,7 +10,7 @@
 
 /* ========== 数据统计栏 ========== */
 .stats-bar {
-  position:absolute; bottom:28rpx; left:20rpx; right:20rpx;
+  position:absolute; bottom:115rpx; left:20rpx; right:20rpx;
   display:flex;
   background:rgba(255,255,255,0.95); border-radius:20rpx;
   padding:20rpx 14rpx; z-index:10;
@@ -23,7 +23,7 @@
 
 /* ========== 底部操作栏 ========== */
 .map-bottom-bar {
-  position:absolute; bottom:138rpx; left:20rpx; right:20rpx;
+  position:absolute; bottom:28rpx; left:20rpx; right:20rpx;
   display:flex; align-items:center;
   background:rgba(255,255,255,0.94); backdrop-filter:blur(14px);
   border-radius:50rpx;
