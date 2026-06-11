@@ -27,7 +27,6 @@
     "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
-  "cloudfunctionRoot": "cloud/",
   "libVersion": "3.16.0",
   "simulatorPluginLibVersion": {},
   "packOptions": {
