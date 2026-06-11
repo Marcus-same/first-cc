@@ -51,12 +51,21 @@ Page({
     const myCode = store.getMyCode();
     const squadName = store.getSquadName();
     const friendsObj = store.getFriends();
-    const friends = Object.entries(friendsObj).map(([code, f]) => ({
-      code,
-      name: f.name,
-      stats: f.stats,
-      lastShared: f.lastShared
-    }));
+    const now = Date.now();
+    const friends = Object.entries(friendsObj).map(([code, f]) => {
+      let syncLabel = '未同步';
+      if (f.lastShared) {
+        const days = Math.floor((now - f.lastShared) / 86400000);
+        syncLabel = days === 0 ? '今天更新' : days === 1 ? '昨天更新' : `${days}天前更新`;
+      }
+      return {
+        code,
+        name: f.name,
+        stats: f.stats,
+        lastShared: f.lastShared,
+        syncLabel
+      };
+    });
     this.setData({
       myCode,
       myCodeChars: myCode.split(''),
@@ -282,5 +291,16 @@ Page({
 
   closePK() {
     this.setData({ showPK: false });
+  },
+
+  // 提醒好友重新分享以更新数据
+  remindFriend(e) {
+    const { name } = e.currentTarget.dataset;
+    wx.showModal({
+      title: '如何更新好友数据',
+      content: `「${name}」的数据是打开你的分享链接时自动同步的。\n\n想让数据更新：\n1. 让好友从任意页面重新转发小程序给你\n2. 你点击链接打开 → 数据自动刷新\n\n好友的数据会在分享链接中实时携带，点击即同步。`,
+      showCancel: false,
+      confirmText: '知道了'
+    });
   }
 });

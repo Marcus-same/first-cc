@@ -33,16 +33,17 @@
   <!-- 好友列表 -->
   <view class="card fade-in-1" wx:if="{{friends.length}}">
     <view class="section-title">👥 我的好友 <text class="count-badge">{{friendCount}}</text></view>
-    <view class="friend-item" wx:for="{{friends}}" wx:key="code" bindtap="pkFriend" data-idx="{{index}}" data-name="{{item.name}}" data-code="{{item.code}}">
-      <view class="friend-avatar">{{item.name[0]}}</view>
-      <view class="friend-info">
+    <view class="friend-item" wx:for="{{friends}}" wx:key="code">
+      <view class="friend-avatar" bindtap="pkFriend" data-idx="{{index}}" data-name="{{item.name}}" data-code="{{item.code}}">{{item.name[0]}}</view>
+      <view class="friend-info" bindtap="pkFriend" data-idx="{{index}}" data-name="{{item.name}}" data-code="{{item.code}}">
         <view class="friend-name">{{item.name}}</view>
         <view class="friend-code">#{{item.code}}</view>
         <view class="friend-stats {{item.stats ? '' : 'dim'}}">
-          {{item.stats ? '🔥' + item.stats.streak + '天 · 📝' + item.stats.weekCount + '次' : '等待好友分享数据…'}}
+          {{item.stats ? '🔥' + item.stats.streak + '天 · 📝' + item.stats.weekCount + '次' : '等待分享链接同步…'}}
         </view>
+        <view class="friend-sync">🕐 {{item.syncLabel}}</view>
       </view>
-      <view class="friend-arrow">›</view>
+      <view class="friend-refresh" catchtap="remindFriend" data-name="{{item.name}}">🔄</view>
     </view>
   </view>
 
