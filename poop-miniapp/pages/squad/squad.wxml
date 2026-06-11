@@ -43,7 +43,7 @@
         </view>
         <view class="friend-sync">🕐 {{item.syncLabel}}</view>
       </view>
-      <view class="friend-refresh" catchtap="remindFriend" data-name="{{item.name}}">🔄</view>
+      <view class="friend-refresh" catchtap="refreshFriend" data-code="{{item.code}}" data-name="{{item.name}}">🔄</view>
     </view>
   </view>
 

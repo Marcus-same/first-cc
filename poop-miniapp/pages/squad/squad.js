@@ -293,14 +293,37 @@ Page({
     this.setData({ showPK: false });
   },
 
-  // 提醒好友重新分享以更新数据
-  remindFriend(e) {
-    const { name } = e.currentTarget.dataset;
-    wx.showModal({
-      title: '如何更新好友数据',
-      content: `「${name}」的数据是打开你的分享链接时自动同步的。\n\n想让数据更新：\n1. 让好友从任意页面重新转发小程序给你\n2. 你点击链接打开 → 数据自动刷新\n\n好友的数据会在分享链接中实时携带，点击即同步。`,
-      showCancel: false,
-      confirmText: '知道了'
+  // 尝试自动刷新好友数据
+  refreshFriend(e) {
+    const { code, name } = e.currentTarget.dataset;
+    // 先尝试从剪贴板自动获取
+    wx.getClipboardData({
+      success: (res) => {
+        try {
+          const data = JSON.parse(res.data);
+          if (data.code === code && data.stats) {
+            store.updateFriendStats(code, data.stats);
+            wx.showToast({ title: `${name} 数据已更新！`, icon: 'success' });
+            this.refresh();
+            return;
+          }
+        } catch (e) {}
+        // 剪贴板没有该好友的数据
+        wx.showModal({
+          title: `更新「${name}」数据`,
+          content: '没有找到该好友的最新数据。\n\n方法很简单：\n1️⃣ 让好友从小程序任意页面转发给你\n2️⃣ 你点开链接 → 数据自动刷新',
+          confirmText: '知道了',
+          showCancel: false
+        });
+      },
+      fail: () => {
+        wx.showModal({
+          title: `更新「${name}」数据`,
+          content: '需要读取剪贴板权限。\n\n换个方式：让好友转发小程序给你，点开链接即自动更新。',
+          confirmText: '知道了',
+          showCancel: false
+        });
+      }
     });
   }
 });
