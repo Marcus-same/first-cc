@@ -13,12 +13,24 @@ Page({
       { key: 'best', val: '--', label: '最短', icon: '⚡' },
       { key: 'avg', val: '--', label: '平均', icon: '📊' },
     ],
-    streak: 0, dailyTip: '', fortune: null, challenge: null, isEmpty: true
+    streak: 0, dailyTip: '', fortune: null, challenge: null, isEmpty: true,
+    greeting: '', showSeedHint: false
   },
   timerId: null, startTime: 0,
 
   onShow() {
-    this.setData({ dark: app.getDarkMode() });
+    // 时令问候
+    const hour = new Date().getHours();
+    const greetings = {
+      morning: ['早上好 ☀️', '新的一天，肠道准备好了吗？', '早安，今天也要元气满满'],
+      noon: ['中午好 🌿', '午饭后来个轻松时刻', '午后时光，放松一下'],
+      evening: ['傍晚好 🌅', '一天辛苦了，该关爱一下肠道了', '晚饭后最适合规律排便'],
+      night: ['夜深了 🌙', '安静的夜晚，肠道也在休息', '晚安，明天又是新的一天']
+    };
+    const g = hour < 10 ? greetings.morning : hour < 14 ? greetings.noon : hour < 20 ? greetings.evening : greetings.night;
+    const greeting = g[Math.floor(Math.random() * g.length)];
+
+    this.setData({ dark: app.getDarkMode(), greeting });
     const s = wx.getStorageSync('app_settings') || {};
     const warnSec = (s.warnMin || 10) * 60;
     this.setData({ warnSec, warnEnabled: s.warnEnabled !== false });
@@ -28,6 +40,10 @@ Page({
     this.loadChallenge();
     const todaySessions = store.getToday().sessions;
     this.setData({ dailyTip: generateTip(todaySessions, store.getStreak()) });
+
+    // 没有任何记录时，显示示例数据入口
+    const allCount = store.getAllSessions().length;
+    this.setData({ showSeedHint: allCount === 0 });
 
     // Timer recovery: check if there's an unfinished timer from last session
     const ts = wx.getStorageSync('_timer_state');
@@ -129,6 +145,26 @@ Page({
   },
   goAchievements() { wx.navigateTo({ url: '/pages/achievements/achievements' }); },
   goPersonality() { wx.navigateTo({ url: '/pages/personality/personality' }); },
+
+  seedDemo() {
+    wx.showModal({
+      title: '生成演示数据',
+      content: '将生成 10 条模拟记录（最近 2 周），你可以体验热力图、成就、人格等所有功能。\n\n随时可在设置中清除数据。',
+      success: (res) => {
+        if (res.confirm) {
+          const count = store.seedSampleData();
+          wx.showToast({ title: `已生成 ${count} 条演示数据`, icon: 'success', duration: 2000 });
+          setTimeout(() => {
+            this.loadStats();
+            this.loadStreak();
+            this.loadFortune();
+            this.loadChallenge();
+            this.setData({ showSeedHint: false });
+          }, 800);
+        }
+      }
+    });
+  },
 
   onShareAppMessage() {
     const myCode = store.getMyCode();

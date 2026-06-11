@@ -2,13 +2,16 @@
 .setting-row {
   display:flex; justify-content:space-between; align-items:center;
   padding:18rpx 0;
+  transition: all var(--duration-fast);
 }
 .setting-row.divider { border-bottom:1rpx solid var(--border-light); }
 .setting-label { font-size:28rpx; color:var(--text); }
 .setting-val {
   display:flex; align-items:center; gap:6rpx;
   font-size:28rpx; color:var(--sub); font-weight:500;
+  transition: color var(--duration-fast);
 }
+.setting-row:active .setting-val { color:var(--accent); }
 .val-arrow { font-size:32rpx; color:var(--sub2); }
 
 .danger-label { color:var(--accent2); font-weight:600; }
@@ -17,23 +20,36 @@
 /* ========== 导航行 ========== */
 .nav-row {
   display:flex; align-items:center; gap:16rpx;
-  padding:20rpx 0; transition:background 0.15s;
+  padding:20rpx 0;
+  transition: all var(--duration-fast);
+  border-radius: var(--radius-sm);
 }
 .nav-row.divider { border-bottom:1rpx solid var(--border-light); }
-.row-hover { background:rgba(0,0,0,0.02); margin:0 -30rpx; padding-left:30rpx; padding-right:30rpx; border-radius:var(--radius-sm); }
+.row-hover {
+  background: rgba(0,0,0,0.02);
+  margin:0 -30rpx; padding-left:30rpx; padding-right:30rpx;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast);
+}
+.row-hover:active { background: rgba(126,200,80,0.06); transform: translateX(4rpx); }
 .theme-dark .row-hover { background:rgba(255,255,255,0.02); }
+.theme-dark .row-hover:active { background: rgba(139,195,74,0.08); }
 .nav-icon { font-size:32rpx; width:44rpx; text-align:center; }
 .nav-label { font-size:28rpx; color:var(--text); flex:1; font-weight:500; }
-.nav-arrow { font-size:32rpx; color:var(--sub2); }
+.nav-arrow {
+  font-size:32rpx; color:var(--sub2);
+  transition: transform var(--duration-fast);
+}
+.row-hover:active .nav-arrow { transform: translateX(6rpx); }
 
 .version-tag {
-  background:var(--bg); padding:6rpx 18rpx; border-radius:var(--radius-sm);
+  background: var(--card2); padding:6rpx 18rpx; border-radius: var(--radius-sm);
   font-size:24rpx; color:var(--sub2); font-family:'SF Mono','Courier New',monospace;
 }
 
 /* ========== Footer ========== */
 .settings-footer { text-align:center; padding:40rpx 0 60rpx; }
-.footer-text { font-size:24rpx; color:var(--sub2); }
+.footer-text { font-size:24rpx; color:var(--sub2); animation: breathe 3s ease-in-out infinite; }
 
 /* ========== 反馈按钮 ========== */
 .feedback-btn {
@@ -44,4 +60,6 @@
 .feedback-btn::after { border:none; }
 .feedback-inner {
   display:flex; align-items:center; gap:16rpx; padding:20rpx 0;
+  transition: all var(--duration-fast);
 }
+.feedback-btn:active .feedback-inner { transform: translateX(4rpx); }

@@ -221,7 +221,12 @@ Page({
     const { name, code } = e.currentTarget.dataset;
     const friend = this.data.friends.find(f => f.code === code);
     if (!friend || !friend.stats) {
-      wx.showToast({ title: '好友还没有分享数据', icon: 'none' });
+      wx.showModal({
+        title: '好友还没有分享数据',
+        content: '让好友在噗友页点击「📊 分享我的数据」，然后把数据发给你，你再用「📋 粘贴好友数据」同步即可。',
+        confirmText: '我知道了',
+        showCancel: false
+      });
       return;
     }
 

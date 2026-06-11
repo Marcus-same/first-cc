@@ -6,7 +6,7 @@
       <view class="timer-emoji">{{running ? '💩' : '🚽'}}</view>
     </view>
     <view class="timer-text {{running ? 'counting' : ''}}">{{timeStr}}</view>
-    <view class="timer-label" wx:if="{{!running}}">点击下方按钮开始计时</view>
+    <view class="timer-label" wx:if="{{!running}}">{{greeting}}</view>
     <view class="timer-label running-label" wx:if="{{running}}">{{runTip}}</view>
     <view class="btn-row">
       <button class="btn-start" bindtap="onStart" disabled="{{running}}">
@@ -25,6 +25,12 @@
   <view class="empty-banner fade-in-1" wx:if="{{isEmpty && !running}}">
     <text class="empty-banner-icon">☕</text>
     <text class="empty-banner-text">今天还没有记录，随时可以开始</text>
+  </view>
+
+  <!-- 新用户体验入口 -->
+  <view class="seed-banner fade-in-1" wx:if="{{isEmpty && !running && showSeedHint}}" bindtap="seedDemo">
+    <text class="seed-icon">✨</text>
+    <text class="seed-text">没有数据？点这里查看演示效果</text>
   </view>
 
   <!-- 连续打卡 -->

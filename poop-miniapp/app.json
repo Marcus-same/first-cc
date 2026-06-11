@@ -16,14 +16,15 @@
   ],
   "window": {
     "navigationBarTitleText": "噗噗日记",
-    "navigationBarBackgroundColor": "#f5f5f0",
+    "navigationBarBackgroundColor": "#faf7f2",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f5f0"
+    "backgroundColor": "#faf7f2"
   },
   "tabBar": {
-    "color": "#999",
-    "selectedColor": "#6b8e4e",
-    "backgroundColor": "#fff",
+    "color": "#b8a890",
+    "selectedColor": "#4a7c59",
+    "backgroundColor": "#fffdf9",
+    "borderStyle": "white",
     "list": [
       { "pagePath": "pages/index/index", "text": "📝 打卡" },
       { "pagePath": "pages/map/map", "text": "🗺️ 噗噗地图" },

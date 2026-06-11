@@ -11,6 +11,14 @@
     <view class="card fade-in">
       <view class="section-title">📅 排便热力图 <text class="title-sub">近 4 周</text></view>
       <view class="heatmap">
+        <!-- 星期表头 -->
+        <view class="heatmap-header">
+          <view class="heatmap-label"></view>
+          <view class="heatmap-dots">
+            <view class="heatmap-day-label" wx:for="{{dayLabels}}" wx:key="*this">{{item}}</view>
+          </view>
+        </view>
+        <!-- 数据行 -->
         <view class="heatmap-row" wx:for="{{heatmap}}" wx:key="week">
           <view class="heatmap-label">{{item.label}}</view>
           <view class="heatmap-dots">
@@ -65,7 +73,8 @@
         <view class="empty-hint">坚持记录，这里会出现你的打卡日历</view>
       </view>
       <view class="record-list" wx:if="{{list.length}}">
-        <view class="record-item fade-in-1" wx:for="{{list}}" wx:key="start" style="animation-delay:{{index * 0.02}}s">
+        <view class="record-item fade-in-1" wx:for="{{list}}" wx:key="start" style="animation-delay:{{index * 0.02}}s"
+              bindlongpress="onRecordLongPress" data-date="{{item._date}}" data-start="{{item.start}}">
           <view class="record-left">
             <view class="record-date">{{item.dateStr}}</view>
             <view class="record-time">{{item.timeStr}}</view>
@@ -86,12 +95,11 @@
   <block wx:if="{{tabView === 'weekly'}}">
     <!-- 周选择器 -->
     <view class="week-picker fade-in">
-      <picker bindchange="onWeekChange" range="{{weekOptions}}" range-key="label" value="{{selectedWeekIdx}}">
-        <view class="picker-trigger">
-          <text class="picker-label">{{weekOptions[selectedWeekIdx].label}}</text>
-          <text class="picker-arrow">▼</text>
-        </view>
-      </picker>
+      <view class="week-nav">
+        <view class="week-nav-btn" bindtap="prevWeek" hover-class="week-nav-btn-hover">◀</view>
+        <view class="week-nav-label">{{weekly.dateRange || '本周'}}</view>
+        <view class="week-nav-btn" bindtap="nextWeek" hover-class="week-nav-btn-hover">▶</view>
+      </view>
     </view>
 
     <!-- 周报头部 -->

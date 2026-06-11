@@ -11,6 +11,16 @@
 .empty-banner-icon { font-size:28rpx; }
 .empty-banner-text { font-size:24rpx; color:var(--sub); }
 
+/* 示例数据入口 */
+.seed-banner {
+  display:flex; align-items:center; justify-content:center; gap:8rpx;
+  margin:6rpx 22rpx 0; padding:16rpx 24rpx;
+  background:linear-gradient(135deg, rgba(74,124,89,0.08), rgba(200,134,58,0.06));
+  border-radius:var(--radius-full); border:1rpx dashed var(--accent);
+}
+.seed-icon { font-size:24rpx; }
+.seed-text { font-size:24rpx; color:var(--accent); font-weight:500; }
+
 /* ========== 计时卡片 ========== */
 .timer-card {
   background: var(--card);

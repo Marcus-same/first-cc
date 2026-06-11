@@ -15,6 +15,14 @@ Page({
 
   onLoad() {
     this.setData({ dark: app.getDarkMode() });
+    // 获取当前位置作为默认地图中心
+    wx.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        this.setData({ latitude: res.latitude, longitude: res.longitude });
+      },
+      fail: () => { /* 保持默认位置 */ }
+    });
     this.loadMarkers();
   },
 

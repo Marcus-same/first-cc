@@ -80,6 +80,7 @@ Page({
 
     // Check daily challenge after saving
     checkChallenge();
-    wx.navigateBack();
+    // 返回到首页 tab（确保不依赖页面栈）
+    wx.switchTab({ url: '/pages/index/index' });
   }
 });

@@ -9,8 +9,7 @@ Page({
     totalSessions: 0, totalMin: 0, totalDays: 0,
     tabView: 'record',
     weekly: {},
-    weekOptions: [],
-    selectedWeekIdx: 0
+    weekOffset: 0
   },
 
   onShow() {
@@ -51,6 +50,7 @@ Page({
     monday.setHours(0, 0, 0, 0);
 
     const DAYS = ['一', '二', '三', '四', '五', '六', '日'];
+    const WEEK_LABELS = ['本周', '上周', '2周前', '3周前'];
     const allSessions = store.getSessions(28);
     const countMap = {};
     allSessions.forEach(s => {
@@ -69,9 +69,9 @@ Page({
         const cnt = countMap[key] || 0;
         days.push({ date: key, level: cnt >= 3 ? 'l3' : cnt === 2 ? 'l2' : cnt === 1 ? 'l1' : 'l0', count: cnt });
       }
-      weeks.push({ label: w === 3 ? DAYS.join(' ') : '', days });
+      weeks.push({ label: WEEK_LABELS[3 - w], days });
     }
-    this.setData({ heatmap: weeks });
+    this.setData({ heatmap: weeks, dayLabels: DAYS });
   },
 
   // ======== 记录列表 ========
@@ -93,10 +93,19 @@ Page({
     }
     this.setData({ funFact });
 
-    const list = sessions.map(s => {
+    const list = sessions.map((s, i) => {
       const d = new Date(s.start);
       const typeInfo = BRISTOL.find(b => b.type === s.type);
+      // Find index within its original day's sessions array for delete targeting
+      const allSessions = store.getAllSessions();
+      let dayIdx = 0;
+      allSessions.forEach((x, xi) => {
+        if (x.start === s.start && x._date === s._date) dayIdx = xi;
+      });
       return {
+        _date: s._date,
+        _index: i, // index within the filtered/sorted list, used to find in day
+        start: s.start,
         dateStr: `${d.getMonth() + 1}月${d.getDate()}日`,
         timeStr: `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`,
         min: Math.floor(s.duration / 60),
@@ -107,6 +116,76 @@ Page({
       };
     });
     this.setData({ list });
+  },
+
+  // ======== 长按操作 ========
+  onRecordLongPress(e) {
+    const { date, start } = e.currentTarget.dataset;
+    wx.showActionSheet({
+      itemList: ['修改备注', '删除记录'],
+      itemColor: '#e04040',
+      success: (res) => {
+        if (res.tapIndex === 0) this.editNote(date, start);
+        if (res.tapIndex === 1) this.deleteRecord(date, start);
+      }
+    });
+  },
+
+  editNote(dateKey, startTs) {
+    // Find the session and its index within that day
+    const data = store._raw ? store._raw() : null;
+    const sessions = store.getSessions(60);
+    const s = sessions.find(x => x._date === dateKey && x.start === startTs);
+    const currentNote = s ? (s.note || '') : '';
+    wx.showModal({
+      title: '修改备注',
+      editable: true,
+      placeholderText: '输入备注内容',
+      content: currentNote,
+      success: (res) => {
+        if (res.confirm && res.content !== undefined) {
+          // Rebuild: find the day, find the session by start time, update note
+          const allData = JSON.parse(wx.getStorageSync('poop_data') || '{}');
+          const day = allData.days[dateKey];
+          if (day && day.sessions) {
+            const si = day.sessions.findIndex(x => x.start === startTs);
+            if (si >= 0) {
+              day.sessions[si].note = res.content;
+              wx.setStorageSync('poop_data', JSON.stringify(allData));
+              wx.showToast({ title: '备注已更新', icon: 'success' });
+              this.buildList();
+            }
+          }
+        }
+      }
+    });
+  },
+
+  deleteRecord(dateKey, startTs) {
+    wx.showModal({
+      title: '确认删除',
+      content: '删除后不可恢复，确定要删除这条记录吗？',
+      confirmColor: '#e04040',
+      success: (res) => {
+        if (res.confirm) {
+          // Find and delete by date + start time
+          const allData = JSON.parse(wx.getStorageSync('poop_data') || '{}');
+          const day = allData.days[dateKey];
+          if (day && day.sessions) {
+            const idx = day.sessions.findIndex(x => x.start === startTs);
+            if (idx >= 0) {
+              day.sessions.splice(idx, 1);
+              if (!day.sessions.length) delete allData.days[dateKey];
+              wx.setStorageSync('poop_data', JSON.stringify(allData));
+              wx.showToast({ title: '已删除', icon: 'success' });
+              this.buildList();
+              this.buildHeatmap();
+              this.buildStats();
+            }
+          }
+        }
+      }
+    });
   },
 
   // ======== 累计统计 ========
@@ -120,33 +199,30 @@ Page({
     });
   },
 
-  // ======== 周选择器 ========
+  // ======== 周选择器（翻页式） ========
   buildWeekOptions() {
-    const options = [];
-    for (let i = 0; i < 52; i++) {
-      const monday = this.getMondayOffset(-i * 7);
-      const sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
-      const label = `${monday.getMonth() + 1}月${monday.getDate()}日 - ${sunday.getMonth() + 1}月${sunday.getDate()}日`;
-      options.push({ label, monday: monday.getTime() });
-    }
-    this.setData({ weekOptions: options, selectedWeekIdx: 0 });
+    this.setData({ weekOffset: 0 });
   },
 
-  onWeekChange(e) {
-    const idx = e.detail.value;
-    this.setData({ selectedWeekIdx: idx });
-    const monday = new Date(this.data.weekOptions[idx].monday);
-    this.buildWeeklyReport(monday);
-  },
-
-  getMondayOffset(offset) {
+  // 获取基于偏移周数的周一
+  _getMonday(weekOffset) {
     const d = new Date();
-    d.setDate(d.getDate() + offset);
     const dayOfWeek = d.getDay() || 7;
-    d.setDate(d.getDate() - dayOfWeek + 1);
+    d.setDate(d.getDate() - dayOfWeek + 1 - weekOffset * 7);
     d.setHours(0, 0, 0, 0);
     return d;
+  },
+
+  prevWeek() {
+    const offset = (this.data.weekOffset || 0) + 1;
+    this.setData({ weekOffset: offset });
+    this.buildWeeklyReport(this._getMonday(offset));
+  },
+
+  nextWeek() {
+    const offset = Math.max(0, (this.data.weekOffset || 0) - 1);
+    this.setData({ weekOffset: offset });
+    this.buildWeeklyReport(this._getMonday(offset));
   },
 
   // ======== 周报 ========

@@ -1,11 +1,11 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
   <view class="card policy">
-    <view class="policy-title">肠道日历 用户协议</view>
+    <view class="policy-title">噗噗日记 用户协议</view>
     <view class="policy-date">更新日期：2026年5月13日</view>
 
     <view class="section">
       <view class="s-title">一、服务说明</view>
-      <view class="s-text">「肠道日历」是一款肠道健康记录工具，帮助用户记录排便习惯、了解肠道健康状况。本小程序仅供个人健康管理参考，不构成医疗建议。</view>
+      <view class="s-text">「噗噗日记」是一款肠道健康记录工具，帮助用户记录排便习惯、了解肠道健康状况。本小程序仅供个人健康管理参考，不构成医疗建议。</view>
     </view>
 
     <view class="section">

@@ -56,8 +56,8 @@
 .advice-body { font-size:28rpx; color:var(--sub); line-height:1.8; }
 
 /* ========== 分享按钮 ========== */
-.share-actions { display:flex; gap:20rpx; padding:8rpx 20rpx 40rpx; }
-.btn-share { flex:1; background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border-radius:var(--radius-full); padding:22rpx; font-size:28rpx; font-weight:600; border:none; box-shadow:0 6rpx 20rpx rgba(126,200,80,0.25); }
+.share-actions { display:flex; gap:20rpx; padding:12rpx 22rpx 48rpx; }
+.btn-share { flex:1; background:linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border-radius:var(--radius-full); padding:24rpx; font-size:28rpx; font-weight:600; border:none; box-shadow:0 6rpx 24rpx rgba(74,124,89,0.25); }
 .btn-share:active { transform:scale(0.95); }
-.btn-save { flex:1; background:var(--card); color:var(--accent); border-radius:var(--radius-full); padding:22rpx; font-size:28rpx; font-weight:600; border:2rpx solid var(--accent); }
-.btn-save:active { background:rgba(126,200,80,0.05); transform:scale(0.95); }
+.btn-save { flex:1; background:var(--card); color:var(--accent); border-radius:var(--radius-full); padding:24rpx; font-size:28rpx; font-weight:600; border:2rpx solid var(--accent); }
+.btn-save:active { background:rgba(74,124,89,0.05); transform:scale(0.95); }

@@ -1,6 +1,6 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
   <!-- 完成头部 -->
-  <view class="done-header fade-in">
+  <view class="done-header fade-in bounce-in-up">
     <view class="done-icon">✅</view>
     <view class="done-info">
       <view class="done-title">记录完成！</view>
@@ -8,21 +8,23 @@
     </view>
   </view>
 
-  <!-- 布里斯托类型选择 -->
+  <!-- 布里斯托类型选择 - 横向滑动 -->
   <view class="card fade-in-1">
-    <view class="section-title">🥑 选择布里斯托类型</view>
-    <view class="bristol-grid">
-      <view
-        class="bristol-cell {{selectedType === item.type ? 'selected' : ''}}"
-        wx:for="{{bristol}}" wx:key="type"
-        bindtap="selectType" data-type="{{item.type}}"
-      >
-        <view class="bristol-emoji">{{item.icon}}</view>
-        <view class="bristol-name">{{item.name}}</view>
-        <view class="bristol-desc">{{item.desc}}</view>
-        <view class="bristol-check" wx:if="{{selectedType === item.type}}">✓</view>
+    <view class="section-title">🥑 选择布里斯托类型 <text class="optional">(滑动选择)</text></view>
+    <scroll-view class="bristol-scroll" scroll-x enable-flex>
+      <view class="bristol-track">
+        <view
+          class="bristol-card {{selectedType === item.type ? 'selected' : ''}}"
+          wx:for="{{bristol}}" wx:key="type"
+          bindtap="selectType" data-type="{{item.type}}"
+        >
+          <view class="bristol-emoji">{{item.icon}}</view>
+          <view class="bristol-name">{{item.name}}</view>
+          <view class="bristol-type-num">第{{item.type}}型</view>
+          <view class="bristol-check-icon" wx:if="{{selectedType === item.type}}">✓</view>
+        </view>
       </view>
-    </view>
+    </scroll-view>
   </view>
 
   <!-- 类型建议 -->
@@ -54,7 +56,7 @@
       <switch checked="{{recordLocation}}" bindchange="toggleLocation" color="#6b8e4e" />
     </view>
     <view class="location-detail" wx:if="{{recordLocation && locationName}}">
-      <view class="loc-dot"></view>
+      <view class="loc-dot pulse-dot"></view>
       {{locationName}}
     </view>
     <view class="location-detail dim" wx:if="{{recordLocation && !locationName}}">
@@ -65,8 +67,8 @@
   <!-- 按钮 -->
   <view class="save-row fade-in-3">
     <button class="btn-skip" bindtap="skip">跳过</button>
-    <button class="btn-save" bindtap="save" disabled="{{!selectedType}}">
-      保存记录
+    <button class="btn-save {{selectedType ? 'ready' : ''}}" bindtap="save" disabled="{{!selectedType}}">
+      <text class="btn-save-text">{{selectedType ? '保存记录' : '请先选择类型'}}</text>
     </button>
   </view>
 </view>

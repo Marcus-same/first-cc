@@ -1,4 +1,15 @@
 <view class="container {{dark ? 'theme-dark' : ''}}">
+  <!-- BPTI 自测入口（没有数据时优先展示） -->
+  <view class="test-entry test-entry-top fade-in" wx:if="{{!persona}}" bindtap="goTest">
+    <view class="test-icon">🧬</view>
+    <view class="test-info">
+      <view class="test-title">BPTI 肠道人格自测</view>
+      <view class="test-desc">12道题，马上知道你的肠道人格类型！</view>
+    </view>
+    <view class="test-badge">免费</view>
+    <view class="test-arrow">→</view>
+  </view>
+
   <!-- 无数据 -->
   <view wx:if="{{!persona}}" class="empty-state fade-in">
     <view class="empty-illust">
@@ -6,12 +17,12 @@
       <view class="empty-emoji">🌱</view>
     </view>
     <view class="empty-title">还没有足够数据</view>
-    <view class="empty-sub">记录几天后再来看看你的肠道人格</view>
+    <view class="empty-sub">记录几天后自动生成，或先做个自测 👆</view>
   </view>
 
   <!-- 人格卡片 -->
-  <view wx:if="{{persona}}" class="persona-wrap fade-in">
-    <view class="persona-card {{persona.id}}">
+  <view wx:if="{{persona}}" class="persona-wrap">
+    <view class="persona-card {{persona.id}} bounce-in-up">
       <view class="persona-badge">你的肠道人格</view>
       <view class="persona-icon">{{persona.icon}}</view>
       <view class="persona-name">{{persona.name}}</view>

@@ -56,6 +56,18 @@ function addSession(session) {
   _write(data);
 }
 
+// dateKey: e.g. "Mon Jun 09 2026", index: position in sessions array
+function deleteSession(dateKey, index) {
+  const data = _migrate();
+  if (data.days[dateKey] && data.days[dateKey].sessions) {
+    data.days[dateKey].sessions.splice(index, 1);
+    if (!data.days[dateKey].sessions.length) delete data.days[dateKey];
+    _write(data);
+    return true;
+  }
+  return false;
+}
+
 function getSessions(days) {
   const data = _migrate();
   const result = [];
@@ -159,6 +171,36 @@ function setSquadName(name) {
   _write(data);
 }
 
+// 生成示例数据（供新用户体验功能）
+function seedSampleData() {
+  const data = _migrate();
+  const now = new Date();
+  const types = [4, 3, 4, 5, 4, 2, 4, 3, 4, 4, 6, 4, 3, 4];
+  const notes = ['早餐后', '喝了很多水', '有点干', '', '午餐后', '', '', '很顺畅', '', '', '昨晚吃辣了', '', '晨跑后', '完美的💩'];
+  let count = 0;
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    // Skip 3 random days to make it realistic
+    if ([2, 7, 11].includes(i)) continue;
+    const key = d.toDateString();
+    if (!data.days[key]) data.days[key] = { sessions: [] };
+    const hour = 7 + Math.floor(Math.random() * 12);
+    const minute = Math.floor(Math.random() * 60);
+    const start = new Date(d);
+    start.setHours(hour, minute, 0, 0);
+    data.days[key].sessions.push({
+      start: start.getTime(),
+      duration: 120 + Math.floor(Math.random() * 480),
+      type: types[i],
+      note: notes[i] || ''
+    });
+    count++;
+  }
+  _write(data);
+  return count;
+}
+
 function clearAll() {
   wx.removeStorageSync(STORE_KEY);
   wx.removeStorageSync('_last_session');
@@ -202,9 +244,9 @@ function getDistinctLocations() {
 }
 
 module.exports = {
-  getToday, addSession, getSessions, getAllSessions, getDayCount, getStreak,
+  getToday, addSession, deleteSession, getSessions, getAllSessions, getDayCount, getStreak,
   getFriends, addFriend, updateFriendStats, removeFriend,
   getMyCode, getSquadName, setSquadName,
-  clearAll, exportAll,
+  clearAll, exportAll, seedSampleData,
   getDistinctLocations
 };

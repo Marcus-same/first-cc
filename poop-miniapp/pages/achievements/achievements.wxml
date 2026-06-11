@@ -38,7 +38,7 @@
     </view>
   </view>
 
-  <!-- 成就墙 -->
+  <!-- ========== 成就墙 ========== -->
   <view class="card fade-in-1">
     <view class="section-title">🏅 成就勋章 <text class="title-sub">{{unlockedCount}} 已解锁</text></view>
     <view class="category-tabs">
