@@ -28,8 +28,28 @@ Page({
 
   onShow() {
     this.refresh();
+    // 从云数据库拉取好友最新数据（实时同步）
+    this._syncFromCloud();
     // app.js 已全局处理邀请，此处仅作安全兜底
     this._checkPendingInvite();
+  },
+
+  // 从云数据库拉取所有好友最新数据
+  _syncFromCloud() {
+    const friendsObj = store.getFriends();
+    const codes = Object.keys(friendsObj);
+    if (!codes.length) return;
+    try {
+      const cloudSync = require('../../utils/cloud-sync');
+      cloudSync.pullFriendStats(codes).then(statsMap => {
+        if (Object.keys(statsMap).length) {
+          Object.entries(statsMap).forEach(([code, stats]) => {
+            store.updateFriendStats(code, stats);
+          });
+          this.refresh();
+        }
+      });
+    } catch (e) {}
   },
 
   // 安全兜底：检查是否还有未处理的邀请（app.js 应已处理）

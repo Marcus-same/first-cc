@@ -7,6 +7,15 @@ App({
   },
 
   onLaunch(options) {
+    // 初始化云开发（好友数据实时同步）
+    if (wx.cloud) {
+      try {
+        wx.cloud.init({ traceUser: true });
+      } catch (e) {
+        console.warn('云开发初始化失败，将使用本地模式', e);
+      }
+    }
+
     // 自动检测版本更新，有新版本时弹窗提醒用户重启
     const updateManager = wx.getUpdateManager();
     updateManager.onCheckForUpdate((res) => {

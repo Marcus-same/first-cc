@@ -80,6 +80,11 @@ Page({
 
     // Check daily challenge after saving
     checkChallenge();
+    // 同步最新数据到云（好友可实时拉取）
+    try {
+      const cloudSync = require('../../utils/cloud-sync');
+      cloudSync.pushMyStats();
+    } catch (e) {}
     // 返回到首页 tab（确保不依赖页面栈）
     wx.switchTab({ url: '/pages/index/index' });
   }
