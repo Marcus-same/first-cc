@@ -140,10 +140,12 @@ Page({
 
   onShareAppMessage() {
     const s = this.data.summary;
+    const myCode = store.getMyCode();
+    const d = s ? `S${s.days}W${s.total}M${s.avgMin || 0}` : 'S0W0M0';
     return {
-      title: `肠道周报 | ${s.total}次记录 · ${s.days}天活跃`,
-      path: '/pages/index/index',
-      imageUrl: '' // Could use canvas snapshot here
+      title: `肠道周报 | ${s ? s.total : 0}次记录 · ${s ? s.days : 0}天活跃`,
+      path: `/pages/index/index?invite=${myCode}&d=${d}`,
+      imageUrl: ''
     };
   },
 

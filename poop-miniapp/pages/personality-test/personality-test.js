@@ -210,10 +210,15 @@ Page({
 
   onShareAppMessage() {
     const p = this.data.persona;
-    if (!p) return { title: '来测测你的肠道人格 BPTI 类型' };
+    const store = require('../../utils/store');
+    const myCode = store.getMyCode();
+    const d = `S0W0M0`;
+    if (!p) {
+      return { title: '来测测你的肠道人格 BPTI 类型', path: `/pages/personality-test/personality-test?invite=${myCode}&d=${d}` };
+    }
     return {
       title: `我的肠道人格是 ${p.icon} ${p.name}（BPTI ${this.data.code}），快来测测你的！`,
-      path: '/pages/personality-test/personality-test'
+      path: `/pages/personality-test/personality-test?invite=${myCode}&d=${d}`
     };
   }
 });

@@ -168,10 +168,14 @@ Page({
 
   onShareAppMessage() {
     const myCode = store.getMyCode();
+    const sessions = store.getSessions(7);
+    const streak = store.getStreak();
+    const totalMin = Math.floor(sessions.reduce((a, s) => a + s.duration, 0) / 60);
+    const d = `S${streak}W${sessions.length}M${totalMin}`;
     return {
-      title: '噗噗日记 — 记录肠道健康，和朋友一起打卡！',
-      path: `/pages/index/index?invite=${myCode}`,
-      imageUrl: '' // 可替换为分享卡片图
+      title: `噗噗日记 — 连续🔥${streak}天，周${sessions.length}次，一起来打卡！`,
+      path: `/pages/index/index?invite=${myCode}&d=${d}`,
+      imageUrl: ''
     };
   }
 });

@@ -145,9 +145,14 @@ Page({
 
   onShareAppMessage() {
     const myCode = store.getMyCode();
+    const sessions = store.getSessions(7);
+    const streak = store.getStreak();
+    const totalMin = Math.floor(sessions.reduce((a, s) => a + s.duration, 0) / 60);
+    const d = `S${streak}W${sessions.length}M${totalMin}`;
+    const locCount = new Set(sessions.filter(s => s.location).map(s => `${s.location.lat},${s.location.lng}`)).size;
     return {
-      title: '来看我的噗噗地图！加入一起打卡吧 🗺️',
-      path: `/pages/map/map?invite=${myCode}`,
+      title: `我的噗噗地图 🗺️ ${locCount}个地点，一起来打卡！`,
+      path: `/pages/map/map?invite=${myCode}&d=${d}`,
       imageUrl: ''
     };
   }

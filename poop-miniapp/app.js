@@ -51,21 +51,11 @@ App({
       // Storage not available, skip onboarding
     }
 
-    // Handle share card params (friend invite / stats sharing)
+    // Handle share card params (friend invite + auto stats sync)
     if (options.query) {
       const q = options.query;
       if (q.invite) {
-        this._handleInvite(q.invite);
-      }
-      if (q.stats) {
-        try {
-          const stats = JSON.parse(decodeURIComponent(q.stats));
-          if (stats.code && stats.data) {
-            store.updateFriendStats(stats.code, stats.data);
-          }
-        } catch (e) {
-          // Stats data too large for query param, user needs clipboard import
-        }
+        this._handleInvite(q.invite, q.d);
       }
     }
   },
@@ -75,27 +65,48 @@ App({
     if (options && options.query) {
       const q = options.query;
       if (q.invite) {
-        this._handleInvite(q.invite);
+        this._handleInvite(q.invite, q.d);
       }
     }
     // Also process any pending invite stored from earlier
     this._processPendingInvite();
   },
 
-  // 一键添加好友：处理邀请链接中的邀请码
-  _handleInvite(code) {
+  // 一键添加好友 + 自动同步数据
+  // compactStats: "S5W12M340" → streak=5, weekCount=12, totalMin=340
+  _handleInvite(code, compactStats) {
     const myCode = store.getMyCode();
     if (code === myCode) {
       wx.showToast({ title: '这是你自己的邀请码', icon: 'none' });
       return;
     }
+    // Parse compact stats from URL (S=streak, W=weekCount, M=totalMin)
+    let stats = null;
+    if (compactStats) {
+      const m = compactStats.match(/S(\d+)W(\d+)M(\d+)/);
+      if (m) {
+        stats = { streak: parseInt(m[1]), weekCount: parseInt(m[2]), totalMin: parseInt(m[3]) };
+      }
+    }
+
     const existing = store.getFriends();
     if (existing[code]) {
-      wx.showToast({ title: '该好友已在列表中', icon: 'none' });
+      // 好友已存在，只更新数据
+      if (stats) {
+        store.updateFriendStats(code, stats);
+        wx.showToast({ title: '好友数据已自动更新！', icon: 'success' });
+      } else {
+        wx.showToast({ title: '该好友已在列表中', icon: 'none' });
+      }
       return;
     }
     store.addFriend(code, '噗友' + code);
-    wx.showToast({ title: '已添加噗友！', icon: 'success' });
+    if (stats) {
+      store.updateFriendStats(code, stats);
+      wx.showToast({ title: '已添加噗友并同步数据！', icon: 'success' });
+    } else {
+      wx.showToast({ title: '已添加噗友！', icon: 'success' });
+    }
   },
 
   // 处理旧版遗留的 _pending_invite（兼容）

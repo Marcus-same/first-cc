@@ -152,9 +152,13 @@ Page({
   },
 
   onShareAppMessage() {
+    const sessions = store.getSessions(7);
+    const streak = store.getStreak();
+    const totalMin = Math.floor(sessions.reduce((a, s) => a + s.duration, 0) / 60);
+    const d = `S${streak}W${sessions.length}M${totalMin}`;
     return {
-      title: `加入我的噗友战队！邀请码：${this.data.myCode}`,
-      path: `/pages/squad/squad?invite=${this.data.myCode}`,
+      title: `加入我的噗友战队！🔥${streak}天 周${sessions.length}次`,
+      path: `/pages/squad/squad?invite=${this.data.myCode}&d=${d}`,
       imageUrl: ''
     };
   },
