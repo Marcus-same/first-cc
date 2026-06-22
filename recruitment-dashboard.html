@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=480">
+<title>新人营招聘日报</title>
+<style>
+:root {
+  --bg:#f0f2f5; --card:#fff; --text:#1e293b; --muted:#94a3b8;
+  --teach:#4a6cf7; --region:#10b981; --tech:#8b5cf6;
+  --amber:#f59e0b; --cyan:#06b6d4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);display:flex;justify-content:center;padding:16px}
+
+/* page container */
+.page{display:none}
+.page.active{display:block}
+.card{background:var(--card);border-radius:16px;padding:20px 24px;width:440px;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+
+/* header */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.header h1{font-size:1.1rem;font-weight:800}
+.header .date{font-size:.78rem;color:var(--muted)}
+
+/* camp cards */
+.camps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.camp{border-radius:12px;padding:12px 14px;text-align:center}
+.camp.c1{background:#fffbeb;border:1px solid #fde68a}
+.camp.c2{background:#ecfeff;border:1px solid #a5f3fc}
+.camp .camp-date{font-size:.68rem;color:var(--muted);margin-bottom:1px}
+.camp .camp-num{font-size:2.2rem;font-weight:900;line-height:1.1}
+.camp .camp-label{font-size:.68rem;color:var(--muted)}
+.camp .camp-split{display:flex;justify-content:center;gap:8px;margin-top:5px;font-size:.68rem;font-weight:700}
+.split-t{color:var(--teach)}.split-r{color:var(--region)}.split-x{color:var(--tech)}
+
+/* delivery table (page 1) */
+.delivery{margin-bottom:14px}
+.delivery .sec-title{font-size:.78rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.delivery table{width:100%;border-collapse:collapse;font-size:.73rem}
+.delivery th{font-weight:600;color:var(--muted);padding:3px 0;text-align:center;font-size:.65rem}
+.delivery th:first-child{text-align:left;padding-left:4px}
+.delivery td{padding:4px 0;text-align:center;font-weight:600}
+.delivery td:first-child{text-align:left;font-weight:700;padding-left:4px}
+.delivery td.zero{color:#d1d5db}
+.delivery tr.total-row td{border-top:1px solid #e2e8f0;font-size:.73rem}
+.delivery tr.total-row td:first-child{color:var(--muted)}
+
+/* actions */
+.actions{display:flex;gap:8px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.btn{padding:6px 14px;border-radius:8px;border:none;cursor:pointer;font-size:.73rem;font-weight:600;white-space:nowrap}
+.btn-a{background:var(--teach);color:#fff}
+.btn-b{background:#e2e8f0;color:var(--text)}
+.btn-c{background:#fee2e2;color:#dc2626}
+.btn-d{background:#ede9fe;color:var(--tech)}
+.foot{text-align:center;font-size:.63rem;color:var(--muted)}
+
+/* funnel page */
+.funnel-page .back{display:flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;color:var(--teach);cursor:pointer;margin-bottom:12px;border:none;background:none;font-family:inherit}
+.funnel-page .funnel-block{margin-bottom:14px}
+.funnel-page .funnel-block h3{font-size:.82rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.funnel-page .funnel-block h3 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.funnel-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.funnel-row .flbl{width:36px;font-size:.7rem;font-weight:600;text-align:right;color:var(--muted)}
+.funnel-row .fnum{width:28px;font-size:.75rem;font-weight:700;text-align:right}
+.funnel-row .fbar{flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+.funnel-row .fbar .ff{height:100%;border-radius:4px;transition:width .3s}
+.ff-t{background:linear-gradient(90deg,#667eea,#764ba2)}
+.ff-r{background:linear-gradient(90deg,#10b981,#34d399)}
+.ff-x{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+
+/* modals */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99;justify-content:center;align-items:center}
+.modal.on{display:flex}
+.modal .box{background:#fff;border-radius:16px;padding:22px;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.modal .box h2{font-size:.95rem;margin-bottom:14px}
+.modal .box .biz-group{margin-bottom:12px}
+.modal .box .biz-group h3{font-size:.78rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.modal .box .biz-group h3 .dot{width:8px;height:8px;border-radius:50%}
+.modal .row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.modal .row .lbl{width:38px;font-size:.73rem;font-weight:600;text-align:right;color:var(--muted)}
+.modal .row input[type=number]{width:52px;padding:4px 6px;border:1px solid #e0e4ea;border-radius:6px;text-align:center;font-size:.78rem}
+.modal .row input[type=date]{padding:4px 8px;border:1px solid #e0e4ea;border-radius:6px;font-size:.78rem;font-family:inherit}
+.modal .row input:focus{outline:none;border-color:var(--teach)}
+.modal .btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.modal .hint{font-size:.68rem;color:var(--muted);margin-top:6px;padding:6px 10px;background:#f8fafc;border-radius:6px}
+
+.toast{position:fixed;top:12px;right:12px;padding:8px 16px;border-radius:8px;color:#fff;font-size:.78rem;font-weight:600;z-index:999;animation:in .3s}
+.toast.ok{background:#10b981}.toast.err{background:#ef4444}
+@keyframes in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- ═══ PAGE 1: 日报首页 ═══ -->
+<div class="page active" id="page1">
+  <div class="card">
+    <div class="header">
+      <h1>📋 新人营 · 招聘交付日报</h1>
+      <span class="date" id="todayLabel"></span>
+    </div>
+    <div class="camps" id="campCards"></div>
+    <div class="delivery" id="deliveryTable"></div>
+    <div class="actions">
+      <button class="btn btn-a" onclick="openEntryModal()">+ 录入今日</button>
+      <button class="btn btn-b" onclick="exportCSV()">导出</button>
+      <button class="btn btn-d" onclick="switchPage(2)">📊 漏斗</button>
+      <button class="btn btn-c" onclick="resetData()">清空</button>
+    </div>
+    <div class="foot" id="updateFoot"></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 2: 漏斗页 ═══ -->
+<div class="page funnel-page" id="page2">
+  <div class="card">
+    <button class="back" onclick="switchPage(1)">← 返回日报</button>
+    <div class="header"><h1>📊 招聘漏斗</h1><span class="date" id="todayLabel2"></span></div>
+    <div id="funnelContent"></div>
+    <div class="foot" style="margin-top:8px;" id="funnelFoot"></div>
+  </div>
+</div>
+
+<!-- ═══ 录入弹窗 ═══ -->
+<div class="modal" id="entryModal">
+  <div class="box">
+    <h2>📝 录入数据</h2>
+    <label style="font-size:.75rem;color:var(--muted);">日期：<input type="date" id="entryDate" style="padding:4px 8px;border:1px solid #e0e4ea;border-radius:6px;font-family:inherit;font-size:.78rem;"></label>
+    <div id="modalBiz"></div>
+    <div class="btn-row">
+      <button class="btn btn-b" onclick="closeEntryModal()">取消</button>
+      <button class="btn btn-a" onclick="saveEntry()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 入职日期确认弹窗 ═══ -->
+<div class="modal" id="joinDateModal">
+  <div class="box">
+    <h2>📅 确认入职日期</h2>
+    <p style="font-size:.73rem;color:var(--muted);margin-bottom:10px;">以下业务线今日有入职，请确认可入职日期（用于分配新人营期数）</p>
+    <div id="joinDateFields"></div>
+    <div class="hint">💡 ≤6/22 归第一期 · 6/23~7/20 归第二期 · 超出两期范围不归入任何一期</div>
+    <div class="btn-row">
+      <button class="btn btn-b" onclick="cancelJoinDate()">跳过（不记录入职日期）</button>
+      <button class="btn btn-a" onclick="confirmJoinDate()">确认并保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+const BIZ=['教研','区域','技术'];
+const STAGES=['推荐','邀约','初试','复试','offer','入职'];
+const KEYS=['rec','invite','first','second','offer','join'];
+const C1='2026-06-22', C2='2026-07-20';
+const COLORS={教研:'#4a6cf7',区域:'#10b981',技术:'#8b5cf6'};
+const KEY='rd_data';
+
+// ── data ──
+function ld(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):{e:[]}}catch(e){return{e:[]}}}
+function sv(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function t(msg,ok=true){const e=document.createElement('div');e.className='toast '+(ok?'ok':'err');e.textContent=msg;document.getElementById('toasts').appendChild(e);setTimeout(()=>e.remove(),2000)}
+
+// pending entry data (saved between entry modal → join date modal)
+let _pendingEntry=null;
+
+// ── cumulative: returns {cum, p1, p2} ──
+// p1/p2 now calculated by joinDate (fallback to entry.date for old data)
+function cum(data){
+  const c={}, p1={}, p2={};
+  BIZ.forEach(b=>{c[b]={};p1[b]={};p2[b]={};KEYS.forEach(k=>{c[b][k]=0;p1[b][k]=0;p2[b][k]=0})});
+
+  data.e.forEach(e=>{
+    BIZ.forEach(b=>{
+      if(!e[b])return;
+      KEYS.forEach(k=>{c[b][k]+=(e[b][k]||0)});
+      // Camp assignment: only join matters (offer for reference)
+      const jv=e[b].join||0;
+      if(jv>0){
+        const jd=e[b].joinDate;
+        const d=jd||e.date; // fallback: old data without joinDate uses entry date
+        if(d<=C1){p1[b].join+=jv;p1[b].offer+=(e[b].offer||0)}
+        else if(d<=C2){p2[b].join+=jv;p2[b].offer+=(e[b].offer||0)}
+        // beyond C2 → not counted in either camp
+      }
+    });
+  });
+  return{c,p1,p2};
+}
+
+// ── page switch ──
+function switchPage(n){
+  document.getElementById('page1').classList.toggle('active', n===1);
+  document.getElementById('page2').classList.toggle('active', n===2);
+  if(n===2) renderFunnelPage();
+  if(n===1) renderPage1();
+}
+
+// ═══════════════════════════════
+// PAGE 1: 日报首页
+// ═══════════════════════════════
+function renderPage1(){
+  const data=ld();
+  const{c,p1,p2}=cum(data);
+  document.getElementById('todayLabel').textContent=new Date().toISOString().slice(0,10);
+
+  // camp cards
+  const d1=Math.ceil((new Date(C1)-new Date())/864e5);
+  const d2=Math.ceil((new Date(C2)-new Date())/864e5);
+  [{id:'c1',date:C1,days:d1,p:p1},{id:'c2',date:C2,days:d2,p:p2}].forEach(camp=>{
+    const j=BIZ.map(b=>camp.p[b].join||0);
+    const o=BIZ.map(b=>camp.p[b].offer||0);
+    const tj=j.reduce((a,b)=>a+b,0);
+    const to=o.reduce((a,b)=>a+b,0);
+    const ds=camp.days>0?`距开营 <b>${camp.days}</b> 天`:camp.days===0?'今天开营':'已开营';
+    document.getElementById(camp.id).innerHTML=`
+      <div class="camp-date">${camp.date} · ${ds}</div>
+      <div class="camp-num">${tj}<span style="font-size:.75rem;font-weight:500;color:#94a3b8;">人</span></div>
+      <div class="camp-label">可参加（offer ${to}人）</div>
+      <div class="camp-split">
+        <span class="split-t">教研 ${j[0]}</span>
+        <span class="split-r">区域 ${j[1]}</span>
+        <span class="split-x">技术 ${j[2]}</span>
+      </div>`;
+  });
+
+  // delivery table
+  let thtml='<div class="sec-title">累计交付进度</div><table><thead><tr><th></th>'+STAGES.map(s=>`<th>${s}</th>`).join('')+'</tr></thead><tbody>';
+  BIZ.forEach(b=>{
+    thtml+=`<tr><td style="color:${COLORS[b]}">${b}</td>`;
+    STAGES.forEach((_,i)=>{
+      const v=c[b][KEYS[i]];
+      thtml+=`<td${v===0?' class="zero"':''}>${v}</td>`;
+    });
+    thtml+='</tr>';
+  });
+  // totals row
+  thtml+='<tr class="total-row"><td>合计</td>';
+  STAGES.forEach((_,i)=>{
+    const sum=BIZ.reduce((a,b)=>a+(c[b][KEYS[i]]||0),0);
+    thtml+=`<td>${sum||'-'}</td>`;
+  });
+  thtml+='</tr></tbody></table>';
+  document.getElementById('deliveryTable').innerHTML=thtml;
+
+  // footer
+  document.getElementById('updateFoot').textContent=data.e.length?`共 ${data.e.length} 天记录 · 最后更新 ${data.e[data.e.length-1].date}`:'暂无数据，点击「+ 录入今日」开始';
+}
+
+// ═══════════════════════════════
+// PAGE 2: 漏斗页
+// ═══════════════════════════════
+function renderFunnelPage(){
+  const data=ld();
+  const{c}=cum(data);
+  document.getElementById('todayLabel2').textContent=new Date().toISOString().slice(0,10);
+
+  const allVals=BIZ.flatMap(b=>STAGES.map((_,i)=>c[b][KEYS[i]]));
+  const max=Math.max(...allVals,1);
+
+  let html='';
+  BIZ.forEach(b=>{
+    html+=`<div class="funnel-block"><h3><span class="dot" style="background:${COLORS[b]}"></span>${b}</h3>`;
+    STAGES.forEach((s,i)=>{
+      const v=c[b][KEYS[i]];
+      const pct=Math.round(v/max*100);
+      const cls={'教研':'ff-t','区域':'ff-r','技术':'ff-x'}[b];
+      html+=`<div class="funnel-row"><span class="flbl">${s}</span><span class="fnum">${v}</span><span style="font-size:.65rem;color:#cbd5e1;">人</span><div class="fbar"><div class="ff ${cls}" style="width:${pct}%"></div></div></div>`;
+    });
+    html+='</div>';
+  });
+  document.getElementById('funnelContent').innerHTML=html;
+  document.getElementById('funnelFoot').textContent=data.e.length?`共 ${data.e.length} 天记录 · 最后更新 ${data.e[data.e.length-1].date}`:'暂无数据';
+}
+
+// ═══════════════════════════════
+// ENTRY MODAL
+// ═══════════════════════════════
+function openEntryModal(date){
+  document.getElementById('entryDate').value=date||new Date().toISOString().slice(0,10);
+  const data=ld();
+  const d=document.getElementById('entryDate').value;
+  const entry=data.e.find(e=>e.date===d);
+  let html='';
+  BIZ.forEach(b=>{
+    html+=`<div class="biz-group"><h3><span class="dot" style="background:${COLORS[b]}"></span>${b}</h3>`;
+    STAGES.forEach((s,j)=>{
+      const v=entry&&entry[b]?entry[b][KEYS[j]]:'';
+      html+=`<div class="row"><span class="lbl">${s}</span><input type="number" min="0" value="${v||''}" placeholder="0" data-biz="${b}" data-key="${KEYS[j]}"><span style="font-size:.68rem;color:#94a3b8;">人</span></div>`;
+    });
+    html+='</div>';
+  });
+  document.getElementById('modalBiz').innerHTML=html;
+  document.getElementById('entryModal').classList.add('on');
+}
+
+function closeEntryModal(){
+  document.getElementById('entryModal').classList.remove('on');
+  _pendingEntry=null;
+}
+
+function saveEntry(){
+  // 1. collect entry data from form
+  const date=document.getElementById('entryDate').value;
+  const entry={date};
+  let hasJoin=false;
+  const joinCounts={};
+  BIZ.forEach(b=>{
+    entry[b]={};
+    KEYS.forEach(k=>{
+      const inp=document.querySelector(`[data-biz="${b}"][data-key="${k}"]`);
+      entry[b][k]=parseInt(inp?.value)||0;
+    });
+    if(entry[b].join>0){hasJoin=true;joinCounts[b]=entry[b].join}
+  });
+
+  // 2. if join > 0 for any biz, pop join date modal first
+  if(hasJoin){
+    _pendingEntry=entry;
+    closeEntryModal();
+    openJoinDateModal(joinCounts);
+    return;
+  }
+
+  // 3. no join, save directly
+  doSave(entry);
+}
+
+function doSave(entry){
+  // Cleanup: remove joinDate when join is 0
+  BIZ.forEach(b=>{if(entry[b]&&!entry[b].join)delete entry[b].joinDate});
+  const data=ld();
+  const idx=data.e.findIndex(e=>e.date===entry.date);
+  if(idx>=0)data.e[idx]=entry;else data.e.push(entry);
+  data.e.sort((a,b)=>a.date.localeCompare(b.date));
+  sv(data);
+  t('已保存 ✓');
+  renderPage1();
+  if(document.getElementById('page2').classList.contains('active'))renderFunnelPage();
+}
+
+// ═══════════════════════════════
+// JOIN DATE MODAL
+// ═══════════════════════════════
+function openJoinDateModal(joinCounts){
+  const date=document.getElementById('entryDate').value;
+  let html='';
+  BIZ.forEach(b=>{
+    if(!joinCounts[b])return;
+    html+=`<div class="biz-group"><h3><span class="dot" style="background:${COLORS[b]}"></span>${b} · 入职 ${joinCounts[b]} 人</h3>`;
+    html+=`<div class="row"><span class="lbl" style="width:auto;">可入职日期</span><input type="date" value="${date}" data-joindate-biz="${b}" style="width:auto;"></div>`;
+    html+='</div>';
+  });
+  document.getElementById('joinDateFields').innerHTML=html;
+  document.getElementById('joinDateModal').classList.add('on');
+  // focus first date input
+  const first=document.querySelector('[data-joindate-biz]');
+  if(first)setTimeout(()=>first.focus(),100);
+}
+
+function confirmJoinDate(){
+  if(!_pendingEntry){closeJoinDateModal();return}
+  // Attach joinDate to each biz that has join>0
+  BIZ.forEach(b=>{
+    if(!_pendingEntry[b]||_pendingEntry[b].join<=0)return;
+    const inp=document.querySelector(`[data-joindate-biz="${b}"]`);
+    _pendingEntry[b].joinDate=inp?inp.value:'';
+  });
+  doSave(_pendingEntry);
+  _pendingEntry=null;
+  closeJoinDateModal();
+}
+
+function cancelJoinDate(){
+  // Save without joinDate (will fallback to entry.date for camp calc)
+  if(_pendingEntry){
+    doSave(_pendingEntry);
+    _pendingEntry=null;
+  }
+  closeJoinDateModal();
+}
+
+function closeJoinDateModal(){
+  document.getElementById('joinDateModal').classList.remove('on');
+}
+
+// ═══════════════════════════════
+// CSV export / import
+// ═══════════════════════════════
+function exportCSV(){
+  const data=ld();
+  if(!data.e.length){t('无数据','err');return}
+  const h=['日期','业务线',...STAGES,'可入职日期'].join(',');
+  const rows=[];
+  data.e.forEach(e=>{BIZ.forEach(b=>{const v=KEYS.map(k=>e[b]?.[k]||0);rows.push([e.date,b,...v,e[b]?.joinDate||''].join(','))})});
+  const csv='﻿'+h+'\n'+rows.join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`招聘日报_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  t('已导出');
+}
+
+// ── reset ──
+function resetData(){
+  if(!confirm('清空全部数据？不可恢复'))return;
+  localStorage.removeItem(KEY);t('已清空');
+  renderPage1();
+  if(document.getElementById('page2').classList.contains('active'))renderFunnelPage();
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+(function(){
+  // camp card containers
+  document.getElementById('campCards').innerHTML='<div class="camp c1" id="c1"></div><div class="camp c2" id="c2"></div>';
+
+  // close modals on overlay click
+  document.querySelectorAll('.modal').forEach(m=>{
+    m.addEventListener('click',function(e){if(e.target===this){this.classList.remove('on');_pendingEntry=null}});
+  });
+
+  // keyboard
+  document.addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.key==='Enter'){
+      e.preventDefault();
+      if(document.getElementById('joinDateModal').classList.contains('on')) confirmJoinDate();
+      else if(document.getElementById('entryModal').classList.contains('on')) saveEntry();
+      else openEntryModal();
+    }
+    if(e.key==='Escape'){
+      closeEntryModal();
+      closeJoinDateModal();
+    }
+  });
+
+  renderPage1();
+})();
+</script>
+</body>
+</html>
