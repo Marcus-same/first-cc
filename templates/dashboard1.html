@@ -679,15 +679,15 @@ function importJSON(){
     const file=e.target.files[0];if(!file)return;const text=await file.text();
     try{
       const raw=JSON.parse(text);
+      // 兼容两种格式
       const data=raw.data||raw;
       const depts=raw.depts;
       if(!data||typeof data!=='object')throw new Error('格式错误');
-      if(!confirm(`将导入 ${Object.keys(data).length} 天数据到飞书 Base，确定吗？`))return;
+      if(!confirm(`将导入 ${Object.keys(data).length} 天数据，确定吗？`))return;
       setSync('syncing');
-      // 使用 migrate API
-      const r=await apiPut('/api/migrate',data);
+      const r=await apiPut('/api/import',raw);
       if(depts&&Array.isArray(depts)){saveDepts(depts);refreshDeptsCache();}
-      toast(`已导入 ${r.funnel_records||0} 条`,'ok');
+      toast(`已导入 ${r.imported||Object.keys(data).length} 天数据`,'ok');
       loadAllData();
     }catch(err){toast('导入失败: '+err.message,'err')}
   };inp.click();

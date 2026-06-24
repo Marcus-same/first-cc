@@ -112,6 +112,46 @@ def api_export():
     data = db.export_all()
     return jsonify({"ok": True, "data": data, "count": len(data)})
 
+# ── API: Import ─────────────────────────────────────────
+
+@app.route('/api/import', methods=['POST'])
+def api_import():
+    """导入 JSON 数据到 SQLite"""
+    body = request.json
+    if not body or not isinstance(body, dict):
+        return jsonify({"ok": False, "error": "请上传 JSON 文件"}), 400
+
+    # 兼容两种格式: {data: {date: {funnel, progress, notes}}} 或直接 {date: {funnel, progress, notes}}
+    data = body.get("data", body)
+
+    if not isinstance(data, dict):
+        return jsonify({"ok": False, "error": "数据格式错误"}), 400
+
+    total = 0
+    for date_str, day_data in data.items():
+        if not isinstance(day_data, dict):
+            continue
+        # 导入漏斗
+        funnel = day_data.get("funnel", {})
+        for dept, vals in funnel.items():
+            if any(vals.get(k, 0) for k in db.STAGE_KEYS):
+                db.funnel_upsert(date_str, dept, vals, "数据导入")
+
+        # 导入进度
+        progress = day_data.get("progress", {})
+        for dept, items in progress.items():
+            if items:
+                db.progress_upsert(date_str, dept, items, "数据导入")
+
+        # 导入备注
+        notes = day_data.get("notes", "")
+        if notes:
+            db.notes_upsert(date_str, str(notes), "#111111", "#ffffff", "数据导入")
+
+        total += 1
+
+    return jsonify({"ok": True, "imported": total})
+
 # ── API: Camp (v2) ──────────────────────────────────────
 
 @app.route('/api/v2/entries', methods=['GET'])
