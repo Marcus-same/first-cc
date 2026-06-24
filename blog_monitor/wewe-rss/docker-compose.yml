@@ -1,0 +1,17 @@
+services:
+  wewe-rss:
+    image: cooderl/wewe-rss-sqlite:latest
+    container_name: wewe-rss
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_TYPE=sqlite
+      - AUTH_CODE=meng2024
+      - FEED_MODE=fulltext
+      - CRON_EXPRESSION=35 8,20 * * *
+      - MAX_REQUEST_PER_MINUTE=60
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    volumes:
+      - ./data:/app/data

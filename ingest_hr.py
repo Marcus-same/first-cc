@@ -69,7 +69,7 @@ ALIYUN_ASR_APP_KEY = os.environ.get("ALIYUN_ASR_APP_KEY", "")
 ALIYUN_ASR_ACCESS_KEY_ID = os.environ.get("ALIYUN_ASR_ACCESS_KEY_ID", "")
 ALIYUN_ASR_ACCESS_KEY_SECRET = os.environ.get("ALIYUN_ASR_ACCESS_KEY_SECRET", "")
 
-ASR_ENGINE = os.environ.get("ASR_ENGINE", "lark")  # lark(飞书妙记) | whisper | local-whisper
+ASR_ENGINE = os.environ.get("ASR_ENGINE", "local-whisper")  # local-whisper(本地/默认) | lark(飞书妙记) | whisper
 
 # Playwright 持久化登录状态目录（小红书）
 PLAYWRIGHT_STATE_DIR = Path(os.environ.get("PLAYWRIGHT_STATE_DIR",
@@ -80,15 +80,43 @@ PLAYWRIGHT_STATE_FILE = PLAYWRIGHT_STATE_DIR / "auth_state.json"
 DAEMON_POLL_INTERVAL = int(os.environ.get("DAEMON_POLL_INTERVAL", "60"))
 
 TAG_POOL = [
-    # 职场成长
-    "沟通表达", "效率工具", "职业规划", "职场关系",
-    # HR知识成长
+    # HR专业知识
     "招聘面试", "培训发展", "薪酬绩效", "员工关系", "组织发展", "劳动法务",
+    # 个人成长
+    "沟通表达", "职业规划", "职场关系",
+    # 效率工具 & AI
+    "AI工具", "Prompt技巧", "自动化", "办公技能", "效率工具",
+    # 技术
+    "编程开发", "产品设计", "数据分析", "技术架构", "设计灵感",
+    # 阅读 & 生活
+    "读书笔记", "生活思考", "创业商业", "健康",
 ]
 
 SOURCE_POOL = ["视频转写", "网页提取", "小红书", "飞书文档", "手动录入"]
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+
+# 标签 → 知识库目录映射
+TAG_TO_DIR = {
+    "招聘面试": "hr/招聘面试",
+    "培训发展": "hr/培训发展",
+    "薪酬绩效": "hr/薪酬绩效",
+    "员工关系": "hr/员工关系",
+    "组织发展": "hr/组织发展",
+    "劳动法务": "hr/劳动法务",
+    "沟通表达": "growth/沟通表达",
+    "职业规划": "growth/职业规划",
+    "职场关系": "growth/职场关系",
+    "AI工具": "tools/AI工具",
+    "Prompt技巧": "tools/AI工具",
+    "设计灵感": "tools/AI工具",
+    "技术架构": "tools/AI工具",
+    "自动化": "tools/自动化脚本",
+    "效率工具": "tools/办公技能",
+    "办公技能": "tools/办公技能",
+}
+
+KB_ROOT = Path(__file__).parent / "knowledge-base"
 
 # ============================================================
 # 文件解析
@@ -495,7 +523,8 @@ def _fetch_xhs_via_curl(url: str, note_id: str) -> tuple[str, str]:
 
     return ("", "")
 
-def ingest_xiaohongshu(full_url: str, review: bool, skip_confirm: bool) -> bool:
+def ingest_xiaohongshu(full_url: str, review: bool, skip_confirm: bool,
+                       local: bool = False, category: str = "") -> bool:
     """小红书全流程：提取文字 → 下载视频转写 → AI分析 → 入库"""
     print(f"\n📕 小红书笔记: {full_url}")
 
@@ -526,8 +555,290 @@ def ingest_xiaohongshu(full_url: str, review: bool, skip_confirm: bool) -> bool:
     # 4. 正常流程：AI分析 → 预览 → 查重 → 入库
     return process_and_write(
         title_hint="", text=combined, source="小红书", url_link=full_url,
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
+
+# ============================================================
+# 抖音内容提取（Playwright 渲染）
+# ============================================================
+def fetch_douyin_content(url: str) -> tuple[str, str]:
+    """
+    用 Playwright 打开抖音页面，提取文本内容 + 拦截视频下载链接。
+    支持视频页 (video/) 和图文页 (article/ / note/)。
+    返回 (text_content, video_download_url_or_cookiefile)
+    """
+    print("  🎵 抖音内容提取...")
+
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("  ⚠️ 需要 playwright: pip install playwright && playwright install chromium")
+        return "", ""
+
+    try:
+        video_url = ""
+        text_parts = []
+
+        with sync_playwright() as p:
+            user_data_dir = os.path.join(tempfile.gettempdir(), 'playwright_douyin_profile')
+            os.makedirs(user_data_dir, exist_ok=True)
+
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=user_data_dir,
+                channel="chrome",
+                headless=True,
+                args=_STEALTH_ARGS,
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                viewport={"width": 1920, "height": 1080},
+                locale="zh-CN", timezone_id="Asia/Shanghai",
+            )
+            context.add_init_script(_STEALTH_INIT_SCRIPT)
+            page = context.new_page()
+
+            # Intercept video network responses
+            network_videos = []
+            def on_response(response):
+                try:
+                    ct = response.headers.get('content-type', '')
+                    if 'video/' in ct:
+                        cl = int(response.headers.get('content-length', 0))
+                        # Only keep substantial videos (>100KB), skip tiny UI assets
+                        if cl > 100000:
+                            network_videos.append((cl, response.url))
+                except Exception:
+                    pass
+            page.on('response', on_response)
+
+            # Navigate — use 'load' not 'networkidle', Douyin pages never go idle
+            try:
+                page.goto(url, wait_until="load", timeout=20000,
+                          referer="https://www.douyin.com/")
+            except Exception:
+                pass
+            page.wait_for_timeout(6000)
+
+            # Get the real URL after redirects (v.douyin.com → www.douyin.com/...)
+            final_url = page.url
+            print(f"  📍 最终页面: {final_url[:100]}")
+
+            # --- Extract video URL from DOM ---
+            # Douyin serves real videos via <video> elements, not direct network responses
+            try:
+                video_info = page.evaluate('''() => {
+                    const videos = document.querySelectorAll('video');
+                    for (const v of videos) {
+                        if (v.duration > 1) {  // Real content video, not UI decoration
+                            const src = v.currentSrc || v.src;
+                            const sources = Array.from(v.querySelectorAll('source')).map(s => s.src);
+                            return {src, sources, duration: v.duration};
+                        }
+                    }
+                    return null;
+                }''')
+                if video_info and video_info.get('src'):
+                    video_url = video_info['src']
+                    print(f"  🎬 从DOM获取视频: {video_url[:80]}... ({video_info.get('duration', 0):.0f}s)")
+                elif video_info and video_info.get('sources'):
+                    video_url = video_info['sources'][0]
+                    print(f"  🎬 从DOM获取视频(source): {video_url[:80]}...")
+            except Exception:
+                pass
+
+            # Fallback to network interception (filter for largest video)
+            if not video_url and network_videos:
+                network_videos.sort(reverse=True)
+                video_url = network_videos[0][1]
+                print(f"  🎬 从网络拦截获取视频: {video_url[:80]}...")
+
+            # --- Extract text ---
+            is_article = '/article/' in final_url or '/note/' in final_url
+
+            # Page title
+            try:
+                title = page.title()
+                if title and title not in ('抖音', '验证中间页', ''):
+                    # Clean up encoding artifacts from console
+                    text_parts.append(title)
+            except Exception:
+                pass
+
+            if is_article:
+                # Article/Note page — extract from article body
+                try:
+                    for sel in ['article', '[class*="article"]', '[class*="content"]',
+                                 '[class*="note"]', '[class*="desc"]', '.rich-content',
+                                 '[class*="text"]', 'main', '#article-root']:
+                        for el in page.query_selector_all(sel):
+                            t = el.inner_text().strip()
+                            if t and len(t) > 20:
+                                text_parts.append(t)
+                except Exception:
+                    pass
+            else:
+                # Video page — extract description
+                try:
+                    for sel in ['[data-e2e="video-desc"]', '[class*="video-info"] [class*="desc"]',
+                                 '[class*="desc"]', '.video-desc', '[class*="title"]']:
+                        for el in page.query_selector_all(sel):
+                            t = el.inner_text().strip()
+                            if t and len(t) > 5:
+                                text_parts.append(t)
+                except Exception:
+                    pass
+
+            # Fallback: full body text
+            if not text_parts:
+                try:
+                    body = page.inner_text('body')
+                    lines = [l.strip() for l in body.split('\n') if l.strip() and len(l) > 10]
+                    lines = [l for l in lines if not any(skip in l for skip in
+                        ['登录', '打开APP', '验证', 'captcha', 'function ', 'window.',
+                         'document.', '请先', '验证码', '滑块', '刷新重试'])]
+                    if lines:
+                        text_parts.append('\n'.join(lines[:80]))
+                except Exception:
+                    pass
+
+            # Save cookies for yt-dlp fallback
+            cookiefile = os.path.join(tempfile.gettempdir(), 'douyin_cookies.json')
+            with open(cookiefile, 'w') as f:
+                json.dump(context.cookies(), f)
+
+            context.close()
+
+        text = '\n\n'.join(text_parts)
+        print(f"  📄 提取文本: {len(text)} 字符" if text else "  ⚠️ 未提取到文本")
+
+        if video_url:
+            return text, video_url
+        else:
+            return text, cookiefile
+
+    except Exception as e:
+        print(f"  ⚠️ 抖音提取失败: {e}")
+        return "", ""
+
+
+def _download_douyin_video(video_url: str, output_dir: str) -> str:
+    """Download video from intercepted URL, return audio file path"""
+    import requests
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://www.douyin.com/',
+    }
+    print(f"  📥 下载视频...")
+    video_path = os.path.join(output_dir, "video.mp4")
+    r = requests.get(video_url, headers=headers, stream=True, timeout=60)
+    r.raise_for_status()
+    total = int(r.headers.get('content-length', 0))
+    with open(video_path, 'wb') as f:
+        written = 0
+        for chunk in r.iter_content(chunk_size=8192):
+            f.write(chunk)
+            written += len(chunk)
+    print(f"  ✅ 下载完成: {written/1024/1024:.1f}MB")
+
+    # Extract audio with ffmpeg
+    audio_path = os.path.join(output_dir, "audio.mp3")
+    subprocess.run([
+        "ffmpeg", "-y", "-i", video_path, "-vn", "-acodec", "libmp3lame",
+        "-q:a", "2", audio_path
+    ], capture_output=True, check=True)
+    print(f"  ✅ 音频提取完成")
+    return audio_path
+
+
+def _cookies_json_to_netscape(cookiefile_json: str) -> str:
+    """Convert Playwright cookies JSON to Netscape format for yt-dlp"""
+    import time
+    with open(cookiefile_json) as f:
+        cookies = json.load(f)
+    path = cookiefile_json.replace('.json', '.txt')
+    future = int(time.time()) + 86400 * 365
+    with open(path, 'w') as f:
+        f.write('# Netscape HTTP Cookie File\n\n')
+        for c in cookies:
+            domain = c.get('domain', '')
+            if not domain:
+                continue
+            name = c.get('name', '')
+            if not name:
+                continue
+            expires = c.get('expires', -1)
+            if expires is None or expires < 0:
+                expires = future
+            else:
+                expires = int(expires)
+            # Ensure domain starts with dot for proper matching
+            if not domain.startswith('.'):
+                domain = '.' + domain
+            f.write(f"{domain}\tTRUE\t{c.get('path','/')}\tFALSE\t{expires}\t{name}\t{c.get('value','')}\n")
+    return path
+
+
+def ingest_douyin(url: str, review: bool, skip_confirm: bool,
+                  local: bool = False, category: str = "") -> bool:
+    """抖音内容入库：Playwright 提取文本 + 拦截视频链接 → 下载 → 转写"""
+    print(f"\n🎵 抖音: {url}")
+
+    # Step 1: Extract text + intercept video URL via Playwright
+    page_text, video_url = fetch_douyin_content(url)
+    text = page_text or ""
+
+    # Step 2: If video URL intercepted, download and transcribe
+    if video_url and video_url.startswith("http"):
+        tmpdir = None
+        try:
+            tmpdir = tempfile.mkdtemp(prefix="dy_ingest_", dir=os.getcwd())
+            audio_path = _download_douyin_video(video_url, tmpdir)
+            transcription = transcribe_audio(audio_path)
+            if transcription and _is_transcription_valid(transcription):
+                text = (text + "\n\n=== 视频转写 ===\n\n" + transcription) if text else transcription
+            elif transcription:
+                print("  ⚠️ 转写质量低（可能为背景音乐），已跳过")
+            else:
+                print("  ⚠️ 转写结果为空")
+        except Exception as e:
+            print(f"  ⚠️ 视频下载/转写失败: {e}")
+        finally:
+            if tmpdir:
+                shutil.rmtree(tmpdir, ignore_errors=True)
+    elif video_url:
+        # Got a cookiefile path instead of video URL — fallback to yt-dlp
+        try:
+            netscape_file = _cookies_json_to_netscape(video_url)
+            import yt_dlp
+            tmpdir = tempfile.mkdtemp(prefix="dy_ingest_", dir=os.getcwd())
+            ydl_opts = {
+                "format": "bestaudio/best",
+                "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "192"}],
+                "outtmpl": os.path.join(tmpdir, "%(title)s.%(ext)s"),
+                "quiet": True, "no_warnings": True,
+                "cookiefile": netscape_file,
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=True)
+                for f in os.listdir(tmpdir):
+                    if f.endswith(".mp3"):
+                        audio_path = os.path.join(tmpdir, f)
+                        transcription = transcribe_audio(audio_path)
+                        if transcription and _is_transcription_valid(transcription):
+                            text = (text + "\n\n=== 视频转写 ===\n\n" + transcription) if text else transcription
+                        break
+            shutil.rmtree(tmpdir, ignore_errors=True)
+        except Exception as e:
+            print(f"  ⚠️ yt-dlp 下载/转写失败: {e}")
+
+    if not text.strip():
+        print("  ❌ 未能提取任何内容")
+        return False
+
+    src = "视频转写" if "/video/" in url else "网页提取"
+    return process_and_write(
+        title_hint="", text=text, source=src, url_link=url,
+        review=review, skip_confirm=skip_confirm, local=local, category=category
+    )
+
 
 # ============================================================
 # 视频 → 音频 → 文字（Whisper API）
@@ -644,6 +955,23 @@ def transcribe_via_lark_minutes(audio_path: str) -> str:
     raise RuntimeError("逐字稿为空")
 
 
+def _is_transcription_valid(text: str, audio_duration: float = 60) -> bool:
+    """检测转写结果是否为音乐幻觉（重复短句、英文词在中文场景等）"""
+    if not text or len(text) < 15:
+        return False
+    # 检测完全重复（如 "Zither Harp Zither Harp..."）
+    words = text.split()
+    if len(words) >= 4:
+        unique_ratio = len(set(words)) / len(words)
+        if unique_ratio < 0.35:
+            return False
+    # 检测纯英文在中文视频中的幻觉（如 "Zither Harp..."）
+    ascii_chars = sum(1 for c in text if ord(c) < 128)
+    if ascii_chars / max(len(text), 1) > 0.5:
+        return False
+    return True
+
+
 def transcribe_audio(audio_path: str) -> str:
     """将音频转为文字，默认使用飞书妙记"""
     engine = ASR_ENGINE
@@ -661,7 +989,7 @@ def transcribe_audio(audio_path: str) -> str:
             device = os.environ.get("WHISPER_DEVICE", "cpu")
             print(f"  📥 加载模型 {model_size}... (首次自动下载)")
             model = WhisperModel(model_size, device=device, compute_type="int8")
-            segments, info = model.transcribe(audio_path)
+            segments, info = model.transcribe(audio_path, language="zh")
             text = " ".join([seg.text for seg in segments])
             if text.strip():
                 print(f"  ✅ 转写完成 ({len(text)} 字符, 语言: {info.language})")
@@ -796,7 +1124,7 @@ def call_deepseek(prompt: str, max_tokens: int = 1200) -> str:
     data = json.dumps({
         "model": "deepseek-chat",
         "messages": [
-            {"role": "system", "content": "你是HR知识管理助手。只返回JSON，不要有其他内容。"},
+            {"role": "system", "content": "你是知识管理助手，擅长信息提炼、分类归纳、结构化整理。只返回JSON，不要有其他内容。"},
             {"role": "user", "content": prompt}
         ],
         "max_tokens": max_tokens,
@@ -821,17 +1149,30 @@ def analyze_hr_content(content: str) -> dict:
     if len(content) > MAX_LEN:
         content = content[:MAX_LEN] + "\n\n[... 内容过长，已截断]"
 
-    prompt = f"""你是一个HR知识管理助手。请分析以下内容，返回JSON（不要有任何其他文字）：
+    prompt = f"""你是一个知识管理助手，负责将各种内容整理为结构化知识卡片。请分析以下内容，严格返回JSON（不要有任何其他文字）：
+
 {{
-  "title": "内容标题（15字以内，概括核心主题）",
-  "organized_content": "整理后的内容（格式统一、简洁精准，保留原文关键信息、要点、步骤、模板等，去除冗余和无关内容。用Markdown组织：标题用##、要点用-、步骤用1.）",
-  "tags": ["标签1", "标签2"],
+  "title": "内容标题（15字以内，精准概括核心主题，不要泛化，要提炼出本文独有的关键词）",
+  "organized_content": "整理后的内容。要求：用Markdown组织，标题用##、要点用-、步骤用1.。保留原文关键数据、方法论、操作步骤、模板框架，去除铺垫、过渡、广告和重复内容。长度控制在原文的30%-50%。",
+  "tags": ["标签1", "标签2", "标签3"],
   "source_type": "来源类型"
 }}
 
-标签必须从以下列表选择1-3个。请精准判断内容属于哪个维度：
-  职场成长（个人能力/职业发展）：沟通表达、效率工具、职业规划、职场关系
-  HR知识成长（专业能力/业务知识）：招聘面试、培训发展、薪酬绩效、员工关系、组织发展、劳动法务
+## 标签选择规则（必选1-3个，从以下列表精确匹配）：
+
+- HR专业知识：招聘面试、培训发展、薪酬绩效、员工关系、组织发展、劳动法务
+- 个人成长：沟通表达、职业规划、职场关系
+- 工具与效率：AI工具、Prompt技巧、自动化、办公技能、效率工具
+- 技术与产品：编程开发、产品设计、数据分析、技术架构、设计灵感
+- 阅读与生活：读书笔记、生活思考、创业商业、健康
+
+判断原则：
+1. 先判断内容属于哪个大类，再选具体标签
+2. 优先选最能概括全文核心的1个标签
+3. 如果内容跨领域（如"用AI做招聘"），选"招聘面试"+"AI工具"
+4. 纯工具教程选"办公技能"或"效率工具"，含AI的选"AI工具"
+5. 个人感悟/随笔选"生活思考"，书籍/文章笔记选"读书笔记"
+
 完整标签列表：{', '.join(TAG_POOL)}
 来源类型必须从以下列表选择1个：{', '.join(SOURCE_POOL)}
 
@@ -1074,6 +1415,72 @@ def write_to_hr_base(title: str, source: str, url_link: str, organized_content: 
         return False
 
 
+def infer_category(tags: list[str], category: str = "") -> str:
+    """从标签推断分类路径"""
+    if category:
+        return category
+    for tag in tags:
+        if tag in TAG_TO_DIR:
+            return TAG_TO_DIR[tag]
+    return ""
+
+
+def write_local_kb(title: str, category: str, tags: list[str], source: str,
+                   organized_content: str, url_link: str, date: str = "") -> str:
+    """写入本地知识卡片 md 文件，返回相对路径"""
+    if not category:
+        category = infer_category(tags)
+    if not category:
+        print("  ⚠️ 无法推断分类路径，请用 --category 指定")
+        return ""
+
+    if not date:
+        date = datetime.now().strftime("%Y-%m-%d")
+
+    # 安全文件名
+    safe_title = re.sub(r'[<>:"/\\|?*]', '-', title)[:40]
+    filename = f"{date}-{safe_title}.md"
+    dir_path = KB_ROOT / category
+    dir_path.mkdir(parents=True, exist_ok=True)
+    filepath = dir_path / filename
+
+    tags_str = ", ".join(tags) if tags else ""
+    importance = "⭐⭐"
+
+    frontmatter = f"""---
+title: {title}
+category: {category}
+tags: [{tags_str}]
+source: {source}
+date: {date}
+status: 已整理
+importance: {importance}
+url: {url_link}
+---
+
+# {title}
+
+## 一句话总结
+
+<用一句话概括核心内容，不超过50字>
+
+## 关键内容
+
+{organized_content}
+
+## 我的思考
+
+<个人批注、行动计划、关联其他知识>
+
+## 相关链接
+
+"""
+    filepath.write_text(frontmatter, encoding='utf-8')
+    rel = filepath.relative_to(KB_ROOT)
+    print(f"  📄 本地: {rel}")
+    return str(rel)
+
+
 # ============================================================
 # Base API 抽象层（Daemon/Sync 模式用）
 # ============================================================
@@ -1119,7 +1526,7 @@ def _parse_record_list(resp: dict) -> list[dict]:
 
 
 def base_get_pending_records(max_records: int = 20) -> list[dict]:
-    """查询 Base 中所有状态=待处理的记录"""
+    """查询 Base 中需处理的记录：待处理、空状态、或有链接且非已完成/处理中"""
     try:
         resp = _run_lark_cli([
             "base", "+record-list",
@@ -1130,12 +1537,15 @@ def base_get_pending_records(max_records: int = 20) -> list[dict]:
         ], timeout=20)
         records = _parse_record_list(resp)
 
-        # 在 Python 侧过滤状态=待处理
         pending = []
         for r in records:
             fields = r.get("fields", {})
             status = fields.get(FIELD_状态, "")
-            if status == VALUE_待处理 or not status:
+            url = fields.get("原始链接", "")
+            # 处理中/已完成跳过，其余有链接就处理
+            if status in (VALUE_处理中, VALUE_已完成):
+                continue
+            if url or status == VALUE_待处理 or not status:
                 pending.append(r)
         return pending
     except Exception as e:
@@ -1246,7 +1656,57 @@ def process_base_record(record: dict) -> bool:
             source = "飞书文档"
             text = fetch_feishu_doc(url)
 
-        elif any(v in url_lower for v in [".mp4", "bilibili.com", "youtube.com", "douyin.com", "v.qq.com"]):
+        elif "douyin.com" in url_lower:
+            source = "抖音"
+            print(f"🎵 抖音内容: {url}")
+            page_text, video_url = fetch_douyin_content(url)
+            text = page_text or ""
+            # Try video download + transcribe from intercepted URL
+            if video_url and video_url.startswith("http"):
+                tmpdir = None
+                try:
+                    tmpdir = tempfile.mkdtemp(prefix="dy_bp_", dir=os.getcwd())
+                    audio_path = _download_douyin_video(video_url, tmpdir)
+                    transcription = transcribe_audio(audio_path)
+                    if transcription and _is_transcription_valid(transcription):
+                        text = (text + "\n\n=== 视频转写 ===\n\n" + transcription) if text else transcription
+                    elif transcription:
+                        print("  ⚠️ 转写质量低（可能为背景音乐），已跳过")
+                except Exception as e:
+                    print(f"  ⚠️ 抖音视频下载/转写失败: {e}")
+                finally:
+                    if tmpdir:
+                        shutil.rmtree(tmpdir, ignore_errors=True)
+            elif video_url:
+                # Cookiefile fallback via yt-dlp
+                try:
+                    netscape_file = _cookies_json_to_netscape(video_url)
+                    import yt_dlp
+                    tmpdir = tempfile.mkdtemp(prefix="dy_bp_", dir=os.getcwd())
+                    ydl_opts = {
+                        "format": "bestaudio/best",
+                        "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3"}],
+                        "outtmpl": os.path.join(tmpdir, "%(title)s.%(ext)s"),
+                        "quiet": True, "no_warnings": True,
+                        "cookiefile": netscape_file,
+                    }
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        info = ydl.extract_info(url, download=True)
+                        for f in os.listdir(tmpdir):
+                            if f.endswith(".mp3"):
+                                transcription = transcribe_audio(os.path.join(tmpdir, f))
+                                if transcription and _is_transcription_valid(transcription):
+                                    text = (text + "\n\n=== 视频转写 ===\n\n" + transcription) if text else transcription
+                                elif transcription:
+                                    print("  ⚠️ 转写质量低（可能为背景音乐），已跳过")
+                                break
+                    shutil.rmtree(tmpdir, ignore_errors=True)
+                except Exception as e:
+                    print(f"  ⚠️ yt-dlp 下载/转写失败: {e}")
+            if not text or not text.strip():
+                raise ValueError("未能提取到任何内容")
+
+        elif any(v in url_lower for v in [".mp4", "bilibili.com", "youtube.com", "v.qq.com"]):
             source = "视频转写"
             text = transcribe_video(url)
 
@@ -1372,7 +1832,8 @@ def run_daemon(poll_interval: int = 60):
 # 入库流程（含预览/查重）
 # ============================================================
 def process_and_write(title_hint: str, text: str, source: str, url_link: str,
-                      review: bool, skip_confirm: bool) -> bool:
+                      review: bool, skip_confirm: bool, local: bool = False,
+                      category: str = "") -> bool:
     """通用处理流程：AI分析 → 可选预览 → 查重 → 入库"""
     print("  🤖 AI 分析...")
     result = analyze_hr_content(text)
@@ -1404,6 +1865,17 @@ def process_and_write(title_hint: str, text: str, source: str, url_link: str,
                 print("  ⏭️ 已跳过")
                 return False
 
+    # 本地输出
+    local_path = ""
+    if local:
+        local_path = write_local_kb(
+            title=final_title, category=category, tags=result["tags"],
+            source=final_source, organized_content=result["organized_content"],
+            url_link=url_link
+        )
+        if not local_path:
+            print("  ⚠️ 本地写入失败，继续入库...")
+
     # 入库
     return write_to_hr_base(
         title=final_title, source=final_source, url_link=url_link,
@@ -1414,7 +1886,8 @@ def process_and_write(title_hint: str, text: str, source: str, url_link: str,
 # ============================================================
 # 各入口处理函数
 # ============================================================
-def ingest_file(file_path: str, review: bool, skip_confirm: bool) -> bool:
+def ingest_file(file_path: str, review: bool, skip_confirm: bool, local: bool = False,
+                category: str = "") -> bool:
     print(f"\n📄 处理: {file_path}")
     if not os.path.exists(file_path):
         print(f"  ❌ 文件不存在"); return False
@@ -1431,10 +1904,11 @@ def ingest_file(file_path: str, review: bool, skip_confirm: bool) -> bool:
 
     return process_and_write(
         title_hint="", text=text, source="手动录入", url_link="",
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
 
-def ingest_folder(folder_path: str, review: bool, skip_confirm: bool) -> dict:
+def ingest_folder(folder_path: str, review: bool, skip_confirm: bool, local: bool = False,
+                  category: str = "") -> dict:
     supported = (".txt", ".md", ".markdown", ".docx", ".pdf")
     files = []
     for root, _, filenames in os.walk(os.path.abspath(folder_path)):
@@ -1448,27 +1922,55 @@ def ingest_folder(folder_path: str, review: bool, skip_confirm: bool) -> dict:
     success = fail = 0
     for i, f in enumerate(files, 1):
         print(f"[{i}/{len(files)}]", end=" ")
-        if ingest_file(f, review=review, skip_confirm=skip_confirm):
+        if ingest_file(f, review=review, skip_confirm=skip_confirm, local=local, category=category):
             success += 1
         else:
             fail += 1
     return {"total": len(files), "success": success, "fail": fail}
 
-def ingest_text(text: str, title: str = "", review: bool = False, skip_confirm: bool = False) -> bool:
+def ingest_text(text: str, title: str = "", review: bool = False, skip_confirm: bool = False,
+                local: bool = False, category: str = "") -> bool:
     print(f"\n📝 处理文本 ({len(text)} 字符)")
     return process_and_write(
         title_hint=title, text=text, source="手动录入", url_link="",
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
 
-def ingest_url(url: str, review: bool, skip_confirm: bool) -> bool:
-    # 小红书链接走专用流水线（浏览器渲染+视频转写）
-    if "xiaohongshu.com" in url.lower():
-        return ingest_xiaohongshu(url, review, skip_confirm)
+def ingest_url(url: str, review: bool, skip_confirm: bool, local: bool = False,
+               category: str = "") -> bool:
+    # 从分享口令中提取干净 URL（如抖音分享文本）
+    url = _clean_url(url)
+    url_lower = url.lower()
+
+    # 小红书链接走专用流水线（含短链 xhslink.com）
+    if "xiaohongshu.com" in url_lower or "xhslink.com" in url_lower:
+        return ingest_xiaohongshu(url, review, skip_confirm, local=local, category=category)
+
+    # 抖音走专用 Playwright 管线
+    if "douyin.com" in url_lower:
+        return ingest_douyin(url, review, skip_confirm, local=local, category=category)
+
+    # 其他视频链接走通用视频转写流水线
+    if any(v in url_lower for v in [".mp4", "bilibili.com", "youtube.com", "v.qq.com"]):
+        return ingest_video(url, review, skip_confirm, local=local, category=category)
+
+    # 飞书文档
+    if "feishu.cn" in url_lower or "larksuite.com" in url_lower:
+        src = "飞书文档"
+        print(f"\n📄 飞书文档: {url}")
+        try:
+            text = fetch_feishu_doc(url)
+        except ValueError as e:
+            print(f"  ❌ {e}")
+            return False
+        if not text.strip():
+            print("  ❌ 未能提取到正文"); return False
+        return process_and_write(
+            title_hint="", text=text, source=src, url_link=url,
+            review=review, skip_confirm=skip_confirm, local=local, category=category
+        )
 
     src = "网页提取"
-    if "mp.weixin.qq.com" in url.lower():
-        src = "网页提取"
     print(f"\n🌐 {url}")
 
     try:
@@ -1482,10 +1984,12 @@ def ingest_url(url: str, review: bool, skip_confirm: bool) -> bool:
 
     return process_and_write(
         title_hint="", text=text, source=src, url_link=url,
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
 
-def ingest_video(url: str, review: bool, skip_confirm: bool) -> bool:
+def ingest_video(url: str, review: bool, skip_confirm: bool, local: bool = False,
+                 category: str = "") -> bool:
+    url = _clean_url(url)
     print(f"\n🎬 视频: {url}")
     src = "小红书" if "xiaohongshu.com" in url.lower() else "视频转写"
 
@@ -1501,10 +2005,11 @@ def ingest_video(url: str, review: bool, skip_confirm: bool) -> bool:
 
     return process_and_write(
         title_hint="", text=text, source=src, url_link=url,
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
 
-def ingest_feishu_doc(url: str, review: bool, skip_confirm: bool) -> bool:
+def ingest_feishu_doc(url: str, review: bool, skip_confirm: bool, local: bool = False,
+                      category: str = "") -> bool:
     print(f"\n📄 飞书文档: {url}")
 
     try:
@@ -1519,7 +2024,7 @@ def ingest_feishu_doc(url: str, review: bool, skip_confirm: bool) -> bool:
 
     return process_and_write(
         title_hint="", text=text, source="飞书文档", url_link=url,
-        review=review, skip_confirm=skip_confirm
+        review=review, skip_confirm=skip_confirm, local=local, category=category
     )
 
 # ============================================================
@@ -1539,6 +2044,8 @@ def main():
     parser.add_argument("--title", help="手动指定标题（配合 --text/--url 使用）")
     parser.add_argument("--review", "-r", action="store_true", help="强制交互式预览模式")
     parser.add_argument("--yes", action="store_true", help="跳过所有确认（批量/定时任务用）")
+    parser.add_argument("--local", action="store_true", help="同步生成本地 Markdown 文件到 knowledge-base/")
+    parser.add_argument("--category", help="本地输出时的分类路径，如 hr/招聘面试")
     parser.add_argument("--poll-interval", type=int, default=DAEMON_POLL_INTERVAL,
                         help=f"Daemon轮询间隔秒数 (默认 {DAEMON_POLL_INTERVAL})")
     args = parser.parse_args()
@@ -1559,19 +2066,26 @@ def main():
         review = args.review if args.review else (args.folder is None)
 
     if args.file:
-        sys.exit(0 if ingest_file(args.file, review=review, skip_confirm=skip_confirm) else 1)
+        sys.exit(0 if ingest_file(args.file, review=review, skip_confirm=skip_confirm,
+                                  local=args.local, category=args.category or "") else 1)
     elif args.folder:
-        r = ingest_folder(args.folder, review=review, skip_confirm=skip_confirm)
+        r = ingest_folder(args.folder, review=review, skip_confirm=skip_confirm,
+                          local=args.local, category=args.category or "")
         print(f"\n{'='*40}\n完成: {r['success']}/{r['total']} 成功")
         sys.exit(0 if r['fail'] == 0 else 1)
     elif args.url:
-        sys.exit(0 if ingest_url(args.url, review=review, skip_confirm=skip_confirm) else 1)
+        sys.exit(0 if ingest_url(args.url, review=review, skip_confirm=skip_confirm,
+                                  local=args.local, category=args.category or "") else 1)
     elif args.video:
-        sys.exit(0 if ingest_video(args.video, review=review, skip_confirm=skip_confirm) else 1)
+        sys.exit(0 if ingest_video(args.video, review=review, skip_confirm=skip_confirm,
+                                   local=args.local, category=args.category or "") else 1)
     elif args.feishu_doc:
-        sys.exit(0 if ingest_feishu_doc(args.feishu_doc, review=review, skip_confirm=skip_confirm) else 1)
+        sys.exit(0 if ingest_feishu_doc(args.feishu_doc, review=review, skip_confirm=skip_confirm,
+                                        local=args.local, category=args.category or "") else 1)
     elif args.text:
-        sys.exit(0 if ingest_text(args.text, args.title or "", review=review, skip_confirm=skip_confirm) else 1)
+        sys.exit(0 if ingest_text(args.text, args.title or "", review=review,
+                                  skip_confirm=skip_confirm, local=args.local,
+                                  category=args.category or "") else 1)
 
 if __name__ == "__main__":
     main()

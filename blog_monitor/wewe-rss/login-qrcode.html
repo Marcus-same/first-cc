@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>微信读书扫码登录</title>
+<style>
+body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f5f5f5; }
+img { padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+p { margin-top: 16px; color: #666; font-size: 16px; }
+#status { font-weight: bold; color: #07c160; }
+</style></head>
+<body>
+<h2>微信读书扫码登录</h2>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAAETklEQVR4nO1cW46rMAy1DdJ8UmkWMEuhOxvNku4OylK6A/gcCeQr20noVIPSpu3tLfh8VAV8VKBHjh9JkKEMHRUSAZyZA2UtluDMHChrsQRn5kBZiyU4MwfKWizBmTlQ1mIJzlzjG8KAGhB3kD4mxP2AaCbyzbB/8t2WgIpYAmde+IZaFvTy7VgD8xFRD/lL1YS1GFVqFINwf7c50MaYQ/IvzTfivmHG/SDKaUbgA4B9RDU9+26vBxVwDM7MoT47Vi/DMOwAul016jmEpgds//y09HebA22UieaMdNzqJ4zfHvqbl4OusP0JZz7eDzXigIbogtI5bI8I3O2rke3qPX6TnLnGN9RpwiXx8x4qVmcU4iGoGD97vTBZWvb8uy0AlZAUzrzMD3E6ZhgmNJ/T7So5MyF0H2N0VTP83eZAG2GCpestW/hsWX5I9VlTMs3oTUMMrab/cubwWs9Jzny0hkAFYsWfuQxUMR+acHUOrO2yaygL2p6GWHxOKAg1I8y+ia34KIezl3INrUwJdCOTpTANLX8j8/GNAYY3hk4SNFGOlhzNLX15TL1uJdzIRMQ3Scm0KjQhtL24JUvO5Jx2zkxNd/vNK0HXEhKc+eixjCXs0REsBNE6ePUaD4VeR5CPHHo8dBloY3lZL3qZ5aOxT8zBzM6ia4HHQ2tUAt1eH/qWeAhiW0yL1VIQ6lCvTjW0/VRzt3/R5yRnPrzXARUjDO+jVBZHKSrW3KH2XKtRK9PY/tmJb3q3Q/9X8qBNMVH6GnxoviVqlg/JyyT2AQmnz+Ohw8s+ZwmoiLUlJliErPPNTqqIkpJJPMRp0pkpR3M1j4fWqAS6W14GJhA4DaxZr6quUj3ba4xrUwLdnpdBdDLmjGJazyYkzdoEqibX0AqVQDcyOQhkBOg+1NNoUFTDSY3R2hxSz3723ZaAilgCZ2bB8zR7G7fm2McaaeKMbEDTRpqPZReDNlunbjQbi6Naa53WlI3Frr7HQ2tTAt2clwlOU/igKzhdORTlY8av9ZzkzMfXhxDx06Qy2dIybbKyZWNqIouGZLrsnX6zBFTEEjjzH8wfGlNVaJ5ExNH7pMJRCpTcD+VBW8ztOQ1UGg9JFGSIHVmvMa5XCXSPNYos/VWQ9YjQskzMj10yWRsEaJOI7ONZd0vO/M9jasGcjZ0lYmD1oRRYe0ydBW103w8IM6vjitdWq40KW34vq/GffLcloCKWwJlX7/vRpd1h9NzXruKQjVnh6JxZAHLm2vf9YOZDbHOgqUlW3ou41MDnfqxaCQXg33qulr3HGmOoYqflZp7br1EJdL+9Y7pdNaJOYdT2GcQtHMIGMv2LPic58+FvqDmbNaSDV20XdM+GgLi1nv8redAG+/ZglcV56fQYsvxkMmf5ntuvTQl0x30/YP6obHXrbyav9pzkzAwoZ7AIZ+ZAWYslODMHyloswZk5UNZiCc7MgbIWS3BmDuUx9V+zbhPlD3zubAAAAABJRU5ErkJggg==" width="280" height="280">
+<p>用 <strong>微信</strong> 扫描，授权微信读书登录</p>
+<p id="status">等待扫码...</p>
+<script>
+const uuid = "041NxhLY1G750w3e";
+setInterval(async () => {
+  try {
+    const res = await fetch(`http://localhost:4000/trpc/platform.getLoginResult?input=%7B%22id%22%3A%22${uuid}%22%7D`, { headers: { "Authorization": "meng2024" } });
+    const d = (await res.json()).result?.data;
+    if (d?.status === "confirmed") {
+      document.getElementById("status").textContent = "✅ 登录成功！";
+      document.getElementById("status").style.color = "#07c160";
+    } else if (d?.status === "scanned") {
+      document.getElementById("status").textContent = "已扫描，请在手机上确认授权...";
+    }
+  } catch(e) {}
+}, 3000);
+</script>
+</body></html>

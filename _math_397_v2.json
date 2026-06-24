@@ -1,0 +1,3575 @@
+[
+  {
+    "id": 1,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "正数、负数和0",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "纯概念，找反义词即得答案"
+  },
+  {
+    "id": 2,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "对有理数进行分类",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "按定义归类，无需计算"
+  },
+  {
+    "id": 3,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "数轴的概念",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "概念辨识，记住三要素即可"
+  },
+  {
+    "id": 4,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "求一个数的相反数",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "一步符号变换"
+  },
+  {
+    "id": 5,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "求一个数的绝对值",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "一步取正"
+  },
+  {
+    "id": 6,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "有理数加减计算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "单步运算，直接计算"
+  },
+  {
+    "id": 7,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "有理数乘除计算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "单步运算，符号法则"
+  },
+  {
+    "id": 8,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "乘方计算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "单一幂运算"
+  },
+  {
+    "id": 9,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "有理数混合计算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "多步四则运算，需注意运算顺序"
+  },
+  {
+    "id": 10,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "科学记数法",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "格式转换，纯记忆型"
+  },
+  {
+    "id": 11,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "近似数",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "四舍五入规则，一步判断"
+  },
+  {
+    "id": 12,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "根据定义求值",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "直接套用定义代值"
+  },
+  {
+    "id": 13,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "分组求和",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "需构造分组策略，技巧性强"
+  },
+  {
+    "id": 14,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "连锁约分",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "技巧单一，按规律连续约分即可"
+  },
+  {
+    "id": 15,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "裂项相消",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "识别裂项模式+对消，中等技巧"
+  },
+  {
+    "id": 16,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "整体换元",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "整体思想+代换，简化复杂算式"
+  },
+  {
+    "id": 17,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "等差数列—倒序相加法",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "倒序配对技巧，需理解对称性"
+  },
+  {
+    "id": 18,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "等比数列—错位相减法",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "乘公比错位消项，高中方法下放"
+  },
+  {
+    "id": 19,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "绝对值化简",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "需判断符号分段讨论，两知识联动"
+  },
+  {
+    "id": 20,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "已知绝对值反求参数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "逆向思考+多解判断"
+  },
+  {
+    "id": 21,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "绝对值非负性应用",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "非负性+方程，双知识结合"
+  },
+  {
+    "id": 22,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "数轴与绝对值结合",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "数形结合，需在数轴上定位分析"
+  },
+  {
+    "id": 23,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "绝对值的分类讨论问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "正式多情况讨论，逻辑要求高"
+  },
+  {
+    "id": 24,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "绝对值有关最值问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "分类讨论+最值综合，多情况叠加"
+  },
+  {
+    "id": 25,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "数轴上的图形滚动问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "动态想象+数轴距离计算"
+  },
+  {
+    "id": 26,
+    "topic": "代数",
+    "chapter": "第一章 有理数",
+    "type_name": "数轴上点左右跳动问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "多段运动+规律归纳，动点入门"
+  },
+  {
+    "id": 27,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "代数式书写规范",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "纯格式规范检查"
+  },
+  {
+    "id": 28,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "整式的概念",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "单项式/多项式辨识"
+  },
+  {
+    "id": 29,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "同类项的概念",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "看字母和次数是否相同"
+  },
+  {
+    "id": 30,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "合并同类项",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "系数相加，一步完成"
+  },
+  {
+    "id": 31,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "去括号与添括号",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "符号规则，一步操作"
+  },
+  {
+    "id": 32,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "整式的加减",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "去括号+合并，两步以内"
+  },
+  {
+    "id": 33,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "整式化简求值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "多步化简后代入计算"
+  },
+  {
+    "id": 34,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "代数式求值—整体代入法",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "整体思想入门，一步代换"
+  },
+  {
+    "id": 35,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "代数式求值—赋值法",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "特值法，选择恰当数值代入"
+  },
+  {
+    "id": 36,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "定义新运算",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "读懂新规则+代入，难度在理解"
+  },
+  {
+    "id": 37,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "不含某项求参数",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "系数为零取参数，一步推导"
+  },
+  {
+    "id": 38,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "周期规律",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "找循环周期，单一维度规律"
+  },
+  {
+    "id": 39,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "数式排列规律",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "数列通项归纳，需抽象出公式"
+  },
+  {
+    "id": 40,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "数图排列规律",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "数形双重信息，需同时分析"
+  },
+  {
+    "id": 41,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "三角形数阵中的排列规律",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "二维三角形排列，归纳难度提升"
+  },
+  {
+    "id": 42,
+    "topic": "代数",
+    "chapter": "第二章 整式及其加减计算",
+    "type_name": "长方形数阵中的排列规律",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "矩形排列坐标化分析"
+  },
+  {
+    "id": 43,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "方程的有关概念",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "概念辨识，什么是方程/解"
+  },
+  {
+    "id": 44,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "一元一次方程的有关概念",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "辨识未知数个数和次数"
+  },
+  {
+    "id": 45,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "根据一元一次方程定义求参",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "反用定义列方程求参数"
+  },
+  {
+    "id": 46,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "等式的性质",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "加减乘除同一数，等式不变"
+  },
+  {
+    "id": 47,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "一元一次方程的解法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "去分母→移项→合并，多步标准流程"
+  },
+  {
+    "id": 48,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "含绝对值的一元一次方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "分类讨论去掉绝对值再求解"
+  },
+  {
+    "id": 49,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "含参数的一元一次方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "参数讨论+解的结构分析"
+  },
+  {
+    "id": 50,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "形如AB=0的方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "零因子定理：各因式分别=0"
+  },
+  {
+    "id": 51,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "整数解方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "解出后再做整除性筛选"
+  },
+  {
+    "id": 52,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "同解方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "两方程解集相同→系数比较"
+  },
+  {
+    "id": 53,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "数轴动点问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "动态位置+方程建模，压轴常考"
+  },
+  {
+    "id": 54,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "和、差、倍、分问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "文字→方程，找等量关系"
+  },
+  {
+    "id": 55,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "年龄问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "年龄差值不变，建立方程"
+  },
+  {
+    "id": 56,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "行程问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "路程=速度×时间，画线段图"
+  },
+  {
+    "id": 57,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "工程问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "工作量=效率×时间，设总量为1"
+  },
+  {
+    "id": 58,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "调配问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "找分配前后数量关系"
+  },
+  {
+    "id": 59,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "利润问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "售价-成本=利润，找等量关系"
+  },
+  {
+    "id": 60,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "存贷款问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "本金×利率×时间，公式套用"
+  },
+  {
+    "id": 61,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "数字问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "数位表示法+方程"
+  },
+  {
+    "id": 62,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "积分问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "胜场+负场=总场，列方程组"
+  },
+  {
+    "id": 63,
+    "topic": "代数",
+    "chapter": "第三章 一元一次方程",
+    "type_name": "分段计费问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分段函数思维，≥或≤分段讨论"
+  },
+  {
+    "id": 64,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "平方根和立方根",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "概念+直接开方计算"
+  },
+  {
+    "id": 65,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "判断无理数",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "无限不循环小数即无理数"
+  },
+  {
+    "id": 66,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "无理数的估算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "夹逼法确定范围，需比较"
+  },
+  {
+    "id": 67,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "求无理数的整数部分和小数部分",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "估值排除+拆分"
+  },
+  {
+    "id": 68,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "无理数大小比较",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "平方比较或估值比较"
+  },
+  {
+    "id": 69,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "实数的简单计算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "有理数+无理数混合运算"
+  },
+  {
+    "id": 70,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "应用平方根的非负性解题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "非负性+方程/不等式结合"
+  },
+  {
+    "id": 71,
+    "topic": "代数",
+    "chapter": "第四章 实数",
+    "type_name": "有理数和无理数的关系",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "抽象关系证明，需反证法思维"
+  },
+  {
+    "id": 72,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "判断二元一次方程",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "两个未知数、一次，概念辨识"
+  },
+  {
+    "id": 73,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "根据定义求参数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "反用定义，列条件求参数"
+  },
+  {
+    "id": 74,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "二元一次方程组解法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "代入消元或加减消元，标准流程"
+  },
+  {
+    "id": 75,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "二元一次方程整数解问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "枚举或整除分析找整数解"
+  },
+  {
+    "id": 76,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "三元方程组解法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "多次消元降为二元再解"
+  },
+  {
+    "id": 77,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "已知方程组解的关系求参数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "将解代入反求参数"
+  },
+  {
+    "id": 78,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "同解方程组",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "解集相同→系数成比例或重组"
+  },
+  {
+    "id": 79,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "错解方程组",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "逆向还原正确解，理解方程结构"
+  },
+  {
+    "id": 80,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "同形方程组",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "识别结构模式→整体代换"
+  },
+  {
+    "id": 81,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "方程组唯一解、无解与无数解",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "系数比分析，线性方程组理论雏形"
+  },
+  {
+    "id": 82,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "利润问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "双变量应用题，找两个等量关系"
+  },
+  {
+    "id": 83,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "行程问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "相遇/追及问题，设两未知数"
+  },
+  {
+    "id": 84,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "数字问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "数位表达+方程组"
+  },
+  {
+    "id": 85,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "配套问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "比例关系转化为方程"
+  },
+  {
+    "id": 86,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "几何问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "几何条件翻译为代数方程"
+  },
+  {
+    "id": 87,
+    "topic": "代数",
+    "chapter": "第五章 二元一次方程（组）",
+    "type_name": "分段计费问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分段区间+方程组"
+  },
+  {
+    "id": 88,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "不等式的基本性质",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "乘除负数要变号，概念理解"
+  },
+  {
+    "id": 89,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "根据一元一次不等式定义求参",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "反用定义求参数范围"
+  },
+  {
+    "id": 90,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "解一元一次不等式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "类似解方程+注意方向变化"
+  },
+  {
+    "id": 91,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "一元一次不等式整数解",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "解不等式后再取整数值"
+  },
+  {
+    "id": 92,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "解一元一次不等式组",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分别求解再取交集"
+  },
+  {
+    "id": 93,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "利用整数解求参数",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "逆向从整数解反推参数范围"
+  },
+  {
+    "id": 94,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "解含参不等式（组）",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "参数影响方向，需分类讨论"
+  },
+  {
+    "id": 95,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "已知不等式（组）的解集求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "解集端点对应参数值"
+  },
+  {
+    "id": 96,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "已知不等式解在某范围内求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "解的区间嵌套参数条件"
+  },
+  {
+    "id": 97,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "已知不等式恒成立求参",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "对所有x成立→最值条件分析"
+  },
+  {
+    "id": 98,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "已知不等式组有解无解求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "交集非空性判断"
+  },
+  {
+    "id": 99,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "已知方程（组）解的范围求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "方程解+不等式范围，跨领域联动"
+  },
+  {
+    "id": 100,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "利润问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "不等式应用题，翻译条件"
+  },
+  {
+    "id": 101,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "分段计费问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分段+不等式，找区间"
+  },
+  {
+    "id": 102,
+    "topic": "代数",
+    "chapter": "第六章 不等式及不等式组",
+    "type_name": "方案设计问题",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "多方案比较选最优，需综合判断"
+  },
+  {
+    "id": 103,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "幂的乘除运算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "单一指数法则"
+  },
+  {
+    "id": 104,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "幂的乘方运算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "(aᵐ)ⁿ=aᵐⁿ，一个公式"
+  },
+  {
+    "id": 105,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "幂的加减运算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "同类项才能合并"
+  },
+  {
+    "id": 106,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "已知幂的值求幂的值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "指数法则逆向应用"
+  },
+  {
+    "id": 107,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "已知幂得到字母的关系式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "指数等式→字母关系"
+  },
+  {
+    "id": 108,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "已知两个幂相等求字母的值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "同底等幂则指数相等"
+  },
+  {
+    "id": 109,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "已知两个幂的值求代数式的值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "两幂值推代数式，两步推理"
+  },
+  {
+    "id": 110,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "比较几个幂的大小",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "化同底或同指再比较"
+  },
+  {
+    "id": 111,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "整式的乘法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分配律逐项相乘后合并"
+  },
+  {
+    "id": 112,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "整式的除法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "多项式÷单项式，逐项除"
+  },
+  {
+    "id": 113,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "不含某一项求参数",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "该项系数=0，解出参数"
+  },
+  {
+    "id": 114,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "恒成立与无关问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "对所有x成立→所有系数=0"
+  },
+  {
+    "id": 115,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "平方差公式",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "识别(a+b)(a-b)模式展开"
+  },
+  {
+    "id": 116,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "完全平方公式",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "(a±b)²展开，记住2ab项"
+  },
+  {
+    "id": 117,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "已知完全平方式求参数",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "对比标准形式反求参数"
+  },
+  {
+    "id": 118,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "三元平方公式",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "(a+b+c)²展开，规律清晰"
+  },
+  {
+    "id": 119,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "立方和、立方差公式",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "公式记忆+模式识别"
+  },
+  {
+    "id": 120,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "完全立方公式",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "(a±b)³展开，项数多但规律"
+  },
+  {
+    "id": 121,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "乘法公式知二推二",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "已知a+b和ab推a²+b²等，灵活公式联动"
+  },
+  {
+    "id": 122,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "高次型的知二推二",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "高次幂推导，多次递推计算"
+  },
+  {
+    "id": 123,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "倒数型的知二推二",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "a+1/a型，平方后再推高次"
+  },
+  {
+    "id": 124,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "知二推二的应用—换元",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "整体换元后套用知二推二"
+  },
+  {
+    "id": 125,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "配方法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "添加常数凑完全平方"
+  },
+  {
+    "id": 126,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "配方法求最值",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "配方后利用平方非负性求最值"
+  },
+  {
+    "id": 127,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "配方法解不定方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "配方+整数解分析，双条件约束"
+  },
+  {
+    "id": 128,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "1/2公式配方",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "配方变体，提取系数再配方"
+  },
+  {
+    "id": 129,
+    "topic": "代数",
+    "chapter": "第七章 整式的乘除法",
+    "type_name": "主元法配方",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "多变量时选主元，降维配方"
+  },
+  {
+    "id": 130,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "因式分解概念题",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "判断是否为因式分解形式"
+  },
+  {
+    "id": 131,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "提公因式法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "找最大公因式提出，需识别"
+  },
+  {
+    "id": 132,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "公式法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "匹配平方差/完全平方模式"
+  },
+  {
+    "id": 133,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "十字相乘法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "二次三项式拆系数配对"
+  },
+  {
+    "id": 134,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "分组分解法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "合理分组后各自提取公因式"
+  },
+  {
+    "id": 135,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "换元法",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "整体替换化简复杂结构"
+  },
+  {
+    "id": 136,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "主元法",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "多变量时先定主元降维分解"
+  },
+  {
+    "id": 137,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "双十字相乘法",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "二元二次型，两次十字相乘"
+  },
+  {
+    "id": 138,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "拆添项法",
+    "book_level": "扩展",
+    "difficulty": "lv4",
+    "reason": "巧添辅助项构造可分解结构"
+  },
+  {
+    "id": 139,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "试根法",
+    "book_level": "扩展",
+    "difficulty": "lv4",
+    "reason": "有理根定理+综合除法验证"
+  },
+  {
+    "id": 140,
+    "topic": "代数",
+    "chapter": "第八章 因式分解",
+    "type_name": "待定系数法",
+    "book_level": "扩展",
+    "difficulty": "lv4",
+    "reason": "设未知系数解方程组，多步推导"
+  },
+  {
+    "id": 141,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "判断是否为分式",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "分母含字母→分式"
+  },
+  {
+    "id": 142,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式有意义求字母范围",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "分母≠0，单条件"
+  },
+  {
+    "id": 143,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式值为0求字母的取值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分子=0且分母≠0，双条件"
+  },
+  {
+    "id": 144,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式恒等变形",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "分子分母同乘除，找等量关系"
+  },
+  {
+    "id": 145,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "把分式最高次符号化正",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "提取负号+约分"
+  },
+  {
+    "id": 146,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式的约分",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "先因式分解再约"
+  },
+  {
+    "id": 147,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式的通分",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "找最简公分母再通分"
+  },
+  {
+    "id": 148,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "字母扩大倍数求分式值变化",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "代值比较或比例分析"
+  },
+  {
+    "id": 149,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "已知式子求分式的值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "代数式变形+代入"
+  },
+  {
+    "id": 150,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式的乘除运算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "约分→乘除→化简"
+  },
+  {
+    "id": 151,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式的加减运算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "通分→加减→约分"
+  },
+  {
+    "id": 152,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式的混合运算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "四则运算+括号+化简"
+  },
+  {
+    "id": 153,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式化简求值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "先化简再代入数值"
+  },
+  {
+    "id": 154,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "解分式方程",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "去分母→解整式方程→检验"
+  },
+  {
+    "id": 155,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "已知分式方程有增根求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "增根=使分母为0的根，反求参数"
+  },
+  {
+    "id": 156,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "已知分式方程无解求参",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "无解条件：增根或方程矛盾"
+  },
+  {
+    "id": 157,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "已知分式方程根的范围求参",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "根+参数范围双约束，需较强分析"
+  },
+  {
+    "id": 158,
+    "topic": "代数",
+    "chapter": "第九章 分式及分式方程",
+    "type_name": "分式方程应用题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "建模→方程→检验，两步验证"
+  },
+  {
+    "id": 159,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "判断是否为二次根式",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "看根号和被开方数"
+  },
+  {
+    "id": 160,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式有意义的条件",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "被开方数≥0，单条件"
+  },
+  {
+    "id": 161,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的性质与化简",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "√(a²)=|a|，注意绝对值"
+  },
+  {
+    "id": 162,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "分母有理化",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "乘共轭因式去掉分母根号"
+  },
+  {
+    "id": 163,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的乘除法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "√a×√b=√(ab)，法则应用"
+  },
+  {
+    "id": 164,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的加减法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "同类根式才能合并"
+  },
+  {
+    "id": 165,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的四则运算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "混合运算+有理化+化简"
+  },
+  {
+    "id": 166,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "分母有理化+知二推二",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "有理化后再套用知二推二公式"
+  },
+  {
+    "id": 167,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "已知字母的值求代数式的值",
+    "book_level": "培优",
+    "difficulty": "lv2",
+    "reason": "代入根式值计算"
+  },
+  {
+    "id": 168,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "无理数求和的裂项相消",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "根式裂项+对消，双技巧嵌套"
+  },
+  {
+    "id": 169,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的大小比较",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "平方比较或有理化后再比"
+  },
+  {
+    "id": 170,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "二次根式的配方",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "根式环境下构造完全平方式"
+  },
+  {
+    "id": 171,
+    "topic": "代数",
+    "chapter": "第十章 二次根式",
+    "type_name": "双重二次根式的化简",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "√(a+√b)型，配方去外层根号"
+  },
+  {
+    "id": 172,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "判断一元二次方程",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "最高次=2且二次项系数≠0"
+  },
+  {
+    "id": 173,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "根据一元二次方程定义求参",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "反用定义求参数取值"
+  },
+  {
+    "id": 174,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "一元二次方程的解法",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "四法选一：配方/公式/因式分解/直接开方"
+  },
+  {
+    "id": 175,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "高次方程",
+    "book_level": "扩展",
+    "difficulty": "lv4",
+    "reason": "换元降次或因式分解降次求解"
+  },
+  {
+    "id": 176,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "分式方程",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "去分母转为一元二次方程"
+  },
+  {
+    "id": 177,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "绝对值方程",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "分类讨论去绝对值后解二次方程"
+  },
+  {
+    "id": 178,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "根式方程",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "平方去根号→二次方程+检验"
+  },
+  {
+    "id": 179,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "依据判别式判断根的情况",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "Δ=b²-4ac，正/零/负判断"
+  },
+  {
+    "id": 180,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "依据根的情况求参数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "Δ≥/=/<0反推参数范围"
+  },
+  {
+    "id": 181,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "韦达定理求参或求代数式值",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "x₁+x₂=-b/a，x₁x₂=c/a灵活变形"
+  },
+  {
+    "id": 182,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "一元二次方程的公共解问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "联立消元或代入公共解"
+  },
+  {
+    "id": 183,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "一元二次方程的整数解问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "判别式+整除性双重约束"
+  },
+  {
+    "id": 184,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "利用根的定义构造方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "已知根→反向构造方程"
+  },
+  {
+    "id": 185,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "利用根系关系构造方程",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "和与积→构造x²-sx+p=0"
+  },
+  {
+    "id": 186,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "两两碰面问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "握手问题模型，n(n-1)/2"
+  },
+  {
+    "id": 187,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "病毒传播问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "指数增长模型建模"
+  },
+  {
+    "id": 188,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "增长率问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "a(1±x)ⁿ=b模型套用"
+  },
+  {
+    "id": 189,
+    "topic": "代数",
+    "chapter": "第十一章 一元二次方程",
+    "type_name": "销售问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "利润=(售价-成本)×销量"
+  },
+  {
+    "id": 190,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "几何体的展开图",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "空间想象+直接判断"
+  },
+  {
+    "id": 191,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "求正方体的相对面",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "展开图折叠还原找对面"
+  },
+  {
+    "id": 192,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "判断展开图标记物的位置",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "观察折叠后标记点对应位置"
+  },
+  {
+    "id": 193,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "点个数及线条数的计算",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "简单计数问题"
+  },
+  {
+    "id": 194,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "线段中点计算问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "中点=两端点坐标和的一半"
+  },
+  {
+    "id": 195,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "线段双中点模型",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "两中点之间距离=大线段的一半"
+  },
+  {
+    "id": 196,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "线段成比例问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "比例式→方程，解出线段长"
+  },
+  {
+    "id": 197,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "车票种类问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "n个点两两连线数=n(n-1)/2"
+  },
+  {
+    "id": 198,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "双角平分线模型",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "两角平分线夹角=原角的一半"
+  },
+  {
+    "id": 199,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "钟面上的角度问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "时针/分针速度差求夹角"
+  },
+  {
+    "id": 200,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "转角问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "方向变换+角度累加，多层判断"
+  },
+  {
+    "id": 201,
+    "topic": "几何",
+    "chapter": "第一章 几何初步",
+    "type_name": "角度换算问题",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "度分秒换算，纯计算"
+  },
+  {
+    "id": 202,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "交叉图形中的角度计算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "对顶角相等+邻补角互补"
+  },
+  {
+    "id": 203,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "垂线段最短的应用",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "点到直线垂线段最短"
+  },
+  {
+    "id": 204,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "识别同位角、内错角、同旁内角",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "三线八角命名辨识"
+  },
+  {
+    "id": 205,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "平移",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "理解平移概念和性质"
+  },
+  {
+    "id": 206,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "平移转化",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "利用平移等积转化"
+  },
+  {
+    "id": 207,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "平行线中的辅助线作法",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "过拐点作平行线构造三线八角"
+  },
+  {
+    "id": 208,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "猪蹄模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "∠P=∠A+∠C，识别并应用"
+  },
+  {
+    "id": 209,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "铅笔模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "∠P+∠A+∠C=360°，识别并应用"
+  },
+  {
+    "id": 210,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "内外勾模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "角度嵌套关系推导"
+  },
+  {
+    "id": 211,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "等积变换模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "同底等高→面积相等转化"
+  },
+  {
+    "id": 212,
+    "topic": "几何",
+    "chapter": "第二章 相交线和平行线",
+    "type_name": "两三角板摆放问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "特殊角(30/45/60/90)组合计算"
+  },
+  {
+    "id": 213,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "三角形稳定性的应用",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "概念识别：三角形具有稳定性"
+  },
+  {
+    "id": 214,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "三角形三边关系",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "两边之和>第三边，两边之差<第三边"
+  },
+  {
+    "id": 215,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "三角形中的角度计算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "内角和180°+外角等于不相邻两内角和"
+  },
+  {
+    "id": 216,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "三角形的高、中线与角平分线",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "三线概念+面积/中点/角度关系"
+  },
+  {
+    "id": 217,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "\"8\"字模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "对顶角+两对内角和相等"
+  },
+  {
+    "id": 218,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "飞镖模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "四边形内角与外角关系"
+  },
+  {
+    "id": 219,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "A字模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "三角形内平行线截比例"
+  },
+  {
+    "id": 220,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "角平分线模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "角平分线上的点到两边距离相等"
+  },
+  {
+    "id": 221,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "老鹰抓小鸡模型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "多角度关系嵌套求解"
+  },
+  {
+    "id": 222,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "边的大小关系证明",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "综合运用三边关系+不等式证明"
+  },
+  {
+    "id": 223,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "面积比问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "底或高成比例→面积成比例"
+  },
+  {
+    "id": 224,
+    "topic": "几何",
+    "chapter": "第三章 三角形",
+    "type_name": "等面积法",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "不同底高组合面积相等建立方程"
+  },
+  {
+    "id": 225,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "全等三角形性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "对应边角相等，简单应用"
+  },
+  {
+    "id": 226,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "全等三角形判定",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "SSS/SAS/ASA/AAS/HL五选一"
+  },
+  {
+    "id": 227,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "辅助线的意义",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "理解辅助线用来构造全等条件"
+  },
+  {
+    "id": 228,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "倍长（类）中线",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "延长中线一倍构造全等，经典辅助线"
+  },
+  {
+    "id": 229,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "截长补短法",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "截长或补短构造相等线段+全等"
+  },
+  {
+    "id": 230,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "角平分线+垂一边",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "角平分线上的点作垂线构造全等"
+  },
+  {
+    "id": 231,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "角平分线+截线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "角平分线上截取等长线段"
+  },
+  {
+    "id": 232,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "角平分线+分垂线",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "过角平分线上点作两边的垂线"
+  },
+  {
+    "id": 233,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "角平分线+平行线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "角平分线∥一边→等腰三角形"
+  },
+  {
+    "id": 234,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "二倍角的处理",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "构造等腰或外角转化二倍关系"
+  },
+  {
+    "id": 235,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "K型全等（一线三垂直）",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "同一直线上三垂直构造全等"
+  },
+  {
+    "id": 236,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "手拉手模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "两个等边/等腰共顶点旋转全等"
+  },
+  {
+    "id": 237,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "婆罗摩笈多",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "圆内接四边形对角线垂直→复杂结论"
+  },
+  {
+    "id": 238,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "脚拉脚模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "两等腰三角形底角相连旋转全等"
+  },
+  {
+    "id": 239,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "等邻边对角互补模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "邻边相等+对角互补→旋转全等"
+  },
+  {
+    "id": 240,
+    "topic": "几何",
+    "chapter": "第四章 全等三角形",
+    "type_name": "半角模型",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "45°/60°半角旋转构造，压轴高频"
+  },
+  {
+    "id": 241,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "判断轴对称图形",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "看是否有对称轴"
+  },
+  {
+    "id": 242,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "轴对称的应用",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "利用对称性质求线段和最小"
+  },
+  {
+    "id": 243,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "等腰三角形的分类讨论",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "顶角/底角/腰进行分类讨论"
+  },
+  {
+    "id": 244,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "垂直平分线",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "垂直平分线上的点到两端等距"
+  },
+  {
+    "id": 245,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "将军饮马模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "轴对称转化+两点间线段最短"
+  },
+  {
+    "id": 246,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "逆等线段问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "逆向构造等线段+对称策略"
+  },
+  {
+    "id": 247,
+    "topic": "几何",
+    "chapter": "第五章 轴对称",
+    "type_name": "三动点问题",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "三点运动+最值综合，极高难度"
+  },
+  {
+    "id": 248,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "两个特殊的直角三角形",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "30°-60°-90°和45°-45°-90°三边比"
+  },
+  {
+    "id": 249,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "30°/45°/60°作垂直构直角三角形",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "遇特殊角作垂线转化到直角三角形"
+  },
+  {
+    "id": 250,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "15°/22.5°利用外角构造二倍角",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "利用外角=两内角和构造特殊角"
+  },
+  {
+    "id": 251,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "75°/105°过顶点作垂直",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "补角构造30°/45°特殊直角三角形"
+  },
+  {
+    "id": 252,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "120°/135°/150°找邻补角",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "邻补角还原到特殊锐角"
+  },
+  {
+    "id": 253,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "解直角三角形",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "勾股定理+三角函数求边角"
+  },
+  {
+    "id": 254,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "格点问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "坐标系中利用勾股定理求距离"
+  },
+  {
+    "id": 255,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "蚂蚁爬行路径",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "展开立体图形→平面最短路径"
+  },
+  {
+    "id": 256,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "直角三角形翻折问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "翻折→全等+勾股方程"
+  },
+  {
+    "id": 257,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "矩形翻折问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "矩形翻折+勾股+方程，多步综合"
+  },
+  {
+    "id": 258,
+    "topic": "几何",
+    "chapter": "第六章 勾股定理",
+    "type_name": "赵爽弦图",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "勾股定理的几何证明模型"
+  },
+  {
+    "id": 259,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "平行四边形的性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "对边平行且相等/对角相等/对角线平分"
+  },
+  {
+    "id": 260,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "平行四边形的判定",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "五选一判定法，条件匹配"
+  },
+  {
+    "id": 261,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "矩形的性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "平行四边形+对角线相等=矩形"
+  },
+  {
+    "id": 262,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "矩形的判定",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "从平行四边形出发或从角出发"
+  },
+  {
+    "id": 263,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "菱形的性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "平行四边形+四边相等/对角线垂直"
+  },
+  {
+    "id": 264,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "菱形的判定",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "边相等或对角线垂直判定"
+  },
+  {
+    "id": 265,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "正方形的性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "矩形+菱形=正方形全部性质"
+  },
+  {
+    "id": 266,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "正方形的判定",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "矩形+菱形条件叠加"
+  },
+  {
+    "id": 267,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "中点四边形",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "四边中点连线→平行四边形"
+  },
+  {
+    "id": 268,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "垂美四边形",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "对角线垂直的四边性质推导"
+  },
+  {
+    "id": 269,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "十字架模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "正方形内两垂直线段相等"
+  },
+  {
+    "id": 270,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "已知多中点构造中位线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "遇中点连中点构中位线或倍长"
+  },
+  {
+    "id": 271,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "已知直角三角形构造斜边中线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "斜边中线=斜边一半"
+  },
+  {
+    "id": 272,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "二倍线段的处理",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "倍长或取中点构造中位线"
+  },
+  {
+    "id": 273,
+    "topic": "几何",
+    "chapter": "第七章 平行四边形",
+    "type_name": "不规则图形辅助线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "割补或等积转化策略"
+  },
+  {
+    "id": 274,
+    "topic": "几何",
+    "chapter": "第八章 旋转",
+    "type_name": "图形旋转的性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "旋转角相等+对应边相等"
+  },
+  {
+    "id": 275,
+    "topic": "几何",
+    "chapter": "第八章 旋转",
+    "type_name": "奔驰模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "等边三角形内点旋转60°构等边"
+  },
+  {
+    "id": 276,
+    "topic": "几何",
+    "chapter": "第八章 旋转",
+    "type_name": "费马点",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "三线段加权距离和最小，旋转+等边"
+  },
+  {
+    "id": 277,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "弧弦圆心角圆周角的关系",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "同弧所对圆周角=圆心角一半"
+  },
+  {
+    "id": 278,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "圆内接四边形",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "对角互补+外角=内对角"
+  },
+  {
+    "id": 279,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "点圆的位置关系",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "比较点到圆心距离与半径"
+  },
+  {
+    "id": 280,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "直线和圆的位置关系",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "d<r相交/d=r相切/d>r相离"
+  },
+  {
+    "id": 281,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "弧长和扇形面积",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "l=nπr/180，S=nπr²/360"
+  },
+  {
+    "id": 282,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "与圆周角圆心角有关辅助线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "构造直径所对圆周角=90°"
+  },
+  {
+    "id": 283,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "与垂径定理有关辅助线",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "过圆心作弦的垂线平分弦"
+  },
+  {
+    "id": 284,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "与切线有关辅助线",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "连半径证垂直/作垂直证半径"
+  },
+  {
+    "id": 285,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "隐形圆",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "定点定长/定角→发现隐藏的圆"
+  },
+  {
+    "id": 286,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "阿基米德折弦定理",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "弦上取点构造等腰，竞赛级定理"
+  },
+  {
+    "id": 287,
+    "topic": "几何",
+    "chapter": "第九章 圆",
+    "type_name": "西姆松定理",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "圆上点向三边作垂线共线，竞赛级"
+  },
+  {
+    "id": 288,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "平行线分线段成比例",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "平行线截线段成比例"
+  },
+  {
+    "id": 289,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "位似",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "相似+对应点连线共点"
+  },
+  {
+    "id": 290,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "\"8\"字相似",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "对顶角+平行→8字形相似"
+  },
+  {
+    "id": 291,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "A字相似",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "平行截三角形→A字形相似"
+  },
+  {
+    "id": 292,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "射影定理",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "Rt△斜边上的高→三组相似"
+  },
+  {
+    "id": 293,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "一线三等角",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "同一直线上三个等角→相似"
+  },
+  {
+    "id": 294,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "角平分线定理",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "角平分线分对边成比例"
+  },
+  {
+    "id": 295,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "米勒定理（最大视角）",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "过两点切圆时视角最大，竞赛题"
+  },
+  {
+    "id": 296,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "手拉手相似模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "两相似三角形共顶点旋转相似"
+  },
+  {
+    "id": 297,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "圆幂定理",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "相交弦/切割线/割线定理统一"
+  },
+  {
+    "id": 298,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "阿氏圆问题",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "到两点距离比为定值→圆，求最值"
+  },
+  {
+    "id": 299,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "瓜豆原理",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "主动点轨迹决定从动点轨迹"
+  },
+  {
+    "id": 300,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "托勒密定理",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "圆内接四边形对角积和=对边积，竞赛"
+  },
+  {
+    "id": 301,
+    "topic": "几何",
+    "chapter": "第十章 相似三角形",
+    "type_name": "托勒密不等式",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "任意四边形推广，竞赛级"
+  },
+  {
+    "id": 302,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "正弦、余弦、正切",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "sin/cos/tan定义+简单计算"
+  },
+  {
+    "id": 303,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "特殊角的三角函数值",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "30°/45°/60°函数值记忆+计算"
+  },
+  {
+    "id": 304,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "解直角三角形",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "勾股+三角函数联合求边角"
+  },
+  {
+    "id": 305,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "解直角三角形实际应用",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "仰角/俯角/坡度建模求解"
+  },
+  {
+    "id": 306,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "胡不归问题",
+    "book_level": "培优",
+    "difficulty": "lv5",
+    "reason": "加权最短路径，正弦转化+将军饮马"
+  },
+  {
+    "id": 307,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "12345模型",
+    "book_level": "扩展",
+    "difficulty": "lv4",
+    "reason": "特殊角(18°/36°/54°/72°)关系速算"
+  },
+  {
+    "id": 308,
+    "topic": "几何",
+    "chapter": "第十一章 锐角三角函数",
+    "type_name": "探照灯模型（定角定高）",
+    "book_level": "扩展",
+    "difficulty": "lv5",
+    "reason": "定角定高求线段最值，高难构造"
+  },
+  {
+    "id": 309,
+    "topic": "几何",
+    "chapter": "第十二章 投影和视图",
+    "type_name": "平行投影",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "太阳光→平行投影辨识"
+  },
+  {
+    "id": 310,
+    "topic": "几何",
+    "chapter": "第十二章 投影和视图",
+    "type_name": "中心投影",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "点光源→中心投影+相似"
+  },
+  {
+    "id": 311,
+    "topic": "几何",
+    "chapter": "第十二章 投影和视图",
+    "type_name": "由几何体判定三视图",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "从三个方向观察→画出视图"
+  },
+  {
+    "id": 312,
+    "topic": "几何",
+    "chapter": "第十二章 投影和视图",
+    "type_name": "由三视图判定几何体",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "逆向从三视图还原几何体"
+  },
+  {
+    "id": 313,
+    "topic": "几何",
+    "chapter": "第十二章 投影和视图",
+    "type_name": "中心投影与相似",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "投影+三角形相似综合"
+  },
+  {
+    "id": 314,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "象限点的特征",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "(+,+)/(-,+)/(-,-)/(+,-)符号记忆"
+  },
+  {
+    "id": 315,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "坐标轴上点的特征",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "x轴上y=0，y轴上x=0"
+  },
+  {
+    "id": 316,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "点到坐标轴的距离",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "|x|是到y轴距离，|y|是到x轴距离"
+  },
+  {
+    "id": 317,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "象限角平分线点的特征",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "一三象限y=x，二四象限y=-x"
+  },
+  {
+    "id": 318,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "点到特殊直线的距离",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "到x=a或y=b的水平/垂直距离"
+  },
+  {
+    "id": 319,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "两点间的距离公式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "d=√[(x₁-x₂)²+(y₁-y₂)²]"
+  },
+  {
+    "id": 320,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "中点坐标公式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "((x₁+x₂)/2,(y₁+y₂)/2)"
+  },
+  {
+    "id": 321,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "点的平移规律",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "左减右加x，上加下减y"
+  },
+  {
+    "id": 322,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "点的对称规律",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "关于x轴y变号，关于y轴x变号"
+  },
+  {
+    "id": 323,
+    "topic": "函数",
+    "chapter": "第一章 平面直角坐标系",
+    "type_name": "点在坐标系中的移动规律",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "多步移动后归纳终点坐标"
+  },
+  {
+    "id": 324,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "判断关系式是否为函数",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "一个x对应唯一y"
+  },
+  {
+    "id": 325,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "判断图象是否为函数图象",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "画竖线，最多一个交点"
+  },
+  {
+    "id": 326,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "求自变量的取值范围",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "分母≠0/根号≥0条件分析"
+  },
+  {
+    "id": 327,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "已知正比例函数求参",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "y=kx代入一点求k"
+  },
+  {
+    "id": 328,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "正比例函数图象和性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "过原点，k>0过一三象限"
+  },
+  {
+    "id": 329,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "求正比例函数解析式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "已知一点代y=kx求k"
+  },
+  {
+    "id": 330,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "已知一次函数求参数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "y=kx+b，两点或一点一性质求k,b"
+  },
+  {
+    "id": 331,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数图象和性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "k定方向，b定截距，k>0增函数"
+  },
+  {
+    "id": 332,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "求一次函数解析式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "两点坐标→待定系数法求k,b"
+  },
+  {
+    "id": 333,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数的图象变换",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "平移/对称，对应k,b的变化规律"
+  },
+  {
+    "id": 334,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "两个一次函数图象的位置关系",
+    "book_level": "扩展",
+    "difficulty": "lv3",
+    "reason": "k相等平行，k₁k₂=-1垂直"
+  },
+  {
+    "id": 335,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数和方程（组）综合",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "交点坐标=方程组的解"
+  },
+  {
+    "id": 336,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数恒过定点问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "分离参数法求定点坐标"
+  },
+  {
+    "id": 337,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数和不等式综合",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "图象法：上方→大于，下方→小于"
+  },
+  {
+    "id": 338,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数中的图形面积问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "求交点→线段长→面积公式"
+  },
+  {
+    "id": 339,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数与将军饮马模型",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "函数背景下的轴对称最短路径"
+  },
+  {
+    "id": 340,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数中的翻折问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "翻折后对称点坐标→新解析式"
+  },
+  {
+    "id": 341,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "分段函数信息提取",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "分段看图找区间对应关系"
+  },
+  {
+    "id": 342,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "多函数结合信息提取",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "两个图象交叉信息对比分析"
+  },
+  {
+    "id": 343,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "一次函数中的方案决策",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "多方案建模→比较→择优"
+  },
+  {
+    "id": 344,
+    "topic": "函数",
+    "chapter": "第二章 一次函数的性质和图象",
+    "type_name": "四边形中的动态问题",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "点在四边形边上运动→函数关系"
+  },
+  {
+    "id": 345,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "已知二次函数求参",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "y=ax²+bx+c，代点或性质求a,b,c"
+  },
+  {
+    "id": 346,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数图象和性质判断",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "开口/顶点/对称轴/增减性综合"
+  },
+  {
+    "id": 347,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "求二次函数的解析式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "一般式/顶点式/交点式三选一"
+  },
+  {
+    "id": 348,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数图象判断",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "根据a/b/c/Δ符号判断图象位置"
+  },
+  {
+    "id": 349,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数图象变换",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "平移→顶点跟着变，解析式改写"
+  },
+  {
+    "id": 350,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "区间最值—定轴定区间",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "对称轴在区间内/外分别讨论"
+  },
+  {
+    "id": 351,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "区间最值—动轴定区间",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "对称轴在动，分类讨论四位置"
+  },
+  {
+    "id": 352,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "区间最值—定轴动区间",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "区间在动，讨论区间与轴的相对位置"
+  },
+  {
+    "id": 353,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数与x轴交点个数",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "Δ>0两个/Δ=0一个/Δ<0无"
+  },
+  {
+    "id": 354,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数与一次函数交点",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "联立→一元二次方程→判别式"
+  },
+  {
+    "id": 355,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数与一元二次不等式",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "图象法：x轴上方>0，下方<0"
+  },
+  {
+    "id": 356,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数方程根的分布",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "根在区间内/外的多条件约束"
+  },
+  {
+    "id": 357,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数中的利润问题",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "总利润=单利×销量，建立二次模型"
+  },
+  {
+    "id": 358,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数中的轨迹问题",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "动点坐标→消参→轨迹解析式"
+  },
+  {
+    "id": 359,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数中的图形面积",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "用坐标表示底和高→面积二次函数"
+  },
+  {
+    "id": 360,
+    "topic": "函数",
+    "chapter": "第三章 二次函数",
+    "type_name": "二次函数中的函数图象问题",
+    "book_level": "基础",
+    "difficulty": "lv3",
+    "reason": "从图象提取a/b/c信息解题"
+  },
+  {
+    "id": 361,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "已知反比例函数求参",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "y=k/x，代一点求k"
+  },
+  {
+    "id": 362,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例函数的图象性质",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "双曲线/k>0一三象限/k<0二四象限"
+  },
+  {
+    "id": 363,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "求反比例函数解析式",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "一点坐标→k=xy"
+  },
+  {
+    "id": 364,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例和一次函数图象判断",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "两个图象交叉特征识别"
+  },
+  {
+    "id": 365,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例函数k的几何意义",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "|k|=矩形面积，常与面积问题结合"
+  },
+  {
+    "id": 366,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例函数与方程不等式",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "图象法：交点两侧比较大小"
+  },
+  {
+    "id": 367,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例函数对称问题",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "双曲线关于原点中心对称"
+  },
+  {
+    "id": 368,
+    "topic": "函数",
+    "chapter": "第四章 反比例函数",
+    "type_name": "反比例函数中的平行和相等",
+    "book_level": "培优",
+    "difficulty": "lv4",
+    "reason": "几何性质+反比例综合证明"
+  },
+  {
+    "id": 369,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "普查和抽样调查",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "全面vs部分，概念辨识"
+  },
+  {
+    "id": 370,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "总体、个体、样本、样本容量",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "四个统计概念辨识"
+  },
+  {
+    "id": 371,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "数据的收集与整理过程",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "收集→整理→描述→分析流程"
+  },
+  {
+    "id": 372,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "抽样调查的合理性",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "随机性和代表性判断"
+  },
+  {
+    "id": 373,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "统计图的选择",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "条形/折线/扇形/直方图适用场景"
+  },
+  {
+    "id": 374,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "用样本估计总体",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "样本比例推断总体数量"
+  },
+  {
+    "id": 375,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "频数和频率的计算",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "频率=频数÷总数"
+  },
+  {
+    "id": 376,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "从频数分布直方图获取信息",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "读图提取各组频数"
+  },
+  {
+    "id": 377,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "从频数分布折线图获取信息",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "读图分析变化趋势"
+  },
+  {
+    "id": 378,
+    "topic": "统计概率",
+    "chapter": "第一章 数据的收集、整理和描述",
+    "type_name": "频数分布表和频率直方图",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "分组→计数→制表→绘图全流程"
+  },
+  {
+    "id": 379,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "求平均数",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "总和÷个数，一步除法"
+  },
+  {
+    "id": 380,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "求加权平均数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "权重×数值之和÷权重和"
+  },
+  {
+    "id": 381,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "求中位数和众数",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "排序取中间/出现次数最多"
+  },
+  {
+    "id": 382,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "从扇形统计图分析数据",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "百分比+总数反推数量"
+  },
+  {
+    "id": 383,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "从条形统计图分析数据",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "读条形高度比较数据"
+  },
+  {
+    "id": 384,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "从折线统计图分析数据",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "读趋势+拐点分析"
+  },
+  {
+    "id": 385,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "求极差",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "最大值-最小值，一步"
+  },
+  {
+    "id": 386,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "求方差、标准差",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "公式计算，多步平方求和"
+  },
+  {
+    "id": 387,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "方差的意义",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "方差大→波动大，概念理解+应用"
+  },
+  {
+    "id": 388,
+    "topic": "统计概率",
+    "chapter": "第二章 数据分析",
+    "type_name": "平均数/中位数/众数/方差综合",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "四个统计量综合命题判断"
+  },
+  {
+    "id": 389,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "判断必然事件",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "100%发生，概念辨识"
+  },
+  {
+    "id": 390,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "判断随机事件",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "可能发生也可能不发生"
+  },
+  {
+    "id": 391,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "判断不可能事件",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "0%可能，概念辨识"
+  },
+  {
+    "id": 392,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "判断事件发生可能性大小",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "直观比较概率高低"
+  },
+  {
+    "id": 393,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "概率的意义",
+    "book_level": "基础",
+    "difficulty": "lv1",
+    "reason": "0~1之间，表示可能性大小"
+  },
+  {
+    "id": 394,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "求随机事件的概率",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "列举法/树状图/列表法计算P"
+  },
+  {
+    "id": 395,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "已知概率反求实验数据",
+    "book_level": "基础",
+    "difficulty": "lv2",
+    "reason": "P=m/n→已知P和n求m"
+  },
+  {
+    "id": 396,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "几何概型",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "面积/长度/体积比求概率"
+  },
+  {
+    "id": 397,
+    "topic": "统计概率",
+    "chapter": "第三章 概率初步",
+    "type_name": "频率估计概率",
+    "book_level": "培优",
+    "difficulty": "lv3",
+    "reason": "大数次试验频率趋近概率"
+  }
+]

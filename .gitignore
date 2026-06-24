@@ -12,3 +12,4 @@ __pycache__/
 *.pyc
 temp_*.*
 *_temp.*
+match_reports/

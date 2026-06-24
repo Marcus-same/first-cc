@@ -1,0 +1,190 @@
+{
+  "2026-06-17": {
+    "funnel": {
+      "教研": {
+        "recommend": 2,
+        "invite": 2,
+        "first": 1,
+        "second": 0,
+        "offer": 0,
+        "onboard": 0
+      },
+      "区域": {
+        "recommend": 0,
+        "invite": 0,
+        "first": 2,
+        "second": 0,
+        "offer": 0,
+        "onboard": 0
+      },
+      "技术": {
+        "recommend": 2,
+        "invite": 2,
+        "first": 3,
+        "second": 1,
+        "offer": 0,
+        "onboard": 0
+      }
+    },
+    "progress": {
+      "教研": [
+        {
+          "subject": "初数",
+          "needed": 4,
+          "current": 4
+        },
+        {
+          "subject": "初英",
+          "needed": 3,
+          "current": 2
+        },
+        {
+          "subject": "高数",
+          "needed": 2,
+          "current": 1
+        },
+        {
+          "subject": "高物",
+          "needed": 2,
+          "current": 0
+        },
+        {
+          "subject": "初英实习生",
+          "needed": 2,
+          "current": 1
+        }
+      ],
+      "区域": [
+        {
+          "subject": "区域",
+          "needed": 15,
+          "current": 1
+        }
+      ],
+      "技术": [
+        {
+          "subject": "Python",
+          "needed": 1,
+          "current": 0
+        },
+        {
+          "subject": "全栈",
+          "needed": 2,
+          "current": 0
+        }
+      ]
+    },
+    "notes": "6月底目标新增offer：\n教研：2；区域：1；技术：1\n7月6日开营预计可参加人员：\n教研：7；区域：2；技术：1"
+  },
+  "2026-06-16": {
+    "funnel": {
+      "教研": {
+        "recommend": 3,
+        "invite": 2,
+        "first": 1,
+        "second": 0,
+        "offer": 2,
+        "onboard": 0
+      },
+      "区域": {
+        "recommend": 2,
+        "invite": 1,
+        "first": 0,
+        "second": 0,
+        "offer": 0,
+        "onboard": 0
+      },
+      "技术": {
+        "recommend": 2,
+        "invite": 2,
+        "first": 5,
+        "second": 1,
+        "offer": 0,
+        "onboard": 0
+      }
+    },
+    "progress": {
+      "教研": [
+        {
+          "subject": "初数",
+          "needed": 4,
+          "current": 4
+        },
+        {
+          "subject": "初英",
+          "needed": 3,
+          "current": 2
+        },
+        {
+          "subject": "高数",
+          "needed": 2,
+          "current": 1
+        },
+        {
+          "subject": "高物",
+          "needed": 2,
+          "current": 0
+        },
+        {
+          "subject": "初英实习生",
+          "needed": 2,
+          "current": 1
+        }
+      ],
+      "区域": [
+        {
+          "subject": "区域",
+          "needed": 15,
+          "current": 2
+        }
+      ],
+      "技术": [
+        {
+          "subject": "Python",
+          "needed": 1,
+          "current": 0
+        },
+        {
+          "subject": "全栈",
+          "needed": 2,
+          "current": 0
+        }
+      ]
+    },
+    "notes": "初数：周涵6月23日入职、冷文鹏已入职、李思诚已入职、闫昊已入职\n高物：欧阳昱宏- offer考虑中\n高数：肖阳6月29日入职\n初英：王雨晴7月6日入职、贾雯静7月6日入职"
+  },
+  "2026-06-18": {
+    "funnel": {
+      "教研": {
+        "recommend": 2,
+        "invite": 0,
+        "first": 0,
+        "second": 0,
+        "offer": 0,
+        "onboard": 0
+      },
+      "区域": {
+        "recommend": 0,
+        "invite": 0,
+        "first": 0,
+        "second": 0,
+        "offer": 0,
+        "onboard": 0
+      },
+      "技术": {
+        "recommend": 2,
+        "invite": 4,
+        "first": 4,
+        "second": 2,
+        "offer": 0,
+        "onboard": 0
+      }
+    },
+    "progress": {
+      "教研": [],
+      "区域": [],
+      "技术": []
+    },
+    "notes": ""
+  }
+}

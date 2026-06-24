@@ -1,0 +1,7 @@
+
+=== UPSERT CALL ===
+table=FhW3RP06 rid=None
+json={"日期": "2026-06-22", "部门": "教研", "更新人": "Marcus", "更新时间": "2026-06-22 13:42:45", "推荐": 9, "邀约": 6, "初试": 4, "复试": 2, "offer": 1, "入职": 0}
+rc=1
+stdout=b''
+stderr=b'{\n  "ok": false,\n  "identity": "user",\n  "error": {\n    "type": "api",\n    "subtype": "unknown",\n    "code": 800030201,\n    "message": "not_found",\n    "hint": "List fields in the current table, then retry with the exact field id or name that belongs to this table. The first 5 available fields are: \\"fldSVGf24A(\\\\\\"Offer\\\\\\")\\", \\"fldXT4fwvz(\\\\\\"\xe6\x9b\xb4\xe6\x96\xb0\xe6\x97\xb6\xe9\x97\xb4\\\\\\")\\", \\"fldtpwCKvH(\\\\\\"\xe6\x8e\xa8\xe8\x8d\x90\\\\\\")\\", \\"fldyPPMYqx(\\\\\\"\xe9\x83\xa8\xe9\x97\xa8\\\\\\")\\", \\"fldtk7rnQe(\\\\\\"\xe6\x9b\xb4\xe6\x96\xb0\xe4\xba\xba\\\\\\")\\". There are 6 more fields not show'

@@ -57,7 +57,7 @@ python build_docx.py               # 生成 Word 文档
 - 临时文件及时清理，不提交到 Git
 
 ## 手机桥接
-- 飞书群「Claude Code Bridge」（`oc_f2ae3639d64ccd8bb8684c384ec22429`）
+- 飞书群「Codex Bridge」（`oc_f2ae3639d64ccd8bb8684c384ec22429`）
 - 手机飞书往群里发任务，我读到后直接群里回复
 - 读取：`lark-cli im +chat-messages-list --as user --chat-id oc_f2ae3639d64ccd8bb8684c384ec22429`
 - 回复：`lark-cli im +messages-send --as bot --chat-id oc_f2ae3639d64ccd8bb8684c384ec22429 --msg-type text --content ...`
@@ -65,5 +65,5 @@ python build_docx.py               # 生成 Word 文档
 ## 会话归档
 - 涉及重要决策的会话，结束后保存 Markdown 摘要到 `knowledge-base/archive/YYYY-MM-DD-主题.md`
 - 摘要包含：讨论内容、决策、产出、待办
-- 原始 JSONL 日志位置：`C:\Users\Administrator\.claude\projects\D--first-cc\`
+- 原始 JSONL 日志位置：`C:\Users\Administrator\.Codex\projects\D--first-cc\`
 - 查历史对话：优先看 archive 摘要，摘要里找不到再问我 grep JSONL

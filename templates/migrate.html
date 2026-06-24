@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据迁移 - 招聘看板</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F9F8F5;--card:#fff;--border:#E0DCD3;--text:#111;--dim:#777;--gold:#B8860B;--green:#3D7A4D;--red:#C05050}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;padding:40px 16px}
+.card{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:24px 28px;max-width:560px;width:100%;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+h1{font-size:20px;margin-bottom:8px}
+p{color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:16px}
+.steps{margin:16px 0;padding-left:20px}
+.steps li{margin-bottom:8px;font-size:14px;line-height:1.6}
+.btn{padding:8px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:inherit}
+.btn.primary{background:var(--gold);color:#fff}.btn.primary:hover{opacity:.85}
+.btn.secondary{background:#eee;color:var(--text)}.btn.secondary:hover{opacity:.85}
+#fileInput{display:none}
+.msg{margin-top:16px;padding:12px;border-radius:6px;font-size:13px;display:none;line-height:1.6}
+.msg.info{display:block;background:#F0F4F8;color:#3D6C8A;border:1px solid #D0DDE8}
+.msg.ok{display:block;background:#F2F8F3;color:#3D7A4D;border:1px solid #C5E0CB}
+.msg.err{display:block;background:#FFF0F0;color:#C05050;border:1px solid #F0D0D0}
+.back{display:inline-block;margin-top:20px;color:var(--gold);text-decoration:underline;cursor:pointer;font-size:14px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>📦 数据迁移</h1>
+  <p>将旧版招聘看板（浏览器 localStorage）数据迁移到飞书 Base 多人协作平台。</p>
+
+  <ol class="steps">
+    <li>在旧看板页面点击 <b>导出数据</b> 链接，下载 JSON 文件</li>
+    <li>点击下方按钮选择该 JSON 文件</li>
+    <li>系统会自动将数据逐条写入飞书 Base</li>
+    <li>迁移完成后，打开 <a href="/dashboard1" style="color:var(--gold)">看板首页</a> 验证</li>
+  </ol>
+
+  <input type="file" id="fileInput" accept=".json" onchange="handleFile(event)">
+  <button class="btn primary" onclick="document.getElementById('fileInput').click()">选择 JSON 文件</button>
+  <button class="btn secondary" style="margin-left:8px" onclick="location.href='/dashboard1'">返回看板</button>
+
+  <div class="msg info" id="msgInfo">📋 准备就绪，请选择旧版看板导出的 JSON 备份文件</div>
+  <div class="msg ok" id="msgOk"></div>
+  <div class="msg err" id="msgErr"></div>
+</div>
+
+<script>
+function show(type,text){
+  ['info','ok','err'].forEach(t=>document.getElementById('msg'+t.charAt(0).toUpperCase()+t.slice(1)).style.display='none');
+  const el=document.getElementById('msg'+type.charAt(0).toUpperCase()+type.slice(1));
+  el.textContent=text;el.style.display='block';
+}
+
+async function handleFile(e){
+  const file=e.target.files[0];if(!file)return;
+  show('info','⏳ 读取文件中...');
+  try{
+    const text=await file.text();
+    const data=JSON.parse(text);
+    if(typeof data!=='object'||Array.isArray(data))throw new Error('格式不正确，需要 JSON 对象（key 为日期）');
+    const days=Object.keys(data).length;
+    show('info',`📤 准备迁移 ${days} 天数据到飞书 Base...`);
+
+    const r=await fetch('/api/migrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    const result=await r.json();
+    if(result.ok){
+      let txt=`✅ 迁移完成！\n\n`;
+      txt+=`漏斗记录：${result.funnel_records} 条\n`;
+      txt+=`进度记录：${result.progress_records} 条\n`;
+      txt+=`备注记录：${result.notes_records} 条\n`;
+      if(result.errors&&result.errors.length>0){
+        txt+=`\n⚠️ ${result.errors.length} 条错误：\n${result.errors.slice(0,5).map(e=>'• '+e).join('\n')}`;
+        if(result.errors.length>5)txt+=`\n... 等 ${result.errors.length-5} 条`;
+      }
+      show('ok',txt);
+    }else{
+      show('err','❌ 迁移失败: '+(result.error||'未知错误'));
+    }
+  }catch(e){
+    show('err','❌ '+e.message);
+  }
+}
+</script>
+</body>
+</html>
