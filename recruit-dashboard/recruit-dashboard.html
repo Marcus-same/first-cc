@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>招聘数据看板</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F9F8F5;--card:#fff;--border:#E0DCD3;--text:#111;--dim:#777;--gold:#B8860B;--gold-bg:#FFFBF0;--green:#3D7A4D;--red:#C05050}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:12px 16px;-webkit-font-smoothing:antialiased}
+.db{max-width:720px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:.02em}
+.topbar-right{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.datepick{border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:12px;background:#fff;color:var(--text);font-family:inherit;cursor:pointer}
+.datepick-inline{border:none;padding:2px 4px;font-size:13px;font-weight:700;background:transparent;color:var(--gold);cursor:pointer;outline:none;font-family:inherit}.datepick-inline:hover{background:var(--gold-bg);border-radius:4px}
+.btn{padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);transition:all .12s;font-family:inherit;white-space:nowrap;line-height:1.5}
+.btn:hover{opacity:.85}
+.btn.primary{background:var(--gold);color:#fff;border-color:var(--gold)}.btn.primary:hover{background:#A0700A}
+.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.green:hover{background:#306A3D}
+.btn.danger{color:var(--red);border-color:var(--red)}.btn.danger:hover{background:var(--red);color:#fff}
+.btn.small{padding:2px 8px;font-size:11px}
+.card{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:12px 16px;margin-bottom:10px}
+.card-title{font-size:14px;font-weight:800;margin-bottom:10px;padding-bottom:8px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border);letter-spacing:.03em}
+.card-title::before{content:'';display:inline-block;width:4px;height:18px;background:var(--gold);border-radius:2px;flex-shrink:0}
+
+/* funnel table */
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{padding:7px 6px;text-align:center;font-weight:700;font-size:12px;color:#fff;background:#9A7008;border:none;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,0.15)}
+.data-table th:first-child{border-radius:5px 0 0 5px}
+.data-table th:last-child{border-radius:0 5px 5px 0}
+.data-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--border);font-size:14px}
+.data-table td:first-child{font-weight:600;font-size:13px}
+.data-table tr:hover td{background:#FAFAF8}
+.data-table .num{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px}
+.data-table .total-row td{font-weight:700;background:var(--gold-bg);border-top:2px solid var(--border)}
+.data-table .total-row .num{font-size:16px}
+
+/* progress */
+.progress-grid{display:grid;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.progress-col{display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.progress-col:last-child{border-right:none}
+.progress-col-hd{text-align:center;font-size:13px;font-weight:700;color:#fff;padding:6px 0;flex-shrink:0;letter-spacing:.04em;text-shadow:0 1px 1px rgba(0,0,0,0.15)}
+.progress-col-bd{padding:7px 12px;flex:1;display:flex;flex-direction:column;gap:2px}
+.progress-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px}
+.progress-item .subject{font-weight:600;flex-shrink:0;color:var(--text)}
+.progress-bar-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.progress-bar{width:52px;height:6px;background:#ECEAE6;border-radius:3px;overflow:hidden}
+.progress-bar .fill{height:100%;border-radius:3px;transition:width .3s}
+.progress-val{font-weight:700;font-size:12px;font-variant-numeric:tabular-nums;min-width:32px;text-align:right;color:var(--text)}
+.progress-empty{text-align:center;color:var(--dim);font-size:12px;padding:12px 0;flex:1;display:flex;align-items:center;justify-content:center}
+
+/* notes */
+.notes-content{font-size:13px;line-height:1.7;white-space:pre-wrap;min-height:40px;transition:color .2s,background .2s}
+.notes-toolbar{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)}
+.notes-toolbar .color-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.notes-toolbar .color-label{font-size:11px;color:var(--dim);font-weight:600;white-space:nowrap}
+.notes-toolbar .swatches{display:flex;gap:3px;flex-wrap:wrap}
+.notes-toolbar .swatch{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.15);cursor:pointer;transition:transform .1s;flex-shrink:0}
+.notes-toolbar .swatch:hover{transform:scale(1.25);border-color:var(--gold);z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.notes-toolbar .swatch.active{outline:2px solid var(--gold);outline-offset:1px}
+.notes-toolbar .hex-input{font-size:12px;border:1px solid var(--border);border-radius:4px;padding:2px 5px;width:70px;font-family:monospace;outline:none;line-height:1.5}
+.notes-toolbar .hex-input:focus{border-color:var(--gold)}
+.notes-toolbar .reset-link{font-size:10px;color:var(--dim);cursor:pointer;margin-left:auto;white-space:nowrap}.notes-toolbar .reset-link:hover{color:var(--red)}
+
+/* modals */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:1000;display:none;justify-content:center;align-items:flex-start;padding-top:30px}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:10px;width:680px;max-width:95vw;max-height:85vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,0.15);animation:mo .2s ease-out}
+@keyframes mo{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+.modal-hd{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:10;border-radius:10px 10px 0 0}
+.modal-hd h3{font-size:15px;font-weight:700}
+.modal-close{font-size:20px;color:var(--dim);cursor:pointer;line-height:1;background:none;border:none}.modal-close:hover{color:var(--red)}
+.modal-bd{padding:14px}
+.modal-ft{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:var(--card);z-index:10}
+
+/* tabs */
+.tabs{display:flex;gap:0;margin-bottom:10px;border-bottom:2px solid var(--border);overflow-x:auto}
+.tab{padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--dim);transition:all .12s;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.tab.active{color:var(--gold);border-bottom:2px solid var(--gold);margin-bottom:-2px}
+.tab-content{display:none}.tab-content.active{display:block}
+
+.edit-funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin-bottom:12px}
+.edit-funnel-item{text-align:center}.edit-funnel-item label{display:block;font-size:11px;color:var(--dim);margin-bottom:3px;font-weight:600}.edit-funnel-item input{width:60px;text-align:center;font-size:14px;font-weight:700;border:1px solid var(--border);border-radius:4px;padding:4px;outline:none;font-family:inherit}.edit-funnel-item input:focus{border-color:var(--gold)}
+
+.progress-edit{margin-top:8px}
+.progress-edit-row{display:flex;align-items:center;gap:6px;padding:3px 0}
+.progress-edit-row input{font-size:12px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;outline:none;font-family:inherit}
+.progress-edit-row input:focus{border-color:var(--gold)}
+.progress-edit-row .sname{width:80px}
+.progress-edit-row .snum{width:46px;text-align:center}
+.progress-edit-row .del-btn{font-size:11px;color:var(--red);cursor:pointer;background:none;border:none;padding:2px 4px}.del-btn:hover{text-decoration:underline}
+.add-progress-btn{font-size:11px;color:var(--gold);cursor:pointer;background:none;border:1px dashed var(--gold);border-radius:4px;padding:3px 10px;margin-top:4px;font-family:inherit;font-weight:600}.add-progress-btn:hover{background:var(--gold-bg)}
+
+.edit-notes{width:100%;font-size:12px;border:1px solid var(--border);border-radius:5px;padding:8px;resize:vertical;min-height:55px;font-family:inherit;outline:none;margin-top:10px;line-height:1.6}.edit-notes:focus{border-color:var(--gold)}
+
+/* dept management */
+.dept-mgr-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f0f0}
+.dept-mgr-item:last-child{border-bottom:none}
+.dept-mgr-item .dept-color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.dept-mgr-item .dept-name-input{flex:1;font-size:13px;border:1px solid var(--border);border-radius:4px;padding:4px 8px;outline:none;font-family:inherit}.dept-mgr-item .dept-name-input:focus{border-color:var(--gold)}
+.dept-mgr-item .dept-move-btn{font-size:14px;cursor:pointer;background:none;border:none;color:var(--dim);padding:2px 4px}.dept-mgr-item .dept-move-btn:hover{color:var(--text)}
+.dept-mgr-add{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--gold);cursor:pointer;font-weight:600;background:none;border:1px dashed var(--gold);border-radius:6px;padding:6px 14px;font-family:inherit;width:100%;justify-content:center}.dept-mgr-add:hover{background:var(--gold-bg)}
+
+.toast{position:fixed;bottom:16px;right:16px;padding:8px 16px;background:var(--gold);color:#fff;font-weight:600;border-radius:5px;font-size:12px;z-index:9999;animation:ti .3s ease-out;box-shadow:0 3px 10px rgba(0,0,0,0.1)}.toast.err{background:var(--red)}.toast.ok{background:var(--green)}
+@keyframes ti{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ft{text-align:center;font-size:10px;color:var(--dim);margin-top:12px;padding-bottom:8px}.ft a{color:var(--gold);text-decoration:underline}
+@media(max-width:640px){.progress-grid{grid-template-columns:1fr!important}.progress-col{border-right:none;border-bottom:1px solid var(--border)}}
+</style>
+</head>
+<body>
+<div class="db">
+  <div class="topbar">
+    <h1>招聘数据看板</h1>
+    <div class="topbar-right">
+      <button class="btn small" onclick="openDeptMgr()" title="管理业务线">⚙ 类别</button>
+      <button class="btn" onclick="copyPrevDay()">复制前日</button>
+      <button class="btn primary" onclick="openEdit()">数据维护</button>
+      <button class="btn green" onclick="doScreenshot()">截图</button>
+      <button class="btn" onclick="exportCSV()">导出</button>
+      <button class="btn danger" onclick="resetDay()">重置</button>
+    </div>
+  </div>
+
+  <div id="cardsSection">
+  <!-- 部门数据 -->
+  <div class="card">
+    <div class="card-title">部门数据 · <input type="date" class="datepick datepick-inline" id="datePicker"></div>
+    <table class="data-table">
+      <thead><tr><th>部门</th><th>推荐</th><th>邀约</th><th>初试</th><th>复试</th><th>Offer</th><th>入职</th></tr></thead>
+      <tbody id="funnelBody"></tbody>
+    </table>
+  </div>
+
+  <!-- 累计进度 -->
+  <div class="card">
+    <div class="card-title">累计进度</div>
+    <div class="progress-grid" id="progressGrid"></div>
+  </div>
+
+  <!-- 备注 -->
+  <div class="card" id="notesCard">
+    <div class="card-title">备注</div>
+    <div class="notes-content" id="notesContent"></div>
+    <div class="notes-toolbar" id="notesToolbarDisplay"></div>
+  </div>
+  </div>
+
+  <div class="ft">招聘数据看板 · 本地存储 | <a href="javascript:exportJSON()">导出数据</a> · <a href="javascript:importJSON()">导入数据</a></div>
+</div>
+
+<!-- 编辑弹窗 -->
+<div class="modal-bg" id="editModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>数据维护</h3>
+      <button class="modal-close" onclick="closeEdit()">&times;</button>
+    </div>
+    <div class="modal-bd">
+      <div class="tabs" id="editTabs"></div>
+      <div id="editTabContents"></div>
+      <div style="margin-top:12px">
+        <label style="font-size:11px;font-weight:700">备注</label>
+        <textarea class="edit-notes" id="editNotes" placeholder="备注内容..."></textarea>
+        <div class="notes-toolbar" id="notesToolbarEdit" style="margin-top:6px;padding-top:6px"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn" onclick="closeEdit()">取消</button>
+      <button class="btn primary" onclick="saveEdit()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 类别管理弹窗 -->
+<div class="modal-bg" id="deptMgrModal">
+  <div class="modal" style="width:440px">
+    <div class="modal-hd">
+      <h3>⚙ 管理业务线</h3>
+      <button class="modal-close" onclick="closeDeptMgr()">&times;</button>
+    </div>
+    <div class="modal-bd">
+      <p style="font-size:11px;color:var(--dim);margin-bottom:10px">拖拽排序、修改名称、添加或删除业务线。颜色按顺序自动分配。</p>
+      <div id="deptMgrList"></div>
+      <button class="dept-mgr-add" onclick="addDeptRow()">+ 添加业务线</button>
+    </div>
+    <div class="modal-ft">
+      <button class="btn" onclick="closeDeptMgr()">取消</button>
+      <button class="btn primary" onclick="saveDeptMgr()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════ 颜色调色板 ═══════════════
+const DEPT_PALETTE = [
+  {color:'#B8860B', bg:'#FFFBF0', headerBg:'#9A7008'},  // gold
+  {color:'#3D7A4D', bg:'#F2F8F3', headerBg:'#306A3D'},  // green
+  {color:'#3D6C8A', bg:'#F0F4F8', headerBg:'#2F5B76'},  // blue
+  {color:'#8B5CF6', bg:'#F5F3FF', headerBg:'#6D28D9'},  // purple
+  {color:'#C05050', bg:'#FFF0F0', headerBg:'#9B2C2C'},  // red
+  {color:'#B8700A', bg:'#FFF8F0', headerBg:'#92400E'},  // orange
+  {color:'#0D9488', bg:'#F0FDFA', headerBg:'#0F766E'},  // teal
+  {color:'#BE185D', bg:'#FDF2F8', headerBg:'#9D174D'},  // pink
+];
+
+// ═══════════════ 常量 ═══════════════
+const STAGES=['推荐','邀约','初试','复试','offer','入职'];
+const SKEY=['recommend','invite','first','second','offer','onboard'];
+const STORAGE_KEY='recruit_dashboard_v2';
+const DEPTS_KEY='recruit_dashboard_depts';
+const NOTES_COLOR_KEY='recruit_dashboard_notes_colors';
+
+// ═══════════════ 业务线管理 ═══════════════
+function defaultDepts(){
+  return [
+    {name:'教研', key:'jy'},
+    {name:'区域', key:'qy'},
+    {name:'技术', key:'js'},
+    {name:'伴学师', key:'bx'},
+  ];
+}
+
+function loadDepts(){
+  try{
+    const raw=localStorage.getItem(DEPTS_KEY);
+    if(raw){
+      const arr=JSON.parse(raw);
+      if(Array.isArray(arr)&&arr.length>0)return arr;
+    }
+  }catch(e){}
+  // 迁移旧数据：如果 localStorage 里有旧版数据，用旧的三部门
+  try{
+    const old=localStorage.getItem(STORAGE_KEY);
+    if(old){
+      const data=JSON.parse(old);
+      const names=new Set();
+      Object.values(data).forEach(day=>{
+        if(day.funnel)Object.keys(day.funnel).forEach(n=>names.add(n));
+        if(day.progress)Object.keys(day.progress).forEach(n=>names.add(n));
+      });
+      if(names.size>0){
+        const arr=[];
+        names.forEach(n=>{
+          const found=defaultDepts().find(d=>d.name===n);
+          arr.push(found||{name:n,key:'d'+arr.length});
+        });
+        saveDepts(arr);
+        return arr;
+      }
+    }
+  }catch(e){}
+  const d=defaultDepts();
+  saveDepts(d);
+  return d;
+}
+
+function saveDepts(arr){
+  localStorage.setItem(DEPTS_KEY,JSON.stringify(arr));
+}
+
+function getDepts(){return _deptsCache||loadDepts();}
+function deptColor(dept,i){
+  const idx=typeof i==='number'?i:getDepts().findIndex(d=>d.name===dept);
+  return DEPT_PALETTE[idx%DEPT_PALETTE.length];
+}
+function deptColorByName(name){
+  const idx=getDepts().findIndex(d=>d.name===name);
+  return DEPT_PALETTE[idx>=0?idx%DEPT_PALETTE.length:0];
+}
+
+let _deptsCache=null;
+function refreshDeptsCache(){_deptsCache=loadDepts();}
+
+// ═══════════════ 数据层 ═══════════════
+let curDate='',editBuf=null,_cache=null,activeEditTab=null;
+
+function def(){
+  const depts=getDepts();
+  const d={funnel:{},progress:{},notes:''};
+  depts.forEach(p=>{d.funnel[p.name]={};SKEY.forEach(k=>d.funnel[p.name][k]=0);d.progress[p.name]=[]});
+  return d;
+}
+function clone(d){return JSON.parse(JSON.stringify(d))}
+
+function loadAll(){
+  if(_cache)return _cache;
+  try{const r=localStorage.getItem(STORAGE_KEY);_cache=r?JSON.parse(r):{};}catch(e){_cache={};}
+  return _cache;
+}
+function saveAll(){if(_cache)localStorage.setItem(STORAGE_KEY,JSON.stringify(_cache));}
+function getDay(dt){const all=loadAll();return all[dt]?clone(all[dt]):def();}
+function setDay(dt,data){if(!_cache)_cache={};_cache[dt]=clone(data);saveAll();}
+
+// ═══════════════ 初始化 ═══════════════
+async function init(){
+  refreshDeptsCache();
+  curDate=new Date().toISOString().split('T')[0];
+  document.getElementById('datePicker').value=curDate;
+  loadAll();
+  if(!_cache||Object.keys(_cache).length===0)await seedDemo();
+  render();
+}
+document.getElementById('datePicker').onchange=function(){curDate=this.value;render()};
+
+async function seedDemo(){
+  const today=new Date().toISOString().split('T')[0];
+  const d=def();
+  d.funnel={教研:{recommend:12,invite:8,first:5,second:3,offer:2,onboard:1},区域:{recommend:15,invite:10,first:6,second:4,offer:2,onboard:1},技术:{recommend:8,invite:5,first:3,second:2,offer:1,onboard:0},伴学师:{recommend:5,invite:3,first:2,second:1,offer:0,onboard:0}};
+  d.progress={教研:[{subject:'初数',needed:4,current:4},{subject:'高物',needed:2,current:0}],区域:[{subject:'总需求',needed:15,current:0}],技术:[{subject:'Python',needed:1,current:0}],伴学师:[{subject:'伴学师',needed:3,current:0}]};
+  d.notes='示例数据';
+  _cache={};_cache[today]=d;saveAll();
+}
+
+// ═══════════════ 渲染 ═══════════════
+function render(){
+  const data=getDay(curDate);
+  const depts=getDepts();
+
+  // funnel table
+  const fb=document.getElementById('funnelBody');fb.innerHTML='';
+  let totals=SKEY.map(()=>0);
+  depts.forEach((dept,i)=>{
+    const f=data.funnel[dept.name]||{};
+    const vals=SKEY.map(k=>f[k]||0);
+    vals.forEach((v,j)=>totals[j]+=v);
+    const clr=deptColor(dept.name,i);
+    fb.innerHTML+=`<tr><td style="color:${clr.color};font-weight:600">${dept.name}</td>${vals.map(v=>`<td class="num"${v===0?' style="color:#d1d5db"':''}>${v}</td>`).join('')}</tr>`;
+  });
+  fb.innerHTML+=`<tr class="total-row"><td>合计</td>${totals.map(v=>`<td class="num">${v}</td>`).join('')}</tr>`;
+
+  // progress grid
+  const pg=document.getElementById('progressGrid');
+  pg.style.gridTemplateColumns=`repeat(${depts.length},1fr)`;
+  pg.innerHTML='';
+  depts.forEach((dept,i)=>{
+    const clr=deptColor(dept.name,i);
+    const items=data.progress[dept.name]||[];
+    let html=`<div class="progress-col"><div class="progress-col-hd" style="background:${clr.headerBg}">${dept.name}</div><div class="progress-col-bd">`;
+    if(items.length===0){
+      html+=`<div class="progress-empty">暂无数据</div>`;
+    }else{
+      items.forEach(it=>{
+        const pct=it.needed>0?Math.round((it.current/it.needed)*100):0;
+        html+=`<div class="progress-item"><span class="subject">${it.subject||'(空)'}</span><div class="progress-bar-wrap"><div class="progress-bar"><div class="fill" style="width:${pct}%;background:${clr.color}"></div></div><span class="progress-val">${it.current}/${it.needed}</span></div></div>`;
+      });
+    }
+    html+=`</div></div>`;
+    pg.innerHTML+=html;
+  });
+
+  // notes
+  const nc=document.getElementById('notesContent');
+  nc.textContent=data.notes||'(无备注)';
+  applyNotesColors();
+}
+
+// ═══════════════ 编辑弹窗 ═══════════════
+function openEdit(){
+  const depts=getDepts();
+  editBuf=getDay(curDate);
+
+  // 动态生成 tabs
+  let tabsHtml='',contentsHtml='';
+  depts.forEach((dept,i)=>{
+    const clr=deptColor(dept.name,i);
+    tabsHtml+=`<button class="tab${i===0?' active':''}" onclick="switchTab('${dept.key}')" style="--tab-color:${clr.color}">${dept.name}</button>`;
+    contentsHtml+=`<div class="tab-content${i===0?' active':''}" id="tab-${dept.key}"></div>`;
+  });
+  document.getElementById('editTabs').innerHTML=tabsHtml;
+  document.getElementById('editTabContents').innerHTML=contentsHtml;
+
+  document.getElementById('editNotes').value=editBuf.notes||'';
+  document.getElementById('editModal').classList.add('open');
+
+  if(depts.length>0)switchTab(depts[0].key);
+}
+
+function switchTab(key){
+  activeEditTab=key;
+  document.querySelectorAll('#editTabs .tab').forEach(t=>{
+    const isActive=t.getAttribute('onclick')&&t.getAttribute('onclick').includes(`'${key}'`);
+    t.classList.toggle('active',!!isActive);
+  });
+  document.querySelectorAll('#editTabContents .tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+key).classList.add('active');
+  renderEditTab(key);
+}
+
+function renderEditTab(key){
+  const dept=getDepts().find(d=>d.key===key);
+  if(!dept)return;
+  const clr=deptColorByName(dept.name);
+  const container=document.getElementById('tab-'+key);
+  if(!container||!editBuf)return;
+  const fd=editBuf.funnel[dept.name]||{};
+  let html=`<div style="font-size:12px;font-weight:700;margin-bottom:8px;color:${clr.color}">漏斗数据</div>`;
+  html+=`<div class="edit-funnel">`;
+  SKEY.forEach((k,j)=>{
+    html+=`<div class="edit-funnel-item"><label>${STAGES[j]}</label><input type="number" min="0" value="${fd[k]||0}" onchange="onFunnelChange('${dept.name}','${k}',this.value)"></div>`;
+  });
+  html+=`</div>`;
+  html+=`<div style="font-size:12px;font-weight:700;margin-bottom:6px;margin-top:4px">进度科目</div>`;
+  html+=`<div id="progress-edit-${key}" class="progress-edit">`;
+  const items=editBuf.progress[dept.name]||[];
+  html+=renderProgressRows(items,key,dept.name);
+  html+=`</div>`;
+  html+=`<button class="add-progress-btn" onclick="addProgress('${key}','${dept.name}')">+ 添加科目</button>`;
+  container.innerHTML=html;
+}
+
+function renderProgressRows(items,key,deptName){
+  if(!items||items.length===0)return '<div style="font-size:11px;color:var(--dim);padding:4px 0">暂无科目</div>';
+  return items.map((it,i)=>`<div class="progress-edit-row"><input class="sname" placeholder="科目名" value="${escapeHtml(it.subject||'')}" onchange="onProgressChange('${deptName}',${i},'subject',this.value)"><span style="font-size:11px;color:var(--dim)">需</span><input class="snum snum-needed" type="number" min="0" value="${it.needed||0}" onchange="onProgressChange('${deptName}',${i},'needed',parseInt(this.value)||0)"><span style="font-size:11px;color:var(--dim)">已</span><input class="snum snum-current" type="number" min="0" value="${it.current||0}" onchange="onProgressChange('${deptName}',${i},'current',parseInt(this.value)||0)"><button class="del-btn" onclick="delProgressByIndex('${key}','${deptName}',${i})">删除</button></div>`).join('');
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function onFunnelChange(deptName,key,val){if(!editBuf)return;if(!editBuf.funnel[deptName])editBuf.funnel[deptName]={};editBuf.funnel[deptName][key]=parseInt(val)||0;}
+function onProgressChange(deptName,idx,field,val){if(!editBuf)return;const arr=editBuf.progress[deptName]||[];if(arr[idx])arr[idx][field]=val;}
+
+function addProgress(key,deptName){
+  if(!editBuf)return;
+  if(!editBuf.progress[deptName])editBuf.progress[deptName]=[];
+  editBuf.progress[deptName].push({subject:'',needed:0,current:0});
+  renderEditTab(key);
+}
+function delProgressByIndex(key,deptName,idx){
+  if(!editBuf)return;
+  editBuf.progress[deptName].splice(idx,1);
+  renderEditTab(key);
+}
+
+function closeEdit(){document.getElementById('editModal').classList.remove('open');editBuf=null;}
+async function saveEdit(){
+  if(!editBuf)return;
+  editBuf.notes=document.getElementById('editNotes').value||'';
+  setDay(curDate,editBuf);
+  closeEdit();render();toast('已保存','ok');
+}
+
+// ═══════════════ 类别管理弹窗 ═══════════════
+let _deptMgrBuf=null;
+
+function openDeptMgr(){
+  _deptMgrBuf=JSON.parse(JSON.stringify(getDepts()));
+  renderDeptMgrList();
+  document.getElementById('deptMgrModal').classList.add('open');
+}
+
+function renderDeptMgrList(){
+  const container=document.getElementById('deptMgrList');
+  let html='';
+  _deptMgrBuf.forEach((dept,i)=>{
+    const clr=DEPT_PALETTE[i%DEPT_PALETTE.length];
+    html+=`<div class="dept-mgr-item">
+      <span class="dept-color-dot" style="background:${clr.color}"></span>
+      <input class="dept-name-input" value="${escapeHtml(dept.name)}" onchange="onDeptMgrNameChange(${i},this.value)" placeholder="业务线名称">
+      <button class="dept-move-btn" onclick="moveDept(${i},-1)" ${i===0?'disabled':''} title="上移">▲</button>
+      <button class="dept-move-btn" onclick="moveDept(${i},1)" ${i===_deptMgrBuf.length-1?'disabled':''} title="下移">▼</button>
+      <button class="del-btn" onclick="removeDeptRow(${i})" title="删除">✕</button>
+    </div>`;
+  });
+  container.innerHTML=html;
+}
+
+function onDeptMgrNameChange(idx,val){
+  if(idx>=0&&idx<_deptMgrBuf.length)_deptMgrBuf[idx].name=val.trim()||_deptMgrBuf[idx].name;
+}
+function moveDept(idx,dir){
+  const ni=idx+dir;
+  if(ni<0||ni>=_deptMgrBuf.length)return;
+  [_deptMgrBuf[idx],_deptMgrBuf[ni]]=[_deptMgrBuf[ni],_deptMgrBuf[idx]];
+  renderDeptMgrList();
+}
+function removeDeptRow(idx){
+  if(_deptMgrBuf.length<=1){toast('至少保留一个业务线','err');return}
+  _deptMgrBuf.splice(idx,1);
+  renderDeptMgrList();
+}
+function addDeptRow(){
+  const n=_deptMgrBuf.length;
+  _deptMgrBuf.push({name:'新业务线',key:'new'+n});
+  renderDeptMgrList();
+}
+
+function closeDeptMgr(){
+  document.getElementById('deptMgrModal').classList.remove('open');
+  _deptMgrBuf=null;
+}
+
+function saveDeptMgr(){
+  if(!_deptMgrBuf||_deptMgrBuf.length===0){toast('至少保留一个业务线','err');return}
+  // 确保 key 唯一
+  const seen=new Set();
+  _deptMgrBuf.forEach((d,i)=>{
+    if(!d.key||seen.has(d.key))d.key='d'+i;
+    seen.add(d.key);
+    if(!d.name)d.name='未命名'+i;
+  });
+  saveDepts(_deptMgrBuf);
+  refreshDeptsCache();
+  closeDeptMgr();
+  render();
+  toast('业务线已更新','ok');
+}
+
+// ═══════════════ 其他操作 ═══════════════
+async function copyPrevDay(){
+  const p=new Date(curDate);p.setDate(p.getDate()-1);const pd=p.toISOString().split('T')[0];
+  const prev=getDay(pd);
+  const depts=getDepts();
+  const hasData=depts.some(d=>SKEY.some(k=>(prev.funnel[d.name]?.[k]||0)>0))||depts.some(d=>(prev.progress[d.name]||[]).length>0);
+  if(!hasData){toast('前一天无数据','err');return}
+  setDay(curDate,clone(prev));render();toast('已复制前日数据','ok');
+}
+
+function doScreenshot(){
+  if(typeof html2canvas!=='function'){toast('截图功能加载中，请稍后','err');return}
+  document.getElementById('editModal').style.display='none';
+  const toolbar=document.getElementById('notesToolbarDisplay');
+  const toolbarOrig=toolbar?toolbar.style.display:'';
+  if(toolbar)toolbar.style.display='none';
+  const target=document.getElementById('cardsSection');
+  setTimeout(()=>{
+    html2canvas(target,{backgroundColor:'#F9F8F5',scale:2,useCORS:true,logging:false}).then(c=>{
+      if(toolbar)toolbar.style.display=toolbarOrig;
+      c.toBlob(b=>{const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='招聘数据_'+curDate+'.png';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);toast('截图已保存','ok')},'image/png')
+    }).catch(e=>{if(toolbar)toolbar.style.display=toolbarOrig;toast('截图失败: '+e.message,'err')})
+  },50);
+}
+
+function exportCSV(){
+  const data=getDay(curDate);
+  const depts=getDepts();
+  let csv='﻿日期,'+curDate+'\n\n部门数据\n部门,'+STAGES.join(',')+'\n';
+  depts.forEach(d=>{csv+=d.name+','+SKEY.map(k=>data.funnel[d.name]?.[k]||0).join(',')+'\n'});
+  let totals=SKEY.map(()=>0);depts.forEach(d=>{SKEY.forEach((k,j)=>{totals[j]+=(data.funnel[d.name]?.[k]||0)})});
+  csv+='合计,'+totals.join(',')+'\n';
+  csv+='\n累计进度\n部门,科目,已完成,需求\n';
+  depts.forEach(d=>{(data.progress[d.name]||[]).forEach(it=>{csv+=d.name+','+it.subject+','+it.current+','+it.needed+'\n'})});
+  csv+='\n备注\n'+data.notes;
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=u;a.download='招聘数据_'+curDate+'.csv';a.click();URL.revokeObjectURL(u);toast('已导出CSV','ok');
+}
+
+function exportJSON(){
+  if(!_cache||Object.keys(_cache).length===0){toast('无数据可导出','err');return}
+  const depts=getDepts();
+  const exp={depts,_cache};
+  const blob=new Blob([JSON.stringify(exp,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=u;a.download='招聘数据_备份.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);toast('已导出数据文件','ok');
+}
+
+function importJSON(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=async function(e){
+    const file=e.target.files[0];if(!file)return;const text=await file.text();
+    try{
+      const raw=JSON.parse(text);
+      let data,depts;
+      if(raw._cache){data=raw._cache;depts=raw.depts;}else{data=raw;}
+      if(typeof data!=='object')throw new Error('格式错误');
+      _cache=data;saveAll();
+      if(depts&&Array.isArray(depts)){saveDepts(depts);refreshDeptsCache();}
+      render();toast('已导入 '+Object.keys(data).length+' 天数据','ok')
+    }catch(err){toast('导入失败: 文件格式不正确','err')}
+  };inp.click();
+}
+
+function resetDay(){
+  if(!confirm('确定要重置 '+curDate+' 的所有数据吗？\n此操作不可恢复！'))return;
+  if(!confirm('再次确认：清空 '+curDate+' 全部数据？'))return;
+  setDay(curDate,def());render();toast('已重置','ok');
+}
+
+function toast(msg,type){
+  const t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},1800);
+}
+
+// ═══════════════ 备注颜色 ═══════════════
+const FONT_PRESETS=['#111111','#B8860B','#3D7A4D','#3D6C8A','#C05050','#B8700A','#666666','#999999'];
+const BG_PRESETS=['#ffffff','#FFFBF0','#F2F8F3','#F0F4F8','#FFF0F0','#FFF8F0','#F5F5F5','#FFFFF0'];
+
+function loadNotesColors(){
+  try{return JSON.parse(localStorage.getItem(NOTES_COLOR_KEY))||{};}catch(e){return {};}
+}
+function saveNotesColors(c){localStorage.setItem(NOTES_COLOR_KEY,JSON.stringify(c));}
+function getNotesColors(){
+  const c=loadNotesColors();
+  return {font:c.font||'#111111',bg:c.bg||'#ffffff'};
+}
+function applyNotesColors(){
+  const c=getNotesColors();
+  const el=document.getElementById('notesContent');
+  if(el){el.style.color=c.font;el.style.background=c.bg;el.style.padding='8px 10px';el.style.borderRadius='5px';}
+  const ta=document.getElementById('editNotes');
+  if(ta){ta.style.color=c.font;ta.style.background=c.bg;}
+  renderNotesToolbar('notesToolbarDisplay');
+  renderNotesToolbar('notesToolbarEdit');
+}
+function setNotesFont(color){const c=getNotesColors();c.font=color;saveNotesColors(c);applyNotesColors();}
+function setNotesBg(color){const c=getNotesColors();c.bg=color;saveNotesColors(c);applyNotesColors();}
+function onNotesHexInput(type){
+  const hex=document.getElementById('hexFont'+(type==='edit'?'Edit':''))?.value||'#111111';
+  const bgHex=document.getElementById('hexBg'+(type==='edit'?'Edit':''))?.value||'#ffffff';
+  const c={font:hex,bg:bgHex};
+  if(/^#[0-9a-fA-F]{6}$/.test(hex))c.font=hex;
+  if(/^#[0-9a-fA-F]{6}$/.test(bgHex))c.bg=bgHex;
+  saveNotesColors(c);
+  applyNotesColors();
+}
+function resetNotesColors(){const c={font:'#111111',bg:'#ffffff'};saveNotesColors(c);applyNotesColors();toast('备注颜色已重置','ok');}
+function renderNotesToolbar(containerId){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const c=getNotesColors();
+  const type=containerId==='notesToolbarEdit'?'Edit':'';
+  let html='<div class="color-row">';
+  html+='<span class="color-label">字色</span><div class="swatches">';
+  FONT_PRESETS.forEach(clr=>{html+='<span class="swatch'+(clr===c.font?' active':'')+'" style="background:'+clr+'" title="'+clr+'" onclick="setNotesFont(&quot;'+clr+'&quot;)"></span>';});
+  html+='</div><input class="hex-input" id="hexFont'+type+'" value="'+c.font+'" onchange="onNotesHexInput(&quot;'+type.toLowerCase()+'&quot;)" maxlength="7">';
+  html+='<span class="color-label" style="margin-left:8px">底色</span><div class="swatches">';
+  BG_PRESETS.forEach(clr=>{html+='<span class="swatch'+(clr===c.bg?' active':'')+'" style="background:'+clr+'" title="'+clr+'" onclick="setNotesBg(&quot;'+clr+'&quot;)"></span>';});
+  html+='</div><input class="hex-input" id="hexBg'+type+'" value="'+c.bg+'" onchange="onNotesHexInput(&quot;'+type.toLowerCase()+'&quot;)" maxlength="7">';
+  html+='<span class="reset-link" onclick="resetNotesColors()">重置</span>';
+  html+='</div>';
+  container.innerHTML=html;
+}
+
+// init
+(function(){applyNotesColors();})();
+init();
+</script>
+</body>
+</html>
