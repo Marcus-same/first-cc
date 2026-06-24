@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: recruit-dashboard
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python recruit_server.py --port $PORT --no-tunnel
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DB_DIR
+        value: /data
+    disk:
+      name: sqlite-data
+      mountPath: /data
+      sizeGB: 1
